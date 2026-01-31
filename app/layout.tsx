@@ -21,6 +21,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL("https://PDFinery.com"), // Replace with your actual domain when you deploy
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
   alternates: {
     canonical: "/",
   },

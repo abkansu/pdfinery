@@ -1,6 +1,7 @@
 "use client";
 
-import { FileText, Trash2, File as FileIcon } from "lucide-react";
+import Image from "next/image";
+import { Trash2, File as FileIcon } from "lucide-react";
 import { PDFUploader } from "@/components/PDFUploader";
 import { MainPageView } from "@/components/MainPageView";
 import { PageThumbnails } from "@/components/PageThumbnails";
@@ -26,22 +27,38 @@ export default function Home() {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "PDFinery",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "Any",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    description:
-      "Merge and reorder PDF files securely in your browser. No installation required.",
-    featureList: [
-      "Merge multiple PDF files",
-      "Reorder pages with drag and drop",
-      "Delete individual pages",
-      "Preview before download",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://PDFinery.com/#organization",
+        name: "PDFinery",
+        url: "https://PDFinery.com",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://PDFinery.com/logo.png",
+        },
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://PDFinery.com/#application",
+        name: "PDFinery",
+        applicationCategory: "UtilityApplication",
+        operatingSystem: "Any",
+        publisher: { "@id": "https://PDFinery.com/#organization" },
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+        description:
+          "Merge and reorder PDF files securely in your browser. No installation required.",
+        featureList: [
+          "Merge multiple PDF files",
+          "Reorder pages with drag and drop",
+          "Delete individual pages",
+          "Preview before download",
+        ],
+      },
     ],
   };
 
@@ -56,9 +73,14 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="rounded-lg bg-primary p-2">
-                <FileText className="h-6 w-6 text-primary-foreground" />
-              </div>
+              <Image
+                src="/logo.png"
+                alt="PDFinery - Merge & Reorder PDF Pages"
+                width={60}
+                height={60}
+                className="rounded-lg object-contain"
+                priority
+              />
               <div>
                 <h1 className="text-xl font-bold">PDFinery</h1>
                 <p className="text-sm text-muted-foreground">
