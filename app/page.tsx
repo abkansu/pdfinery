@@ -211,7 +211,7 @@ export default function Home() {
       <footer className="border-t mt-auto">
         <div className="container mx-auto px-4 py-4">
           <p className="text-center text-sm text-muted-foreground">
-            PDF Merger - All processing happens in your browser. Your files never leave your device.
+            PDFinery - All processing happens in your browser. Your files never leave your device.
           </p>
         </div>
       </footer>
