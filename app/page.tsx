@@ -186,7 +186,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">4</span>
-                    <span>Click "Download Merged PDF" to save your result</span>
+                    <span>Click &quot;Download Merged PDF&quot; to save your result</span>
                   </li>
                 </ul>
               </div>
