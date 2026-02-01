@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -87,11 +88,13 @@ function SortableItem({
         onClick={onSelect}
       >
         {thumbnail ? (
-          <img
+          <Image
             src={thumbnail}
             alt={`Page ${index + 1}`}
-            className="w-full h-full object-contain bg-white"
+            fill
+            className="object-contain bg-white"
             draggable={false}
+            unoptimized
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-muted">
@@ -139,10 +142,12 @@ function DragOverlayItem({
   return (
     <div className="drag-overlay w-[120px] h-[160px] rounded-lg border-2 border-primary overflow-hidden bg-white relative shadow-2xl">
       {thumbnail ? (
-        <img
+        <Image
           src={thumbnail}
           alt={`Page ${index + 1}`}
-          className="w-full h-full object-contain"
+          fill
+          className="object-contain"
+          unoptimized
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center bg-muted">
