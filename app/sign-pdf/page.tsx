@@ -12,6 +12,7 @@ import { getPdfjs } from "@/lib/pdfUtils";
 import { PDFDocument } from "pdf-lib";
 import { cn } from "@/lib/utils";
 import { Header } from "@/components/Header";
+import Image from "next/image";
 
 // --- Types ---
 
@@ -201,7 +202,7 @@ const UploadSignature = ({ onSave, onCancel }: { onSave: (dataUrl: string) => vo
     <div className="flex flex-col gap-4">
       <div className="border-dashed border-2 rounded-md p-8 flex flex-col items-center justify-center min-h-[200px] bg-muted/20">
         {image ? (
-          <img src={image} alt="Preview" className="max-h-[150px] object-contain" />
+          <Image src={image} width={32} height={32} alt="Preview" className="max-h-[150px] object-contain" />
         ) : (
           <div className="text-center text-muted-foreground">
             <Upload className="mx-auto h-8 w-8 mb-2" />
@@ -317,7 +318,7 @@ export default function SignPDFPage() {
     };
     
     // Auto-adjust aspect ratio based on image
-    const img = new Image();
+    const img = new window.Image();
     img.onload = () => {
       const ratio = img.width / img.height;
       newSignature.height = newSignature.width / ratio;
@@ -488,7 +489,7 @@ export default function SignPDFPage() {
       }
 
       const pdfBytes = await pdf.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -617,7 +618,7 @@ export default function SignPDFPage() {
                    }}
                    onMouseDown={(e) => handleMouseDown(e, sig)}
                  >
-                   <img src={sig.dataUrl} className="w-full h-full pointer-events-none" alt="signature" />
+                   <Image src={sig.dataUrl} width={32} height={32} className="w-full h-full pointer-events-none" alt="signature" />
                    
                    {/* Delete Button (visible when selected) */}
                    {selectedSigId === sig.id && (
