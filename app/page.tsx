@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Trash2, File as FileIcon } from "lucide-react";
+import { Header } from "@/components/Header";
 import { PDFUploader } from "@/components/PDFUploader";
 import { MainPageView } from "@/components/MainPageView";
 import { PageThumbnails } from "@/components/PageThumbnails";
@@ -69,41 +69,19 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt="PDFinery - Merge & Reorder PDF Pages"
-                width={60}
-                height={60}
-                className="rounded-lg object-contain"
-                priority
-              />
-              <div>
-                <h1 className="text-xl font-bold">PDFinery</h1>
-                <p className="text-sm text-muted-foreground">
-                  Merge files and organize pages
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              {pages.length > 0 && (
-                <Button
-                  variant="outline"
-                  onClick={clearAll}
-                  className="gap-2"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Clear All
-                </Button>
-              )}
-              <DownloadButton pages={pages} disabled={isLoading} />
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header>
+        {pages.length > 0 && (
+          <Button
+            variant="outline"
+            onClick={clearAll}
+            className="gap-2"
+          >
+            <Trash2 className="h-4 w-4" />
+            Clear All
+          </Button>
+        )}
+        <DownloadButton pages={pages} disabled={isLoading} />
+      </Header>
 
       {/* Loading Overlay */}
       {isLoading && (

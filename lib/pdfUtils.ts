@@ -4,7 +4,7 @@ import type { PDFPage } from "./types";
 // Dynamically import pdfjs to avoid SSR issues
 let pdfjsLib: typeof import("pdfjs-dist") | null = null;
 
-async function getPdfjs() {
+export async function getPdfjs() {
   if (pdfjsLib) return pdfjsLib;
   
   if (typeof window !== "undefined") {

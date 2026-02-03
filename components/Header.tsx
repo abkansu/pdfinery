@@ -1,0 +1,76 @@
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+
+interface HeaderProps {
+  children?: React.ReactNode;
+}
+
+export function Header({ children }: HeaderProps) {
+  const pathname = usePathname();
+
+  const navItems = [
+    {
+      name: "Merge & Organize",
+      href: "/",
+      isActive: pathname === "/"
+    },
+    {
+      name: "Convert PDF",
+      href: "/convert",
+      isActive: pathname === "/convert"
+    },
+    {
+      name: "Sign PDF",
+      href: "/sign-pdf",
+      isActive: pathname === "/sign-pdf"
+    }
+  ];
+
+  return (
+    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+            <Image
+              src="/logo.png"
+              alt="PDFinery"
+              width={32}
+              height={32}
+              className="rounded-lg object-contain"
+              priority
+            />
+            <span className="text-xl font-bold hidden sm:inline-block">PDFinery</span>
+          </Link>
+
+          <nav className="flex items-center gap-1 bg-muted/50 p-1 rounded-lg">
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={cn(
+                    "h-8 px-3 text-sm font-medium transition-all",
+                    item.isActive 
+                      ? "bg-background text-foreground shadow-sm hover:bg-background" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-transparent"
+                  )}
+                >
+                  {item.name}
+                </Button>
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {children}
+        </div>
+      </div>
+    </header>
+  );
+}
