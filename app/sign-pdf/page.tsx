@@ -228,6 +228,55 @@ const UploadSignature = ({ onSave, onCancel }: { onSave: (dataUrl: string) => vo
   );
 };
 
+// 4. Page Thumbnail
+const PageThumbnail = ({ pdfDoc, pageIndex }: { pdfDoc: any, pageIndex: number }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const renderThumbnail = async () => {
+      if (!pdfDoc) return;
+      
+      try {
+        const page = await pdfDoc.getPage(pageIndex + 1);
+        const viewport = page.getViewport({ scale: 0.2 }); // Small scale for thumbnail
+        
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        
+        if (context) {
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          
+          await page.render({
+            canvasContext: context,
+            viewport: viewport
+          }).promise;
+          
+          setImageSrc(canvas.toDataURL());
+        }
+      } catch (err) {
+        console.error("Error rendering thumbnail:", err);
+      }
+    };
+
+    renderThumbnail();
+  }, [pdfDoc, pageIndex]);
+
+  if (!imageSrc) {
+    return (
+      <div className="aspect-[3/4] bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500 animate-pulse">
+        <Loader2 className="h-4 w-4 animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={imageSrc} alt={`Page ${pageIndex + 1}`} className="w-full h-full object-contain bg-white rounded" />
+  );
+};
+
 // --- Main Page ---
 
 export default function SignPDFPage() {
@@ -569,7 +618,8 @@ export default function SignPDFPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden flex relative">
+      <div className="flex-1 overflow-hidden flex justify-center relative">
+        <div className="flex gap-0 w-full max-w-[1200px] shadow-lg bg-white my-6 mx-6 rounded-lg overflow-hidden border">
          {/* Sidebar / Page Navigation if needed, for now just simple Prev/Next or Scroll? 
              The requirements say "Keep track of the currently visible page". 
              Let's do a simple Prev/Next footer or sidebar. Sidebar is better for multi-page.
@@ -587,9 +637,10 @@ export default function SignPDFPage() {
                      )}
                      onClick={() => setCurrentPage(idx + 1)}
                    >
-                     <div className="aspect-[3/4] bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">
-                        Page {idx + 1}
+                     <div className="aspect-[3/4] bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500 overflow-hidden">
+                        <PageThumbnail pdfDoc={pdfDoc} pageIndex={idx} />
                      </div>
+                     <div className="text-center text-xs mt-1 text-gray-500">Page {idx + 1}</div>
                    </div>
                  ))}
               </div>
@@ -597,7 +648,7 @@ export default function SignPDFPage() {
          </div>
 
          {/* PDF Canvas Area */}
-         <div className="flex-1 overflow-auto bg-gray-100 flex justify-center p-8 relative" onClick={() => setSelectedSigId(null)}>
+         <div className="flex-1 overflow-auto bg-gray-100 flex justify-center p-8 relative min-w-0" onClick={() => setSelectedSigId(null)}>
             <div className="relative shadow-lg" style={{ width: canvasRef.current?.width || 'auto', height: canvasRef.current?.height || 'auto' }}>
                <canvas ref={canvasRef} className="bg-white" />
                
@@ -648,6 +699,7 @@ export default function SignPDFPage() {
                ))}
             </div>
          </div>
+        </div>
          
          {/* Mobile Page Controls (floating) */}
          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white shadow-lg rounded-full px-4 py-2 flex items-center gap-4 md:hidden">

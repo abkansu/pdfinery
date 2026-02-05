@@ -1,65 +1,58 @@
 "use client";
 
-import { Trash2, File as FileIcon } from "lucide-react";
+import Link from "next/link";
+import { 
+  Files, 
+  RefreshCcw, 
+  PenLine, 
+  ShieldCheck, 
+  ArrowRight,
+  Layers,
+  FileText
+} from "lucide-react";
 import { Header } from "@/components/Header";
-import { PDFUploader } from "@/components/PDFUploader";
-import { MainPageView } from "@/components/MainPageView";
-import { PageThumbnails } from "@/components/PageThumbnails";
-import { DownloadButton } from "@/components/DownloadButton";
 import { Button } from "@/components/ui/button";
-import { SortableFileList } from "@/components/SortableFileList";
-import { usePDF } from "@/contexts/PDFContext";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function Home() {
-  const {
-    pages,
-    uploadedFiles,
-    selectedIndex,
-    isLoading,
-    loadingMessage,
-    addFiles,
-    setPages,
-    setUploadedFiles,
-    setSelectedIndex,
-    deletePage,
-    clearAll
-  } = usePDF();
+export default function LandingPage() {
+  const tools = [
+    {
+      title: "Organize",
+      description: "Merge multiple PDF files into one document. Reorder pages with drag and drop, and remove unwanted pages.",
+      icon: Layers,
+      href: "/organize",
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10",
+    },
+    {
+      title: "Convert",
+      description: "Convert PDFs to high-quality images (PNG/JPG) or extract text securely. No file uploads required.",
+      icon: RefreshCcw,
+      href: "/convert",
+      color: "text-green-500",
+      bgColor: "bg-green-500/10",
+    },
+    {
+      title: "Sign & Secure",
+      description: "Sign documents with your personal signature. Draw, type, or upload your signature image.",
+      icon: PenLine,
+      href: "/sign-pdf",
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
+    },
+  ];
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": "https://PDFinery.com/#organization",
-        name: "PDFinery",
-        url: "https://PDFinery.com",
-        logo: {
-          "@type": "ImageObject",
-          url: "https://PDFinery.com/logo.png",
-        },
-      },
-      {
-        "@type": "SoftwareApplication",
-        "@id": "https://PDFinery.com/#application",
-        name: "PDFinery",
-        applicationCategory: "UtilityApplication",
-        operatingSystem: "Any",
-        publisher: { "@id": "https://PDFinery.com/#organization" },
-        offers: {
-          "@type": "Offer",
-          price: "0",
-          priceCurrency: "USD",
-        },
-        description:
-          "Merge and reorder PDF files securely in your browser. No installation required.",
-        featureList: [
-          "Merge multiple PDF files",
-          "Reorder pages with drag and drop",
-          "Delete individual pages",
-          "Preview before download",
-        ],
-      },
-    ],
+    "@type": "WebSite",
+    name: "PDFinery",
+    url: "https://PDFinery.com",
+    description: "Secure, client-side PDF tools. Merge, convert, and sign PDFs in your browser.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://PDFinery.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   };
 
   return (
@@ -68,150 +61,104 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Header */}
-      <Header>
-        {pages.length > 0 && (
-          <Button
-            variant="outline"
-            onClick={clearAll}
-            className="gap-2"
-          >
-            <Trash2 className="h-4 w-4" />
-            Clear All
-          </Button>
-        )}
-        <DownloadButton pages={pages} disabled={isLoading} />
-      </Header>
+      
+      <Header />
 
-      {/* Loading Overlay */}
-      {isLoading && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-card p-6 rounded-lg shadow-lg text-center">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-lg font-medium">{loadingMessage}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Please wait while we process your files
-            </p>
+      <div className="container mx-auto px-4 py-16 md:py-24 flex-1 flex flex-col items-center justify-center">
+        
+        {/* Hero Section */}
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
+          <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 mb-4">
+            <ShieldCheck className="w-3 h-3 mr-1" />
+            100% Client-Side Processing
+          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+            Your All-in-One <span className="text-primary">PDF Toolkit</span>
+          </h1>
+          <p className="text-xl text-muted-foreground">
+            Securely process your PDF files directly in your browser. 
+            Your documents never leave your device.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Link href="/organize">
+              <Button size="lg" className="h-12 px-8 text-base">
+                Start Merging
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+            <Link href="/convert">
+              <Button variant="outline" size="lg" className="h-12 px-8 text-base">
+                Convert PDF
+              </Button>
+            </Link>
           </div>
         </div>
-      )}
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-6 flex-1">
-        <div className="grid lg:grid-cols-[300px,1fr] gap-6 h-full items-start">
-          
-          {/* Left Sidebar */}
-          <div className="space-y-6">
-            {/* Upload Section */}
-            <PDFUploader onFilesSelected={addFiles} isLoading={isLoading} />
-
-            {/* Uploaded Files List */}
-            <SortableFileList files={uploadedFiles} onReorder={setUploadedFiles} />
-          </div>
-
-          {/* Main View Area */}
-          <div className="grid lg:grid-cols-[1fr,300px] gap-6 items-start">
-            <div className="space-y-6">
-              {pages.length > 0 ? (
-                <div className="flex flex-col gap-6">
-                  {/* Page Preview */}
-                  <MainPageView
-                    pages={pages}
-                    selectedIndex={selectedIndex}
-                    onSelectPage={setSelectedIndex}
-                    className="min-h-[500px]"
-                  />
-                  
-                  {/* Thumbnails Section */}
-                  <PageThumbnails
-                    pages={pages}
-                    selectedIndex={selectedIndex}
-                    onSelectPage={setSelectedIndex}
-                    onReorderPages={setPages}
-                    onDeletePage={deletePage}
-                    className="w-full"
-                  />
-                </div>
-              ) : (
-                <div className="h-[400px] flex items-center justify-center border-2 border-dashed rounded-lg bg-muted/20">
-                  <div className="text-center text-muted-foreground max-w-sm px-4">
-                    <div className="bg-muted rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                      <FileIcon className="w-8 h-8 opacity-50" />
-                    </div>
-                    <h3 className="text-lg font-medium mb-2">No files uploaded</h3>
-                    <p>Upload PDF files from the left sidebar to start merging.</p>
+        {/* Tools Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+          {tools.map((tool) => (
+            <Link key={tool.title} href={tool.href} className="group h-full">
+              <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50 cursor-pointer border-muted">
+                <CardHeader>
+                  <div className={`w-12 h-12 rounded-lg ${tool.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <tool.icon className={`w-6 h-6 ${tool.color}`} />
                   </div>
-                </div>
-              )}
+                  <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                    {tool.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base leading-relaxed">
+                    {tool.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+
+        {/* Features / Benefits */}
+        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-4xl mx-auto">
+          <div className="space-y-2">
+            <div className="mx-auto w-10 h-10 flex items-center justify-center rounded-full bg-muted">
+              <ShieldCheck className="w-5 h-5 text-muted-foreground" />
             </div>
-
-            {/* Instructions Panel */}
-            <div className="space-y-4 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent">
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="font-medium mb-2">How to use</h3>
-                <ul className="text-sm text-muted-foreground space-y-2">
-                  <li className="flex items-start gap-2">
-                    <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">1</span>
-                    <span>Upload PDF files using the panel on the left</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">2</span>
-                    <span>Drag files in the left sidebar to reorder the entire PDF sequence</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                      <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">3</span>
-                    <span>Drag page thumbnails below to reorder individual pages</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">4</span>
-                    <span>Click &quot;Download Merged PDF&quot; to save your result</span>
-                  </li>
-                </ul>
-              </div>
-
-              {pages.length > 0 && (
-                <div className="bg-muted/50 rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Statistics</h3>
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    <p>Total Pages: <span className="font-medium text-foreground">{pages.length}</span></p>
-                    <p>Source Files: <span className="font-medium text-foreground">
-                      {uploadedFiles.length}
-                    </span></p>
-                  </div>
-                </div>
-              )}
-
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="font-medium mb-2">Why Use PDFinery?</h3>
-                <p className="text-sm text-muted-foreground">
-                  All processing happens in your browser. Your files never leave your
-                  device—no uploads to our servers, no installation, and no account
-                  required. PDFinery is a free, secure PDF merger and reorder tool
-                  that works on any device with a modern web browser.
-                </p>
-              </div>
-
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="font-medium mb-2">Features</h3>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li>Merge multiple PDF files into one document</li>
-                  <li>Reorder pages with an intuitive drag-and-drop interface</li>
-                  <li>Delete individual pages you don&apos;t need</li>
-                  <li>Preview pages before downloading</li>
-                  <li>Free to use with no file size limits</li>
-                  <li>Works entirely in your browser for maximum privacy</li>
-                </ul>
-              </div>
-            </div>
+            <h3 className="font-semibold">Private & Secure</h3>
+            <p className="text-sm text-muted-foreground">Files are processed locally on your device. No uploads to servers.</p>
           </div>
+          <div className="space-y-2">
+            <div className="mx-auto w-10 h-10 flex items-center justify-center rounded-full bg-muted">
+              <Files className="w-5 h-5 text-muted-foreground" />
+            </div>
+            <h3 className="font-semibold">No Limits</h3>
+            <p className="text-sm text-muted-foreground">Process as many files as you need without size restrictions.</p>
+          </div>
+          <div className="space-y-2">
+            <div className="mx-auto w-10 h-10 flex items-center justify-center rounded-full bg-muted">
+              <FileText className="w-5 h-5 text-muted-foreground" />
+            </div>
+            <h3 className="font-semibold">Free Forever</h3>
+            <p className="text-sm text-muted-foreground">No accounts, no subscriptions, no hidden fees.</p>
+          </div>
+        </div>
+
+        {/* SEO Section */}
+        <div className="mt-24 max-w-3xl mx-auto text-center space-y-4 mb-8">
+          <h2 className="text-2xl font-bold tracking-tight">Why Use PDFinery?</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            All processing happens in your browser. Your files never leave your
+            device—no uploads to our servers, no installation, and no account
+            required. PDFinery is a free, secure PDF merger and reorder tool
+            that works on any device with a modern web browser.
+          </p>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="border-t mt-auto">
-        <div className="container mx-auto px-4 py-4">
-          <p className="text-center text-sm text-muted-foreground">
-            PDFinery - All processing happens in your browser. Your files never leave your device.
+      <footer className="border-t py-8 mt-auto bg-muted/30">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} PDFinery. Built with privacy in mind.
           </p>
         </div>
       </footer>

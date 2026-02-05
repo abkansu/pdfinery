@@ -15,17 +15,17 @@ export function Header({ children }: HeaderProps) {
 
   const navItems = [
     {
-      name: "Merge & Organize",
-      href: "/",
-      isActive: pathname === "/"
+      name: "Organize",
+      href: "/organize",
+      isActive: pathname === "/organize"
     },
     {
-      name: "Convert PDF",
+      name: "Convert",
       href: "/convert",
       isActive: pathname === "/convert"
     },
     {
-      name: "Sign PDF",
+      name: "Sign & Secure",
       href: "/sign-pdf",
       isActive: pathname === "/sign-pdf"
     }
