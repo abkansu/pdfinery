@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Header } from "@/components/Header";
 import { PDFUploader } from "@/components/PDFUploader";
 import { 
   loadPdf, 
@@ -179,8 +178,7 @@ export default function ConvertPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 flex flex-col">
-      {/* Header */}
-      <Header />
+      {/* Header removed from here */}
 
       <div className="container mx-auto px-4 py-8 flex-1">
         <div className="max-w-4xl mx-auto space-y-8">

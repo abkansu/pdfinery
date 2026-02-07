@@ -10,7 +10,6 @@ import {
   Layers,
   FileText
 } from "lucide-react";
-import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -62,8 +61,6 @@ export default function LandingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
-      <Header />
-
       <div className="container mx-auto px-4 py-16 md:py-24 flex-1 flex flex-col items-center justify-center">
         
         {/* Hero Section */}
@@ -153,15 +150,6 @@ export default function LandingPage() {
           </p>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="border-t py-8 mt-auto bg-muted/30">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} PDFinery. Built with privacy in mind.
-          </p>
-        </div>
-      </footer>
     </main>
   );
 }

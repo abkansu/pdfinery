@@ -1,12 +1,9 @@
 "use client";
 
-import { Trash2, File as FileIcon } from "lucide-react";
-import { Header } from "@/components/Header";
+import { File as FileIcon } from "lucide-react";
 import { PDFUploader } from "@/components/PDFUploader";
 import { MainPageView } from "@/components/MainPageView";
 import { PageThumbnails } from "@/components/PageThumbnails";
-import { DownloadButton } from "@/components/DownloadButton";
-import { Button } from "@/components/ui/button";
 import { SortableFileList } from "@/components/SortableFileList";
 import { usePDF } from "@/contexts/PDFContext";
 
@@ -68,20 +65,6 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Header */}
-      <Header>
-        {pages.length > 0 && (
-          <Button
-            variant="outline"
-            onClick={clearAll}
-            className="gap-2"
-          >
-            <Trash2 className="h-4 w-4" />
-            Clear All
-          </Button>
-        )}
-        <DownloadButton pages={pages} disabled={isLoading} />
-      </Header>
 
       {/* Loading Overlay */}
       {isLoading && (
@@ -98,7 +81,7 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 flex-1">
-        <div className="grid lg:grid-cols-[300px,1fr] gap-6 h-full items-start">
+        <div className="grid lg:grid-cols-[240px,1fr] gap-6 h-full items-start">
           
           {/* Left Sidebar */}
           <div className="space-y-6">
@@ -110,7 +93,7 @@ export default function Home() {
           </div>
 
           {/* Main View Area */}
-          <div className="grid lg:grid-cols-[1fr,300px] gap-6 items-start">
+          <div className="grid lg:grid-cols-[1fr,240px] gap-6 items-start">
             <div className="space-y-6">
               {pages.length > 0 ? (
                 <div className="flex flex-col gap-6">
@@ -197,15 +180,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="border-t mt-auto">
-        <div className="container mx-auto px-4 py-4">
-          <p className="text-center text-sm text-muted-foreground">
-            PDFinery - All processing happens in your browser. Your files never leave your device.
-          </p>
-        </div>
-      </footer>
     </main>
   );
 }

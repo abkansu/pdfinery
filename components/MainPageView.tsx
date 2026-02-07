@@ -147,7 +147,7 @@ export function MainPageView({
           )}
           <canvas
             ref={canvasRef}
-            className="pdf-canvas border rounded-lg shadow-sm max-h-[600px] object-contain"
+            className="pdf-canvas border rounded-lg shadow-sm max-h-[700px] object-contain"
           />
         </div>
       </CardContent>

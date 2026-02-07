@@ -5,6 +5,9 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { usePDF } from "@/contexts/PDFContext";
+import { DownloadButton } from "@/components/DownloadButton";
+import { Trash2 } from "lucide-react";
 
 interface HeaderProps {
   children?: React.ReactNode;
@@ -12,6 +15,7 @@ interface HeaderProps {
 
 export function Header({ children }: HeaderProps) {
   const pathname = usePathname();
+  const { pages, isLoading, clearAll } = usePDF(); // Access PDF context
 
   const navItems = [
     {
@@ -69,6 +73,23 @@ export function Header({ children }: HeaderProps) {
 
         <div className="flex items-center gap-3">
           {children}
+          
+          {/* Page-specific Actions */}
+          {pathname === "/organize" && (
+            <>
+              {pages.length > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={clearAll}
+                  className="gap-2 hidden sm:flex"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Clear All
+                </Button>
+              )}
+              <DownloadButton pages={pages} disabled={isLoading} />
+            </>
+          )}
         </div>
       </div>
     </header>

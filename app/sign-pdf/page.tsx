@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { getPdfjs } from "@/lib/pdfUtils";
 import { PDFDocument } from "pdf-lib";
 import { cn } from "@/lib/utils";
-import { Header } from "@/components/Header";
 import Image from "next/image";
 
 // --- Types ---
@@ -289,6 +288,7 @@ export default function SignPDFPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<SignatureType>("draw");
   const [selectedSigId, setSelectedSigId] = useState<string | null>(null);
+  const [pageSize, setPageSize] = useState<{ width: number; height: number } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -344,6 +344,8 @@ export default function SignPDFPage() {
           canvasContext: context,
           viewport: viewport
         }).promise;
+
+        setPageSize({ width: viewport.width, height: viewport.height });
       }
     } catch (err) {
       console.error("Error rendering page:", err);
@@ -555,8 +557,8 @@ export default function SignPDFPage() {
 
   if (!file) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
+      <div className="flex-1 flex flex-col">
+        
         <div className="container mx-auto py-10 max-w-4xl flex-1">
            <h1 className="text-3xl font-bold mb-6">Sign PDF</h1>
            <div className="border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-4 bg-muted/10">
@@ -585,8 +587,8 @@ export default function SignPDFPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <Header />
+    <div className="flex flex-col h-[calc(100vh-10rem)] w-full bg-gray-100">
+      
       {/* Editor Toolbar */}
       <div className="bg-white border-b px-6 py-3 flex items-center justify-between shadow-sm z-10">
         <div className="flex items-center gap-4">
@@ -618,13 +620,13 @@ export default function SignPDFPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden flex justify-center relative">
-        <div className="flex gap-0 w-full max-w-[1200px] shadow-lg bg-white my-6 mx-6 rounded-lg overflow-hidden border">
+      <div className="flex-1 overflow-hidden p-6 w-full flex justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-[256px_1fr] w-full max-w-[1200px] shadow-lg bg-white rounded-lg overflow-hidden border h-full">
          {/* Sidebar / Page Navigation if needed, for now just simple Prev/Next or Scroll? 
              The requirements say "Keep track of the currently visible page". 
              Let's do a simple Prev/Next footer or sidebar. Sidebar is better for multi-page.
          */}
-         <div className="w-64 bg-white border-r overflow-y-auto hidden md:block p-4">
+         <div id="loaded-sign-pages" className="bg-white border-r overflow-y-auto hidden md:block p-4 h-full">
             <div className="space-y-4">
               <h3 className="font-semibold text-sm text-gray-500">PAGES ({totalPages})</h3>
               <div className="grid grid-cols-1 gap-4">
@@ -648,8 +650,8 @@ export default function SignPDFPage() {
          </div>
 
          {/* PDF Canvas Area */}
-         <div className="flex-1 overflow-auto bg-gray-100 flex justify-center p-8 relative min-w-0" onClick={() => setSelectedSigId(null)}>
-            <div className="relative shadow-lg" style={{ width: canvasRef.current?.width || 'auto', height: canvasRef.current?.height || 'auto' }}>
+         <div id="loaded-page-canvas" className="overflow-auto bg-gray-100 flex justify-center p-8 relative h-full" onClick={() => setSelectedSigId(null)}>
+            <div className="relative shadow-lg transition-all duration-200" style={{ width: pageSize ? pageSize.width : 'auto', height: pageSize ? pageSize.height : 'auto' }}>
                <canvas ref={canvasRef} className="bg-white" />
                
                {/* Signatures Overlay */}
@@ -698,7 +700,7 @@ export default function SignPDFPage() {
                  </div>
                ))}
             </div>
-         </div>
+          </div>
         </div>
          
          {/* Mobile Page Controls (floating) */}

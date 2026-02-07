@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { PDFProvider } from "@/components/PDFProvider";
 import { Analytics } from '@vercel/analytics/next';
+import { PageContainer } from "@/components/layout/PageContainer";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -73,7 +76,19 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <PDFProvider>
-          {children}
+          {/* Header placed outside the page container for full width */}
+          <Header />
+          
+          {/* 
+            Global Page Layout System 
+            - Wraps all page content
+            - Manages responsive 3-column layout (Ads + Content)
+          */}
+          <PageContainer>
+            {children}
+          </PageContainer>
+          
+          <Footer />
         </PDFProvider>
         <Analytics />
       </body>
