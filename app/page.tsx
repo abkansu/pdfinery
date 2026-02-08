@@ -8,7 +8,8 @@ import {
   ShieldCheck, 
   ArrowRight,
   Layers,
-  FileText
+  FileText,
+  Scissors
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +23,14 @@ export default function LandingPage() {
       href: "/organize",
       color: "text-blue-500",
       bgColor: "bg-blue-500/10",
+    },
+    {
+      title: "Split",
+      description: "Split PDF into multiple files by range, extract specific pages, or split into single pages.",
+      icon: Scissors,
+      href: "/split",
+      color: "text-orange-500",
+      bgColor: "bg-orange-500/10",
     },
     {
       title: "Convert",

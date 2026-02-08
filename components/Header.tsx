@@ -24,6 +24,11 @@ export function Header({ children }: HeaderProps) {
       isActive: pathname === "/organize"
     },
     {
+      name: "Split",
+      href: "/split",
+      isActive: pathname === "/split"
+    },
+    {
       name: "Convert",
       href: "/convert",
       isActive: pathname === "/convert"
@@ -75,7 +80,7 @@ export function Header({ children }: HeaderProps) {
           {children}
           
           {/* Page-specific Actions */}
-          {pathname === "/organize" && (
+          {(pathname === "/organize" || pathname === "/split") && (
             <>
               {pages.length > 0 && (
                 <Button
@@ -87,7 +92,9 @@ export function Header({ children }: HeaderProps) {
                   Clear All
                 </Button>
               )}
-              <DownloadButton pages={pages} disabled={isLoading} />
+              {pathname === "/organize" && (
+                <DownloadButton pages={pages} disabled={isLoading} />
+              )}
             </>
           )}
         </div>
