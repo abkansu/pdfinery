@@ -4,6 +4,7 @@ import { useCallback, useRef } from "react";
 import { Upload, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 interface PDFUploaderProps {
   onFilesSelected: (files: FileList) => void;
@@ -12,6 +13,7 @@ interface PDFUploaderProps {
 
 export function PDFUploader({ onFilesSelected, isLoading }: PDFUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations("Components.PDFUploader");
 
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -71,15 +73,15 @@ export function PDFUploader({ onFilesSelected, isLoading }: PDFUploaderProps) {
           </div>
           <div className="text-center">
             <p className="text-lg font-medium">
-              Drop PDF files here or click to upload
+              {t("dropText")}
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              You can select multiple PDF files at once
+              {t("multiSelect")}
             </p>
           </div>
           <Button variant="secondary" disabled={isLoading}>
             <FileText className="mr-2 h-4 w-4" />
-            Select PDF Files
+            {t("button")}
           </Button>
           <input
             ref={inputRef}

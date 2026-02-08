@@ -21,6 +21,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GripVertical } from "lucide-react";
 import { UploadedFile } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface SortableFileListProps {
   files: UploadedFile[];
@@ -41,6 +42,7 @@ function SortableItem({ file, index }: SortableItemProps) {
     transition,
     isDragging,
   } = useSortable({ id: file.id });
+  const t = useTranslations("Components.SortableFileList");
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -70,7 +72,7 @@ function SortableItem({ file, index }: SortableItemProps) {
           {file.name}
         </p>
         <p className="text-xs text-muted-foreground">
-          {new Date(file.timestamp).toLocaleTimeString()} • {file.pageCount} pages
+          {new Date(file.timestamp).toLocaleTimeString()} • {t("pages", { count: file.pageCount })}
         </p>
       </div>
     </div>
@@ -84,6 +86,7 @@ export function SortableFileList({ files, onReorder }: SortableFileListProps) {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+  const t = useTranslations("Components.SortableFileList");
 
   const fileIds = useMemo(() => files.map((f) => f.id), [files]);
 
@@ -105,7 +108,7 @@ export function SortableFileList({ files, onReorder }: SortableFileListProps) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base font-medium">Uploaded Files</CardTitle>
+        <CardTitle className="text-base font-medium">{t("title")}</CardTitle>
       </CardHeader>
       <CardContent>
         <DndContext

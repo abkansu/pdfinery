@@ -13,6 +13,7 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **Convert PDF**: Convert PDF file to text or image
 - **Split PDF by range**: Split PDF by page ranges, N pages, single pages
 - **Extract PDF pages**: Extract selected pages from PDF
+- **Internationalization**: Support for multiple languages (English, Turkish) with instant switching and localized URLs
 - **Privacy First**: All processing happens in your browser - files never leave your device
 
 
@@ -25,19 +26,23 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **pdf-lib** for PDF manipulation
 - **pdfjs-dist** for PDF rendering
 - **@dnd-kit** for drag-and-drop functionality
+- **next-intl** for internationalization (i18n)
 
 ## Project Structure
 
 - **app/** (Next.js App Router)
-  - **convert/**
-    - page.tsx
-  - **organize/**
-    - page.tsx
-  - **sign-pdf/**
+  - **[locale]/**
+    - **convert/**
+      - page.tsx
+    - **organize/**
+      - page.tsx
+    - **sign-pdf/**
+      - page.tsx
+    - **split/**
+      - page.tsx
+    - layout.tsx
     - page.tsx
   - globals.css
-  - layout.tsx
-  - page.tsx
   - robots.ts
   - sitemap.ts
 
@@ -49,9 +54,11 @@ A frontend-only Next.js application that allows users to interact with PDF files
     - button.tsx
     - card.tsx
     - input.tsx
+    - select.tsx
   - DownloadButton.tsx
   - Footer.tsx
   - Header.tsx
+  - LanguageSelect.tsx
   - MainPageView.tsx
   - PageThumbnails.tsx
   - PDFProvider.tsx
@@ -61,24 +68,38 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **contexts/**
   - PDFContext.tsx
 
+- **i18n/**
+  - request.ts
+  - routing.ts
+
 - **lib/**
   - conversionUtils.ts
+  - navigation.ts
   - pdfUtils.ts
   - types.ts
   - utils.ts
 
+- **messages/**
+  - en.json
+  - tr.json
+
 - **public/**
+  - **flags/**
+    - tr.svg
+    - us.svg
+  - **logos/**
+    - logo-small.png
+    - logo.png
   - content.md
   - llm.txt
   - llms.txt
-  - logo-small.png
-  - logo.png
 
 - **Configuration Files**
   - .eslintrc.json
   - .gitattributes
   - .gitignore
   - components.json
+  - middleware.ts
   - next.config.js
   - package.json
   - postcss.config.js
@@ -93,6 +114,7 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - PDF merge, split, reorder
 - Client-side processing (WASM)
 - SEO-friendly tool pages
+- Internationalization (i18n)
 
 ### Out of Scope (for now)
 - User accounts
@@ -108,12 +130,12 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - PDF to IMG working
 - PDF to Text working
 - PDF split working
+- Internationalization implemented (EN/TR)
 
 ## Core Principles
 ### Browser-only processing (no server uploads)
 ### Privacy-first
 ### Global layout rule (must not be violated)
-
 - All pages must render inside the existing centered content container that reserves left and right side space for banner ads.
 - Do not use full-width layouts
 - Do not overlap or push side ad areas
@@ -123,24 +145,33 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - Navbar invariant: navbar is full-width and outside the content+ads container. Ads/content start below it.
 - Footer invariant: footer is full-width and outside the content+ads container. Ads/content start above it.
 
+### Global internationalization rule (must not be violated)
+- At every page translate every user-seen text 
+- Use messages folder to add, remove or edit translated text
+- At every language addition update messages directory
+- At language select component use public/flags directory for corresponding flag
+
+## AI / Agent Instructions
+
+### Do not break the global layout
+### **Respect Core Principles**
+### Optimize for clarity and monetization
+### Ask before changing architecture
+
 ### On new page add
 - Add the new page link to the navbar
 - Add the new page to the landing page of the website with the appropriate information
 - Add the appropriate metadata and optimize SEO
+- Update PROJECT.md Project Structure, Tech Stack and Features accordingly
 
 ### On page edit
 - Update existing navbar link if the name changes
 - Update the landing page of the website with the appropriate information
 - Tune the existing metadata and optimize SEO
+- Update PROJECT.md Project Structure, Tech Stack and Features accordingly
 
 ### On page delete
 - Remove existing navbar link if the name changes
 - Remove the landing page of the website with the appropriate information
 - Tune the existing metadata and optimize SEO
-
-## AI / Agent Instructions
-
-- Do not break the global layout
-- **Respect Core Principles**
-- Optimize for clarity and monetization
-- Ask before changing architecture
+- Update PROJECT.md Project Structure, Tech Stack and Features accordingly

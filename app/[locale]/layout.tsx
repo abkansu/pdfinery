@@ -5,7 +5,9 @@ import { Analytics } from '@vercel/analytics/next';
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import "./globals.css";
+import {NextIntlClientProvider} from 'next-intl';
+import {getMessages} from 'next-intl/server';
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +28,8 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://PDFinery.com"), // Replace with your actual domain when you deploy
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: "/logos/logo.png",
+    apple: "/logos/logo.png",
   },
   alternates: {
     canonical: "/",
@@ -67,29 +69,35 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params: {locale}
 }: Readonly<{
   children: React.ReactNode;
+  params: {locale: string};
 }>) {
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={inter.className}>
-        <PDFProvider>
-          {/* Header placed outside the page container for full width */}
-          <Header />
-          
-          {/* 
-            Global Page Layout System 
-            - Wraps all page content
-            - Manages responsive 3-column layout (Ads + Content)
-          */}
-          <PageContainer>
-            {children}
-          </PageContainer>
-          
-          <Footer />
-        </PDFProvider>
+        <NextIntlClientProvider messages={messages}>
+          <PDFProvider>
+            {/* Header placed outside the page container for full width */}
+            <Header />
+            
+            {/* 
+              Global Page Layout System 
+              - Wraps all page content
+              - Manages responsive 3-column layout (Ads + Content)
+            */}
+            <PageContainer>
+              {children}
+            </PageContainer>
+            
+            <Footer />
+          </PDFProvider>
+        </NextIntlClientProvider>
         <Analytics />
       </body>
     </html>

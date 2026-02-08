@@ -1,0 +1,243 @@
+{
+  "Navigation": {
+    "home": "Ana Sayfa",
+    "organize": "Düzenle",
+    "convert": "Dönüştür",
+    "sign": "İmzala",
+    "split": "Böl"
+  },
+  "HomePage": {
+    "title": "Hepsi Bir Arada <primary>PDF Araç Seti</primary>",
+    "subtitle": "PDF dosyalarınızı doğrudan tarayıcınızda güvenle işleyin. Belgeleriniz cihazınızdan asla ayrılmaz.",
+    "startMerging": "Birleştirmeye Başla",
+    "convertPdf": "PDF Dönüştür",
+    "features": {
+      "clientSide": "%100 İstemci Taraflı İşleme",
+      "private": "Gizli ve Güvenli",
+      "privateDesc": "Dosyalar cihazınızda yerel olarak işlenir. Sunuculara yükleme yapılmaz.",
+      "noLimits": "Sınır Yok",
+      "noLimitsDesc": "Boyut kısıtlaması olmadan ihtiyacınız olduğu kadar dosya işleyin.",
+      "free": "Daima Ücretsiz",
+      "freeDesc": "Hesap yok, abonelik yok, gizli ücret yok."
+    },
+    "why": {
+      "title": "Neden PDFinery Kullanmalısınız?",
+      "description": "Tüm işlemler tarayıcınızda gerçekleşir. Dosyalarınız cihazınızdan asla ayrılmaz; sunucularımıza yükleme yapılmaz, kurulum ve hesap gerekmez. PDFinery, modern web tarayıcısına sahip herhangi bir cihazda çalışan ücretsiz, güvenli bir PDF birleştirme ve düzenleme aracıdır."
+    },
+    "tools": {
+      "organize": {
+        "title": "Düzenle",
+        "description": "Birden fazla PDF dosyasını tek bir belgede birleştirin. Sayfaları sürükleyip bırakarak yeniden sıralayın ve istenmeyen sayfaları kaldırın."
+      },
+      "split": {
+        "title": "Böl",
+        "description": "PDF'i aralığa göre birden çok dosyaya bölün, belirli sayfaları çıkarın veya tek sayfalara ayırın."
+      },
+      "convert": {
+        "title": "Dönüştür",
+        "description": "PDF'leri yüksek kaliteli görsellere (PNG/JPG) dönüştürün veya metni güvenle çıkarın. Dosya yüklemeye gerek yoktur."
+      },
+      "sign": {
+        "title": "İmzala & Güvenlik",
+        "description": "Belgeleri kişisel imzanızla imzalayın. İmzanızı çizin, yazın veya imza görselinizi yükleyin."
+      }
+    }
+  },
+  "OrganizePage": {
+    "loading": "İşleniyor...",
+    "loadingSub": "Dosyalarınız işlenirken lütfen bekleyin",
+    "noFilesTitle": "Dosya yüklenmedi",
+    "noFilesDesc": "Birleştirmeye başlamak için sol panelden PDF dosyaları yükleyin.",
+    "howTo": {
+        "title": "Nasıl kullanılır",
+        "step1": "Soldaki paneli kullanarak PDF dosyalarını yükleyin",
+        "step2": "Tüm PDF sırasını yeniden düzenlemek için dosyaları sol panelde sürükleyin",
+        "step3": "Bireysel sayfaları yeniden düzenlemek için aşağıdaki sayfa küçük resimlerini sürükleyin",
+        "step4": "Sonucu kaydetmek için \"Birleştirilmiş PDF'i İndir\"e tıklayın"
+    },
+    "stats": {
+        "title": "İstatistikler",
+        "totalPages": "Toplam Sayfa",
+        "sourceFiles": "Kaynak Dosyalar"
+    },
+    "features": {
+        "title": "Özellikler",
+        "list": {
+            "0": "Birden fazla PDF dosyasını tek belgede birleştirin",
+            "1": "Sezgisel sürükle ve bırak arayüzü ile sayfaları yeniden sıralayın",
+            "2": "İhtiyacınız olmayan sayfaları silin",
+            "3": "İndirmeden önce sayfaları önizleyin",
+            "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
+            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
+        }
+    }
+  },
+  "SplitPage": {
+    "title": "PDF Böl",
+    "modes": {
+        "ranges": "Aralığa Göre Böl",
+        "rangesDesc": "Özel sayfa aralıkları (örn. 1-5, 8-10)",
+        "everyN": "Her X Sayfada Bir Böl",
+        "everyNDesc": "Eşit parçalara böl",
+        "single": "Tüm Sayfaları Ayır",
+        "singleDesc": "Her sayfayı ayrı bir PDF olarak kaydet",
+        "extract": "Sayfaları Seç",
+        "extractDesc": "Çıkarmak için belirli sayfaları seçin"
+    },
+    "inputs": {
+        "rangesLabel": "Sayfa Aralıkları",
+        "rangesPlaceholder": "örn. 1-5, 8-10",
+        "rangesHelp": "Sayfa aralıklarını virgülle ayırarak girin. Örnek: 1-5, 1'den 5'e kadar olan sayfalarla tek bir PDF oluşturur.",
+        "everyNLabel": "Her N sayfada bir böl",
+        "extractLabel": "Yeni bir PDF'e çıkarmak için sayfaları seçin ({count} seçildi)",
+        "singleLabel": "Bu işlem, her sayfa için bir tane olmak üzere {count} ayrı PDF dosyası oluşturacaktır."
+    },
+    "buttons": {
+        "processing": "İşleniyor...",
+        "downloadSelected": "Seçilen Sayfaları İndir",
+        "downloadZip": "Böl ve ZIP Olarak İndir"
+    },
+    "noFiles": {
+        "title": "Dosya yüklenmedi",
+        "desc": "Bölme işlemine başlamak için sol panelden PDF dosyaları yükleyin."
+    },
+    "howTo": {
+        "title": "Nasıl kullanılır",
+        "step1": "Bir PDF dosyası yükleyin",
+        "step2": "Bir bölme yöntemi seçin (Aralık, Her N, vb.)",
+        "step3": "Seçenekleri yapılandırın veya sayfaları seçin",
+        "step4": "Bölünmüş dosyalarınızı indirin"
+    },
+    "stats": {
+        "title": "İstatistikler",
+        "totalPages": "Toplam Sayfa"
+    },
+    "features": {
+        "title": "Özellikler",
+        "list": {
+            "0": "PDF dosyalarını özel sayfa aralıklarına göre bölün",
+            "1": "PDF dosyalarını eşit parçalara bölün",
+            "2": "Belirli sayfaları yeni bir PDF'e çıkarın",
+            "3": "Her sayfayı ayrı bir PDF dosyası olarak kaydedin",
+            "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
+            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
+        }
+    }
+  },
+  "ConvertPage": {
+    "title": "PDF'i Resme veya Metne Dönüştür",
+    "subtitle": "Güvenli, tarayıcı tabanlı PDF dönüşümü. Dosya yüklemesi yok.",
+    "fileInfo": "{size} • {pages} sayfa",
+    "changeFile": "Dosyayı Değiştir",
+    "modes": {
+        "label": "Dönüştürme Modu",
+        "image": "Resme",
+        "text": "Metne"
+    },
+    "imageSettings": {
+        "format": "Format",
+        "scale": "Ölçek / Kalite",
+        "scaleOptions": {
+            "scale_1": "1x (Standart)",
+            "scale_1_5": "1.5x (Yüksek)",
+            "scale_2": "2x (Çok Yüksek)",
+            "scale_3": "3x (Baskı)"
+        }
+    },
+    "buttons": {
+        "converting": "Dönüştürülüyor... %{progress}",
+        "convertImage": "Resme Dönüştür",
+        "convertText": "Metne Dönüştür",
+        "downloadTxt": ".txt İndir",
+        "downloadAll": "Tümünü İndir",
+        "downloadZip": "Tümünü İndir (ZIP)"
+    },
+    "results": {
+        "placeholder": "Ayarları yapılandırın ve başlamak için Dönüştür'e tıklayın",
+        "complete": "Dönüşüm Tamamlandı",
+        "convertedCount": "{count} sayfa dönüştürüldü"
+    },
+    "errors": {
+        "loadFailed": "PDF yüklenemedi. Lütfen geçerli bir PDF dosyası olduğundan emin olun.",
+        "conversionFailed": "Dönüşüm sırasında bir hata oluştu.",
+        "zipFailed": "ZIP dosyası oluşturulamadı."
+    }
+  },
+  "SignPage": {
+    "title": "PDF İmzala",
+    "uploadTitle": "İmzalanacak PDF'i yükleyin",
+    "uploadDesc": "Dosyalar tamamen tarayıcınızda işlenir.",
+    "selectPdf": "PDF Seç",
+    "featuresDesc": "Desteklenen özellikler: Çiz, Yaz veya İmza Yükle. Çoklu sayfa desteği. Güvenli istemci taraflı işleme.",
+    "back": "Geri",
+    "addSignature": "İmza Ekle",
+    "downloadSigned": "İmzalı PDF'i İndir",
+    "pagesTitle": "SAYFALAR ({count})",
+    "modal": {
+        "title": "İmza Oluştur",
+        "tabs": {
+            "draw": "Çiz",
+            "type": "Yaz",
+            "upload": "Yükle"
+        },
+        "buttons": {
+            "clear": "Temizle",
+            "cancel": "İptal",
+            "create": "İmza Oluştur",
+            "selectFile": "Dosya Seç"
+        },
+        "placeholders": {
+            "type": "Adınızı yazın",
+            "upload": "İmzanızın bir resmini yüklemek için tıklayın"
+        },
+        "disclaimer": "Bu özellik yalnızca görsel bir imza ekler. Kriptografik bir dijital imza değildir."
+    },
+    "alerts": {
+        "loadFailed": "PDF yüklenemedi",
+        "saveFailed": "PDF kaydedilemedi"
+    }
+  },
+  "Components": {
+    "Footer": {
+        "copyright": "© {year} PDFinery. Gizlilik ön planda tutularak yapılmıştır."
+    },
+    "PDFUploader": {
+        "dropText": "PDF dosyalarını buraya bırakın veya yüklemek için tıklayın",
+        "multiSelect": "Aynı anda birden fazla PDF dosyası seçebilirsiniz",
+        "button": "PDF Dosyaları Seç"
+    },
+    "DownloadButton": {
+        "merging": "Birleştiriliyor...",
+        "download": "Birleştirilmiş PDF'i İndir ({count} sayfa)",
+        "error": "PDF'ler birleştirilemedi. Lütfen tekrar deneyin."
+    },
+    "PDFProvider": {
+        "processing": "PDF dosyaları işleniyor...",
+        "processingFile": "{filename} işleniyor ({current}/{total})...",
+        "error": "PDF dosyaları işlenemedi. Lütfen geçerli PDF dosyaları olduklarından emin olun.",
+        "confirmClear": "Tüm sayfaları kaldırmak istediğinizden emin misiniz?"
+    },
+    "MainPageView": {
+        "noPages": "Görüntülenecek sayfa yok",
+        "uploadPrompt": "Başlamak için PDF dosyaları yükleyin",
+        "preview": "Sayfa Önizleme",
+        "pageInfo": "Kaynak: {filename} (Sayfa {pageIndex})",
+        "renderError": "Sayfa oluşturulamadı. Lütfen tekrar deneyin."
+    },
+    "PageThumbnails": {
+        "loading": "Yükleniyor...",
+        "page": "Sayfa {index}",
+        "title": "Sayfalar",
+        "noPages": "Henüz sayfa yok. Görmek için PDF dosyaları yükleyin.",
+        "titleCount": "Sayfalar ({count})",
+        "dragHint": "Sayfaları yeniden sıralamak için sürükleyin"
+    },
+    "SortableFileList": {
+        "title": "Yüklenen Dosyalar",
+        "pages": "{count} sayfa"
+    }
+  },
+  "Common": {
+    "language": "Dil"
+  }
+}

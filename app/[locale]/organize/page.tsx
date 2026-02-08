@@ -6,6 +6,7 @@ import { MainPageView } from "@/components/MainPageView";
 import { PageThumbnails } from "@/components/PageThumbnails";
 import { SortableFileList } from "@/components/SortableFileList";
 import { usePDF } from "@/contexts/PDFContext";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
   const {
@@ -19,8 +20,9 @@ export default function Home() {
     setUploadedFiles,
     setSelectedIndex,
     deletePage,
-    clearAll
   } = usePDF();
+  
+  const t = useTranslations("OrganizePage");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -32,7 +34,7 @@ export default function Home() {
         url: "https://PDFinery.com",
         logo: {
           "@type": "ImageObject",
-          url: "https://PDFinery.com/logo.png",
+          url: "https://PDFinery.com/logos/logo.png",
         },
       },
       {
@@ -73,7 +75,7 @@ export default function Home() {
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-lg font-medium">{loadingMessage}</p>
             <p className="text-sm text-muted-foreground mt-1">
-              Please wait while we process your files
+              {t("loadingSub")}
             </p>
           </div>
         </div>
@@ -121,8 +123,8 @@ export default function Home() {
                     <div className="bg-muted rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                       <FileIcon className="w-8 h-8 opacity-50" />
                     </div>
-                    <h3 className="text-lg font-medium mb-2">No files uploaded</h3>
-                    <p>Upload PDF files from the left sidebar to start merging.</p>
+                    <h3 className="text-lg font-medium mb-2">{t("noFilesTitle")}</h3>
+                    <p>{t("noFilesDesc")}</p>
                   </div>
                 </div>
               )}
@@ -131,33 +133,33 @@ export default function Home() {
             {/* Instructions Panel */}
             <div className="space-y-4 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent">
               <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="font-medium mb-2">How to use</h3>
+                <h3 className="font-medium mb-2">{t("howTo.title")}</h3>
                 <ul className="text-sm text-muted-foreground space-y-2">
                   <li className="flex items-start gap-2">
                     <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">1</span>
-                    <span>Upload PDF files using the panel on the left</span>
+                    <span>{t("howTo.step1")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">2</span>
-                    <span>Drag files in the left sidebar to reorder the entire PDF sequence</span>
+                    <span>{t("howTo.step2")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                       <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">3</span>
-                    <span>Drag page thumbnails below to reorder individual pages</span>
+                    <span>{t("howTo.step3")}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0">4</span>
-                    <span>Click &quot;Download Merged PDF&quot; to save your result</span>
+                    <span>{t("howTo.step4")}</span>
                   </li>
                 </ul>
               </div>
 
               {pages.length > 0 && (
                 <div className="bg-muted/50 rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Statistics</h3>
+                  <h3 className="font-medium mb-2">{t("stats.title")}</h3>
                   <div className="text-sm text-muted-foreground space-y-1">
-                    <p>Total Pages: <span className="font-medium text-foreground">{pages.length}</span></p>
-                    <p>Source Files: <span className="font-medium text-foreground">
+                    <p>{t("stats.totalPages")}: <span className="font-medium text-foreground">{pages.length}</span></p>
+                    <p>{t("stats.sourceFiles")}: <span className="font-medium text-foreground">
                       {uploadedFiles.length}
                     </span></p>
                   </div>
@@ -166,14 +168,14 @@ export default function Home() {
 
 
               <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="font-medium mb-2">Features</h3>
+                <h3 className="font-medium mb-2">{t("features.title")}</h3>
                 <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li>Merge multiple PDF files into one document</li>
-                  <li>Reorder pages with an intuitive drag-and-drop interface</li>
-                  <li>Delete individual pages you don&apos;t need</li>
-                  <li>Preview pages before downloading</li>
-                  <li>Free to use with no file size limits</li>
-                  <li>Works entirely in your browser for maximum privacy</li>
+                  <li>{t("features.list.0")}</li>
+                  <li>{t("features.list.1")}</li>
+                  <li>{t("features.list.2")}</li>
+                  <li>{t("features.list.3")}</li>
+                  <li>{t("features.list.4")}</li>
+                  <li>{t("features.list.5")}</li>
                 </ul>
               </div>
             </div>

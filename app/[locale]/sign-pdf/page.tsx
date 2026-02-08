@@ -12,6 +12,7 @@ import { getPdfjs } from "@/lib/pdfUtils";
 import { PDFDocument } from "pdf-lib";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 // --- Types ---
 
@@ -30,7 +31,7 @@ type SignatureType = "draw" | "type" | "upload";
 // --- Components ---
 
 // 1. Signature Pad (Drawing)
-const SignaturePad = ({ onSave, onCancel }: { onSave: (dataUrl: string) => void; onCancel: () => void }) => {
+const SignaturePad = ({ onSave, onCancel, t }: { onSave: (dataUrl: string) => void; onCancel: () => void; t: any }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasContent, setHasContent] = useState(false);
@@ -120,10 +121,10 @@ const SignaturePad = ({ onSave, onCancel }: { onSave: (dataUrl: string) => void;
         />
       </div>
       <div className="flex justify-between">
-        <Button variant="outline" onClick={clear} disabled={!hasContent}>Clear</Button>
+        <Button variant="outline" onClick={clear} disabled={!hasContent}>{t("modal.buttons.clear")}</Button>
         <div className="flex gap-2">
-          <Button variant="ghost" onClick={onCancel}>Cancel</Button>
-          <Button onClick={handleSave} disabled={!hasContent}>Create Signature</Button>
+          <Button variant="ghost" onClick={onCancel}>{t("modal.buttons.cancel")}</Button>
+          <Button onClick={handleSave} disabled={!hasContent}>{t("modal.buttons.create")}</Button>
         </div>
       </div>
     </div>
@@ -131,7 +132,7 @@ const SignaturePad = ({ onSave, onCancel }: { onSave: (dataUrl: string) => void;
 };
 
 // 2. Type Signature
-const TypeSignature = ({ onSave, onCancel }: { onSave: (dataUrl: string) => void; onCancel: () => void }) => {
+const TypeSignature = ({ onSave, onCancel, t }: { onSave: (dataUrl: string) => void; onCancel: () => void; t: any }) => {
   const [text, setText] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -167,14 +168,14 @@ const TypeSignature = ({ onSave, onCancel }: { onSave: (dataUrl: string) => void
         </div>
       </div>
       <Input 
-        placeholder="Type your name" 
+        placeholder={t("modal.placeholders.type")} 
         value={text} 
         onChange={(e) => setText(e.target.value)}
         className="text-lg"
       />
       <div className="flex justify-end gap-2">
-        <Button variant="ghost" onClick={onCancel}>Cancel</Button>
-        <Button onClick={handleSave} disabled={!text.trim()}>Create Signature</Button>
+        <Button variant="ghost" onClick={onCancel}>{t("modal.buttons.cancel")}</Button>
+        <Button onClick={handleSave} disabled={!text.trim()}>{t("modal.buttons.create")}</Button>
       </div>
       {/* Hidden canvas for generation */}
       <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -183,7 +184,7 @@ const TypeSignature = ({ onSave, onCancel }: { onSave: (dataUrl: string) => void
 };
 
 // 3. Upload Signature
-const UploadSignature = ({ onSave, onCancel }: { onSave: (dataUrl: string) => void; onCancel: () => void }) => {
+const UploadSignature = ({ onSave, onCancel, t }: { onSave: (dataUrl: string) => void; onCancel: () => void; t: any }) => {
   const [image, setImage] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -205,7 +206,7 @@ const UploadSignature = ({ onSave, onCancel }: { onSave: (dataUrl: string) => vo
         ) : (
           <div className="text-center text-muted-foreground">
             <Upload className="mx-auto h-8 w-8 mb-2" />
-            <p>Click to upload an image of your signature</p>
+            <p>{t("modal.placeholders.upload")}</p>
           </div>
         )}
         <Input 
@@ -216,12 +217,12 @@ const UploadSignature = ({ onSave, onCancel }: { onSave: (dataUrl: string) => vo
           onChange={handleFileChange}
         />
         <label htmlFor="sig-upload" className="mt-4 cursor-pointer">
-           <Button variant="secondary" asChild><span>Select File</span></Button>
+           <Button variant="secondary" asChild><span>{t("modal.buttons.selectFile")}</span></Button>
         </label>
       </div>
       <div className="flex justify-end gap-2">
-        <Button variant="ghost" onClick={onCancel}>Cancel</Button>
-        <Button onClick={() => image && onSave(image)} disabled={!image}>Create Signature</Button>
+        <Button variant="ghost" onClick={onCancel}>{t("modal.buttons.cancel")}</Button>
+        <Button onClick={() => image && onSave(image)} disabled={!image}>{t("modal.buttons.create")}</Button>
       </div>
     </div>
   );
@@ -290,6 +291,7 @@ export default function SignPDFPage() {
   const [selectedSigId, setSelectedSigId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState<{ width: number; height: number } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations("SignPage");
   
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -319,7 +321,7 @@ export default function SignPDFPage() {
         setSignatures([]);
       } catch (err) {
         console.error("Error loading PDF:", err);
-        alert("Failed to load PDF");
+        alert(t("alerts.loadFailed"));
       } finally {
         setIsLoading(false);
       }
@@ -549,7 +551,7 @@ export default function SignPDFPage() {
       URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Error saving PDF:", err);
-      alert("Failed to save PDF");
+      alert(t("alerts.saveFailed"));
     } finally {
       setIsLoading(false);
     }
@@ -560,15 +562,15 @@ export default function SignPDFPage() {
       <div className="flex-1 flex flex-col">
         
         <div className="container mx-auto py-10 max-w-4xl flex-1">
-           <h1 className="text-3xl font-bold mb-6">Sign PDF</h1>
+           <h1 className="text-3xl font-bold mb-6">{t("title")}</h1>
            <div className="border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-4 bg-muted/10">
              <div className="bg-primary/10 p-4 rounded-full">
                <Upload className="w-10 h-10 text-primary" />
              </div>
-             <h2 className="text-xl font-semibold">Upload a PDF to sign</h2>
-             <p className="text-muted-foreground">Files are processed entirely in your browser.</p>
+             <h2 className="text-xl font-semibold">{t("uploadTitle")}</h2>
+             <p className="text-muted-foreground">{t("uploadDesc")}</p>
              <Button onClick={() => fileInputRef.current?.click()}>
-               Select PDF
+               {t("selectPdf")}
              </Button>
              <input
                ref={fileInputRef}
@@ -579,7 +581,7 @@ export default function SignPDFPage() {
              />
            </div>
            <div className="mt-8 text-center text-sm text-muted-foreground">
-             <p>Supported features: Draw, Type, or Upload signature. Multi-page support. Secure client-side processing.</p>
+             <p>{t("featuresDesc")}</p>
            </div>
         </div>
       </div>
@@ -593,7 +595,7 @@ export default function SignPDFPage() {
       <div className="bg-white border-b px-6 py-3 flex items-center justify-between shadow-sm z-10">
         <div className="flex items-center gap-4">
           <Button variant="ghost" onClick={() => setFile(null)}>
-            <Undo className="w-4 h-4 mr-2" /> Back
+            <Undo className="w-4 h-4 mr-2" /> {t("back")}
           </Button>
           <span className="font-semibold text-sm truncate max-w-[200px]">{file.name}</span>
         </div>
@@ -610,11 +612,11 @@ export default function SignPDFPage() {
 
         <div className="flex items-center gap-3">
           <Button variant="outline" onClick={() => setIsModalOpen(true)}>
-             <Pen className="w-4 h-4 mr-2" /> Add Signature
+             <Pen className="w-4 h-4 mr-2" /> {t("addSignature")}
           </Button>
           <Button onClick={handleDownload} disabled={isLoading}>
             {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
-            Download Signed PDF
+            {t("downloadSigned")}
           </Button>
         </div>
       </div>
@@ -622,13 +624,9 @@ export default function SignPDFPage() {
       {/* Main Content */}
       <div className="flex-1 overflow-hidden p-6 w-full flex justify-center">
         <div className="grid grid-cols-1 md:grid-cols-[256px_1fr] w-full max-w-[1200px] shadow-lg bg-white rounded-lg overflow-hidden border h-full">
-         {/* Sidebar / Page Navigation if needed, for now just simple Prev/Next or Scroll? 
-             The requirements say "Keep track of the currently visible page". 
-             Let's do a simple Prev/Next footer or sidebar. Sidebar is better for multi-page.
-         */}
          <div id="loaded-sign-pages" className="bg-white border-r overflow-y-auto hidden md:block p-4 h-full">
             <div className="space-y-4">
-              <h3 className="font-semibold text-sm text-gray-500">PAGES ({totalPages})</h3>
+              <h3 className="font-semibold text-sm text-gray-500">{t("pagesTitle", { count: totalPages })}</h3>
               <div className="grid grid-cols-1 gap-4">
                  {Array.from({ length: totalPages }).map((_, idx) => (
                    <div 
@@ -720,7 +718,7 @@ export default function SignPDFPage() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden">
              <div className="p-4 border-b flex items-center justify-between bg-gray-50">
-               <h3 className="font-semibold text-lg">Create Signature</h3>
+               <h3 className="font-semibold text-lg">{t("modal.title")}</h3>
                <Button variant="ghost" size="icon" onClick={() => setIsModalOpen(false)}>
                  <X className="w-5 h-5" />
                </Button>
@@ -731,30 +729,30 @@ export default function SignPDFPage() {
                  className={cn("flex-1 py-3 text-sm font-medium", activeTab === 'draw' ? "border-b-2 border-primary text-primary" : "text-gray-500 hover:text-gray-700")}
                  onClick={() => setActiveTab('draw')}
                >
-                 Draw
+                 {t("modal.tabs.draw")}
                </button>
                <button 
                  className={cn("flex-1 py-3 text-sm font-medium", activeTab === 'type' ? "border-b-2 border-primary text-primary" : "text-gray-500 hover:text-gray-700")}
                  onClick={() => setActiveTab('type')}
                >
-                 Type
+                 {t("modal.tabs.type")}
                </button>
                <button 
                  className={cn("flex-1 py-3 text-sm font-medium", activeTab === 'upload' ? "border-b-2 border-primary text-primary" : "text-gray-500 hover:text-gray-700")}
                  onClick={() => setActiveTab('upload')}
                >
-                 Upload
+                 {t("modal.tabs.upload")}
                </button>
              </div>
              
              <div className="p-6">
-               {activeTab === 'draw' && <SignaturePad onSave={addSignature} onCancel={() => setIsModalOpen(false)} />}
-               {activeTab === 'type' && <TypeSignature onSave={addSignature} onCancel={() => setIsModalOpen(false)} />}
-               {activeTab === 'upload' && <UploadSignature onSave={addSignature} onCancel={() => setIsModalOpen(false)} />}
+               {activeTab === 'draw' && <SignaturePad onSave={addSignature} onCancel={() => setIsModalOpen(false)} t={t} />}
+               {activeTab === 'type' && <TypeSignature onSave={addSignature} onCancel={() => setIsModalOpen(false)} t={t} />}
+               {activeTab === 'upload' && <UploadSignature onSave={addSignature} onCancel={() => setIsModalOpen(false)} t={t} />}
              </div>
              
              <div className="p-4 bg-yellow-50 text-yellow-800 text-xs text-center border-t">
-               This feature adds a visual signature only. It is not a cryptographic digital signature.
+               {t("modal.disclaimer")}
              </div>
           </div>
         </div>

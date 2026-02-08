@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/navigation";
 import { 
   Files, 
   RefreshCcw, 
@@ -13,36 +13,39 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 export default function LandingPage() {
+  const t = useTranslations("HomePage");
+
   const tools = [
     {
-      title: "Organize",
-      description: "Merge multiple PDF files into one document. Reorder pages with drag and drop, and remove unwanted pages.",
+      title: t("tools.organize.title"),
+      description: t("tools.organize.description"),
       icon: Layers,
       href: "/organize",
       color: "text-blue-500",
       bgColor: "bg-blue-500/10",
     },
     {
-      title: "Split",
-      description: "Split PDF into multiple files by range, extract specific pages, or split into single pages.",
+      title: t("tools.split.title"),
+      description: t("tools.split.description"),
       icon: Scissors,
       href: "/split",
       color: "text-orange-500",
       bgColor: "bg-orange-500/10",
     },
     {
-      title: "Convert",
-      description: "Convert PDFs to high-quality images (PNG/JPG) or extract text securely. No file uploads required.",
+      title: t("tools.convert.title"),
+      description: t("tools.convert.description"),
       icon: RefreshCcw,
       href: "/convert",
       color: "text-green-500",
       bgColor: "bg-green-500/10",
     },
     {
-      title: "Sign & Secure",
-      description: "Sign documents with your personal signature. Draw, type, or upload your signature image.",
+      title: t("tools.sign.title"),
+      description: t("tools.sign.description"),
       icon: PenLine,
       href: "/sign-pdf",
       color: "text-purple-500",
@@ -76,25 +79,26 @@ export default function LandingPage() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-6">
           <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 mb-4">
             <ShieldCheck className="w-3 h-3 mr-1" />
-            100% Client-Side Processing
+            {t("features.clientSide")}
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-            Your All-in-One <span className="text-primary">PDF Toolkit</span>
+            {t.rich("title", {
+              primary: (chunks) => <span className="text-primary">{chunks}</span>
+            })}
           </h1>
           <p className="text-xl text-muted-foreground">
-            Securely process your PDF files directly in your browser. 
-            Your documents never leave your device.
+            {t("subtitle")}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link href="/organize">
               <Button size="lg" className="h-12 px-8 text-base">
-                Start Merging
+                {t("startMerging")}
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
             <Link href="/convert">
               <Button variant="outline" size="lg" className="h-12 px-8 text-base">
-                Convert PDF
+                {t("convertPdf")}
               </Button>
             </Link>
           </div>
@@ -129,33 +133,30 @@ export default function LandingPage() {
             <div className="mx-auto w-10 h-10 flex items-center justify-center rounded-full bg-muted">
               <ShieldCheck className="w-5 h-5 text-muted-foreground" />
             </div>
-            <h3 className="font-semibold">Private & Secure</h3>
-            <p className="text-sm text-muted-foreground">Files are processed locally on your device. No uploads to servers.</p>
+            <h3 className="font-semibold">{t("features.private")}</h3>
+            <p className="text-sm text-muted-foreground">{t("features.privateDesc")}</p>
           </div>
           <div className="space-y-2">
             <div className="mx-auto w-10 h-10 flex items-center justify-center rounded-full bg-muted">
               <Files className="w-5 h-5 text-muted-foreground" />
             </div>
-            <h3 className="font-semibold">No Limits</h3>
-            <p className="text-sm text-muted-foreground">Process as many files as you need without size restrictions.</p>
+            <h3 className="font-semibold">{t("features.noLimits")}</h3>
+            <p className="text-sm text-muted-foreground">{t("features.noLimitsDesc")}</p>
           </div>
           <div className="space-y-2">
             <div className="mx-auto w-10 h-10 flex items-center justify-center rounded-full bg-muted">
               <FileText className="w-5 h-5 text-muted-foreground" />
             </div>
-            <h3 className="font-semibold">Free Forever</h3>
-            <p className="text-sm text-muted-foreground">No accounts, no subscriptions, no hidden fees.</p>
+            <h3 className="font-semibold">{t("features.free")}</h3>
+            <p className="text-sm text-muted-foreground">{t("features.freeDesc")}</p>
           </div>
         </div>
 
         {/* SEO Section */}
         <div className="mt-24 max-w-3xl mx-auto text-center space-y-4 mb-8">
-          <h2 className="text-2xl font-bold tracking-tight">Why Use PDFinery?</h2>
+          <h2 className="text-2xl font-bold tracking-tight">{t("why.title")}</h2>
           <p className="text-muted-foreground leading-relaxed">
-            All processing happens in your browser. Your files never leave your
-            device—no uploads to our servers, no installation, and no account
-            required. PDFinery is a free, secure PDF merger and reorder tool
-            that works on any device with a modern web browser.
+            {t("why.description")}
           </p>
         </div>
       </div>

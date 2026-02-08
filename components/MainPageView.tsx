@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { renderPageToCanvas } from "@/lib/pdfUtils";
 import type { PDFPage } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ export function MainPageView({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isRendering, setIsRendering] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslations("Components.MainPageView");
 
   const currentPage = pages[selectedIndex];
 
@@ -49,7 +51,7 @@ export function MainPageView({
         }
         console.error("Error rendering page:", err);
         if (!isCancelled) {
-          setError("Failed to render page. Please try again.");
+          setError(t("renderError"));
         }
       } finally {
         if (!isCancelled) {
@@ -70,7 +72,7 @@ export function MainPageView({
         cancelRender();
       }
     };
-  }, [currentPage]);
+  }, [currentPage, t]);
 
   const handlePrevious = () => {
     if (selectedIndex > 0) {
@@ -89,8 +91,8 @@ export function MainPageView({
       <Card className={cn("h-full", className)}>
         <CardContent className="flex items-center justify-center h-full min-h-[500px]">
           <div className="text-center text-muted-foreground">
-            <p className="text-lg">No pages to display</p>
-            <p className="text-sm mt-1">Upload PDF files to get started</p>
+            <p className="text-lg">{t("noPages")}</p>
+            <p className="text-sm mt-1">{t("uploadPrompt")}</p>
           </div>
         </CardContent>
       </Card>
@@ -101,7 +103,7 @@ export function MainPageView({
     <Card className={cn("h-full", className)}>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Page Preview</CardTitle>
+          <CardTitle className="text-lg">{t("preview")}</CardTitle>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
@@ -126,7 +128,7 @@ export function MainPageView({
         </div>
         {currentPage && (
           <p className="text-xs text-muted-foreground">
-            From: {currentPage.sourceFileName} (Page {currentPage.pageIndex + 1})
+            {t("pageInfo", { filename: currentPage.sourceFileName, pageIndex: currentPage.pageIndex + 1 })}
           </p>
         )}
       </CardHeader>

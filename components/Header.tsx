@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { Link, usePathname } from "@/lib/navigation";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { LanguageSelect } from "@/components/LanguageSelect";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { usePDF } from "@/contexts/PDFContext";
@@ -15,26 +16,27 @@ interface HeaderProps {
 
 export function Header({ children }: HeaderProps) {
   const pathname = usePathname();
+  const t = useTranslations("Navigation");
   const { pages, isLoading, clearAll } = usePDF(); // Access PDF context
 
   const navItems = [
     {
-      name: "Organize",
+      name: t("organize"),
       href: "/organize",
       isActive: pathname === "/organize"
     },
     {
-      name: "Split",
+      name: t("split"),
       href: "/split",
       isActive: pathname === "/split"
     },
     {
-      name: "Convert",
+      name: t("convert"),
       href: "/convert",
       isActive: pathname === "/convert"
     },
     {
-      name: "Sign & Secure",
+      name: t("sign"),
       href: "/sign-pdf",
       isActive: pathname === "/sign-pdf"
     }
@@ -46,7 +48,7 @@ export function Header({ children }: HeaderProps) {
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
             <Image
-              src="/logo.png"
+              src="/logos/logo.png"
               alt="PDFinery"
               width={32}
               height={32}
@@ -77,6 +79,7 @@ export function Header({ children }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
+          <LanguageSelect />
           {children}
           
           {/* Page-specific Actions */}

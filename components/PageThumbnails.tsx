@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { generateThumbnail } from "@/lib/pdfUtils";
 import { cn } from "@/lib/utils";
 import type { PDFPage } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface PageThumbnailsProps {
   pages: PDFPage[];
@@ -63,6 +64,7 @@ function SortableItem({
     transition,
     isDragging,
   } = useSortable({ id: page.id });
+  const t = useTranslations("Components.PageThumbnails");
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -90,7 +92,7 @@ function SortableItem({
         {thumbnail ? (
           <Image
             src={thumbnail}
-            alt={`Page ${index + 1}`}
+            alt={t("page", { index: index + 1 })}
             fill
             className="object-contain bg-white"
             draggable={false}
@@ -99,7 +101,7 @@ function SortableItem({
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-muted">
             <div className="animate-pulse text-muted-foreground text-xs">
-              Loading...
+              {t("loading")}
             </div>
           </div>
         )}
@@ -113,7 +115,7 @@ function SortableItem({
         </div>
         {/* Page number badge */}
         <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs py-1 px-2 text-center font-medium">
-          Page {index + 1}
+          {t("page", { index: index + 1 })}
         </div>
       </div>
       {/* Delete button */}
@@ -139,23 +141,25 @@ function DragOverlayItem({
   thumbnail: string | null;
   index: number;
 }) {
+  const t = useTranslations("Components.PageThumbnails");
+  
   return (
     <div className="drag-overlay w-[120px] h-[160px] rounded-lg border-2 border-primary overflow-hidden bg-white relative shadow-2xl">
       {thumbnail ? (
         <Image
           src={thumbnail}
-          alt={`Page ${index + 1}`}
+          alt={t("page", { index: index + 1 })}
           fill
           className="object-contain"
           unoptimized
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center bg-muted">
-          <div className="text-muted-foreground text-xs">Loading...</div>
+          <div className="text-muted-foreground text-xs">{t("loading")}</div>
         </div>
       )}
       <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs py-1 px-2 text-center font-medium">
-        Page {index + 1}
+        {t("page", { index: index + 1 })}
       </div>
     </div>
   );
@@ -172,6 +176,7 @@ export function PageThumbnails({
   const [thumbnails, setThumbnails] = useState<Record<string, string>>({});
   const [activeId, setActiveId] = useState<string | null>(null);
   const thumbnailsRef = useRef<Record<string, string>>({});
+  const t = useTranslations("Components.PageThumbnails");
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -262,11 +267,11 @@ export function PageThumbnails({
     return (
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Pages</CardTitle>
+          <CardTitle className="text-lg">{t("title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center h-[180px] text-muted-foreground">
-            <p>No pages yet. Upload PDF files to see them here.</p>
+            <p>{t("noPages")}</p>
           </div>
         </CardContent>
       </Card>
@@ -278,10 +283,10 @@ export function PageThumbnails({
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">
-            Pages ({pages.length})
+            {t("titleCount", { count: pages.length })}
           </CardTitle>
           <p className="text-sm text-muted-foreground">
-            Drag the grip icon to reorder pages
+            {t("dragHint")}
           </p>
         </div>
       </CardHeader>

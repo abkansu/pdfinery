@@ -5,6 +5,7 @@ import { Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { mergePDFs, downloadPDF } from "@/lib/pdfUtils";
 import type { PDFPage } from "@/lib/types";
+import { useTranslations } from "next-intl";
 
 interface DownloadButtonProps {
   pages: PDFPage[];
@@ -13,6 +14,7 @@ interface DownloadButtonProps {
 
 export function DownloadButton({ pages, disabled }: DownloadButtonProps) {
   const [isDownloading, setIsDownloading] = useState(false);
+  const t = useTranslations("Components.DownloadButton");
 
   const handleDownload = async () => {
     if (pages.length === 0) return;
@@ -24,7 +26,7 @@ export function DownloadButton({ pages, disabled }: DownloadButtonProps) {
       downloadPDF(mergedPdfBytes, `merged-pdf-${timestamp}.pdf`);
     } catch (error) {
       console.error("Error merging PDFs:", error);
-      alert("Failed to merge PDFs. Please try again.");
+      alert(t("error"));
     } finally {
       setIsDownloading(false);
     }
@@ -40,12 +42,12 @@ export function DownloadButton({ pages, disabled }: DownloadButtonProps) {
       {isDownloading ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />
-          Merging...
+          {t("merging")}
         </>
       ) : (
         <>
           <Download className="h-4 w-4" />
-          Download Merged PDF ({pages.length} pages)
+          {t("download", { count: pages.length })}
         </>
       )}
     </Button>

@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
+const createNextIntlPlugin = require('next-intl/plugin');
+ 
+const withNextIntl = createNextIntlPlugin(
+  './i18n/request.ts'
+);
+
 const nextConfig = {
   webpack: (config) => {
     config.resolve.alias.canvas = false;
@@ -7,4 +13,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

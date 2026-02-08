@@ -21,6 +21,7 @@ import {
   formatBytes,
   ConversionResult 
 } from "@/lib/conversionUtils";
+import { useTranslations } from "next-intl";
 
 type ConversionType = "image" | "text";
 type ImageFormat = "image/png" | "image/jpeg";
@@ -56,6 +57,7 @@ export default function ConvertPage() {
   const [file, setFile] = useState<File | null>(null);
   const [pdfInfo, setPdfInfo] = useState<{ numPages: number } | null>(null);
   const [activeTab, setActiveTab] = useState<ConversionType>("image");
+  const t = useTranslations("ConvertPage");
   
   // State for Image Conversion
   const [imageSettings, setImageSettings] = useState<{ scale: number; format: ImageFormat }>({
@@ -91,7 +93,7 @@ export default function ConvertPage() {
       pdf.destroy();
     } catch (err) {
       console.error(err);
-      setError("Failed to load PDF. Please ensure it is a valid PDF file.");
+      setError(t("errors.loadFailed"));
       setFile(null);
     }
   };
@@ -136,7 +138,7 @@ export default function ConvertPage() {
       pdf.destroy();
     } catch (err) {
       console.error(err);
-      setError("An error occurred during conversion.");
+      setError(t("errors.conversionFailed"));
     } finally {
       setIsProcessing(false);
     }
@@ -166,7 +168,7 @@ export default function ConvertPage() {
       downloadFile(zipBlob, `${file?.name.replace(".pdf", "")}-images.zip`);
     } catch (err) {
       console.error("Failed to zip images", err);
-      alert("Failed to create ZIP file.");
+      alert(t("errors.zipFailed"));
     }
   };
 
@@ -187,9 +189,9 @@ export default function ConvertPage() {
           {!file ? (
             <div className="space-y-4">
               <div className="text-center space-y-2 mb-8">
-                <h2 className="text-3xl font-bold">Convert PDF to Image or Text</h2>
+                <h2 className="text-3xl font-bold">{t("title")}</h2>
                 <p className="text-muted-foreground text-lg">
-                  Secure, browser-based PDF conversion. No file uploads.
+                  {t("subtitle")}
                 </p>
               </div>
               <PDFUploader onFilesSelected={handleFilesSelected} isLoading={false} />
@@ -206,7 +208,7 @@ export default function ConvertPage() {
                       <div className="overflow-hidden">
                         <p className="font-medium truncate" title={file.name}>{file.name}</p>
                         <p className="text-xs text-muted-foreground">
-                          {formatBytes(file.size)} • {pdfInfo?.numPages || "?"} pages
+                          {t("fileInfo", { size: formatBytes(file.size), pages: pdfInfo?.numPages || "?" })}
                         </p>
                       </div>
                     </div>
@@ -217,13 +219,13 @@ export default function ConvertPage() {
                       onClick={() => setFile(null)}
                       disabled={isProcessing}
                     >
-                      Change File
+                      {t("changeFile")}
                     </Button>
                   </CardContent>
                 </Card>
 
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm font-medium text-muted-foreground px-1">Conversion Mode</p>
+                  <p className="text-sm font-medium text-muted-foreground px-1">{t("modes.label")}</p>
                   <div className="grid grid-cols-2 gap-2">
                     <Button
                       variant={activeTab === "image" ? "default" : "outline"}
@@ -232,7 +234,7 @@ export default function ConvertPage() {
                       className="gap-2"
                     >
                       <ImageIcon className="h-4 w-4" />
-                      To Image
+                      {t("modes.image")}
                     </Button>
                     <Button
                       variant={activeTab === "text" ? "default" : "outline"}
@@ -241,7 +243,7 @@ export default function ConvertPage() {
                       className="gap-2"
                     >
                       <FileText className="h-4 w-4" />
-                      To Text
+                      {t("modes.text")}
                     </Button>
                   </div>
                 </div>
@@ -250,7 +252,7 @@ export default function ConvertPage() {
                   <Card>
                     <CardContent className="p-4 space-y-4">
                       <div className="space-y-2">
-                        <label className="text-sm font-medium">Format</label>
+                        <label className="text-sm font-medium">{t("imageSettings.format")}</label>
                         <div className="grid grid-cols-2 gap-2">
                           <Button
                             variant={imageSettings.format === "image/png" ? "secondary" : "ghost"}
@@ -272,17 +274,17 @@ export default function ConvertPage() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-medium">Scale / Quality</label>
+                        <label className="text-sm font-medium">{t("imageSettings.scale")}</label>
                         <select 
                           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
                           value={imageSettings.scale}
                           onChange={(e) => setImageSettings(s => ({ ...s, scale: Number(e.target.value) }))}
                           disabled={isProcessing}
                         >
-                          <option value="1">1x (Standard)</option>
-                          <option value="1.5">1.5x (High)</option>
-                          <option value="2">2x (Very High)</option>
-                          <option value="3">3x (Print)</option>
+                          <option value="1">{t("imageSettings.scaleOptions.scale_1")}</option>
+                          <option value="1.5">{t("imageSettings.scaleOptions.scale_1_5")}</option>
+                          <option value="2">{t("imageSettings.scaleOptions.scale_2")}</option>
+                          <option value="3">{t("imageSettings.scaleOptions.scale_3")}</option>
                         </select>
                       </div>
                     </CardContent>
@@ -298,12 +300,12 @@ export default function ConvertPage() {
                   {isProcessing ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Converting... {progress}%
+                      {t("buttons.converting", { progress })}
                     </>
                   ) : (
                     <>
                       <RefreshCcw className="mr-2 h-4 w-4" />
-                      Convert {activeTab === "image" ? "to Images" : "to Text"}
+                      {activeTab === "image" ? t("buttons.convertImage") : t("buttons.convertText")}
                     </>
                   )}
                 </Button>
@@ -323,7 +325,7 @@ export default function ConvertPage() {
                   <div className="h-full min-h-[400px] border-2 border-dashed rounded-lg flex items-center justify-center text-muted-foreground bg-muted/10">
                     <div className="text-center p-6">
                       <RefreshCcw className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                      <p>Configure settings and click Convert to start</p>
+                      <p>{t("results.placeholder")}</p>
                     </div>
                   </div>
                 )}
@@ -334,11 +336,11 @@ export default function ConvertPage() {
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-medium flex items-center gap-2">
                         <CheckCircle2 className="text-green-500 h-5 w-5" />
-                        Conversion Complete
+                        {t("results.complete")}
                       </h3>
                       <Button onClick={handleDownloadText} variant="outline" className="gap-2">
                         <Download className="h-4 w-4" />
-                        Download .txt
+                        {t("buttons.downloadTxt")}
                       </Button>
                     </div>
                     <Card className="max-h-[600px] overflow-auto">
@@ -357,11 +359,11 @@ export default function ConvertPage() {
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-medium flex items-center gap-2">
                         <CheckCircle2 className="text-green-500 h-5 w-5" />
-                        Converted {imageResults.length} pages
+                        {t("results.convertedCount", { count: imageResults.length })}
                       </h3>
                       <Button onClick={handleDownloadAllImages} variant="default" className="gap-2">
                         <Download className="h-4 w-4" />
-                        Download All {imageResults.length > 1 && "(ZIP)"}
+                        {imageResults.length > 1 ? t("buttons.downloadZip") : t("buttons.downloadAll")}
                       </Button>
                     </div>
 

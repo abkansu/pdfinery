@@ -1,0 +1,243 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "organize": "Organize",
+    "convert": "Convert",
+    "sign": "Sign",
+    "split": "Split"
+  },
+  "HomePage": {
+    "title": "Your All-in-One <primary>PDF Toolkit</primary>",
+    "subtitle": "Securely process your PDF files directly in your browser. Your documents never leave your device.",
+    "startMerging": "Start Merging",
+    "convertPdf": "Convert PDF",
+    "features": {
+      "clientSide": "100% Client-Side Processing",
+      "private": "Private & Secure",
+      "privateDesc": "Files are processed locally on your device. No uploads to servers.",
+      "noLimits": "No Limits",
+      "noLimitsDesc": "Process as many files as you need without size restrictions.",
+      "free": "Free Forever",
+      "freeDesc": "No accounts, no subscriptions, no hidden fees."
+    },
+    "why": {
+      "title": "Why Use PDFinery?",
+      "description": "All processing happens in your browser. Your files never leave your device—no uploads to our servers, no installation, and no account required. PDFinery is a free, secure PDF merger and reorder tool that works on any device with a modern web browser."
+    },
+    "tools": {
+      "organize": {
+        "title": "Organize",
+        "description": "Merge multiple PDF files into one document. Reorder pages with drag and drop, and remove unwanted pages."
+      },
+      "split": {
+        "title": "Split",
+        "description": "Split PDF into multiple files by range, extract specific pages, or split into single pages."
+      },
+      "convert": {
+        "title": "Convert",
+        "description": "Convert PDFs to high-quality images (PNG/JPG) or extract text securely. No file uploads required."
+      },
+      "sign": {
+        "title": "Sign & Secure",
+        "description": "Sign documents with your personal signature. Draw, type, or upload your signature image."
+      }
+    }
+  },
+  "OrganizePage": {
+    "loading": "Processing...",
+    "loadingSub": "Please wait while we process your files",
+    "noFilesTitle": "No files uploaded",
+    "noFilesDesc": "Upload PDF files from the left sidebar to start merging.",
+    "howTo": {
+        "title": "How to use",
+        "step1": "Upload PDF files using the panel on the left",
+        "step2": "Drag files in the left sidebar to reorder the entire PDF sequence",
+        "step3": "Drag page thumbnails below to reorder individual pages",
+        "step4": "Click \"Download Merged PDF\" to save your result"
+    },
+    "stats": {
+        "title": "Statistics",
+        "totalPages": "Total Pages",
+        "sourceFiles": "Source Files"
+    },
+    "features": {
+        "title": "Features",
+        "list": {
+            "0": "Merge multiple PDF files into one document",
+            "1": "Reorder pages with an intuitive drag-and-drop interface",
+            "2": "Delete individual pages you don't need",
+            "3": "Preview pages before downloading",
+            "4": "Free to use with no file size limits",
+            "5": "Works entirely in your browser for maximum privacy"
+        }
+    }
+  },
+  "SplitPage": {
+    "title": "Split PDF",
+    "modes": {
+        "ranges": "Split by Range",
+        "rangesDesc": "Custom page ranges (e.g. 1-5, 8-10)",
+        "everyN": "Split Every X Pages",
+        "everyNDesc": "Split into equal parts",
+        "single": "Extract All Pages",
+        "singleDesc": "Save every page as a separate PDF",
+        "extract": "Select Pages",
+        "extractDesc": "Pick specific pages to extract"
+    },
+    "inputs": {
+        "rangesLabel": "Page Ranges",
+        "rangesPlaceholder": "e.g. 1-5, 8-10",
+        "rangesHelp": "Enter page ranges separated by commas. Example: 1-5 will create one PDF with pages 1 to 5.",
+        "everyNLabel": "Split every N pages",
+        "extractLabel": "Select pages below to extract into a new PDF ({count} selected)",
+        "singleLabel": "This will create {count} separate PDF files, one for each page."
+    },
+    "buttons": {
+        "processing": "Processing...",
+        "downloadSelected": "Download Selected Pages",
+        "downloadZip": "Split and Download ZIP"
+    },
+    "noFiles": {
+        "title": "No files uploaded",
+        "desc": "Upload PDF files from the left sidebar to start splitting."
+    },
+    "howTo": {
+        "title": "How to use",
+        "step1": "Upload a PDF file",
+        "step2": "Choose a split method (Range, Every N, etc.)",
+        "step3": "Configure options or select pages",
+        "step4": "Download your split files"
+    },
+    "stats": {
+        "title": "Statistics",
+        "totalPages": "Total Pages"
+    },
+    "features": {
+        "title": "Features",
+        "list": {
+            "0": "Split PDF files by custom page ranges",
+            "1": "Split PDF files into equal parts",
+            "2": "Extract specific pages into a new PDF",
+            "3": "Save every page as a separate PDF file",
+            "4": "Free to use with no file size limits",
+            "5": "Works entirely in your browser for maximum privacy"
+        }
+    }
+  },
+  "ConvertPage": {
+    "title": "Convert PDF to Image or Text",
+    "subtitle": "Secure, browser-based PDF conversion. No file uploads.",
+    "fileInfo": "{size} • {pages} pages",
+    "changeFile": "Change File",
+    "modes": {
+        "label": "Conversion Mode",
+        "image": "To Image",
+        "text": "To Text"
+    },
+    "imageSettings": {
+        "format": "Format",
+        "scale": "Scale / Quality",
+        "scaleOptions": {
+            "scale_1": "1x (Standard)",
+            "scale_1_5": "1.5x (High)",
+            "scale_2": "2x (Very High)",
+            "scale_3": "3x (Print)"
+        }
+    },
+    "buttons": {
+        "converting": "Converting... {progress}%",
+        "convertImage": "Convert to Images",
+        "convertText": "Convert to Text",
+        "downloadTxt": "Download .txt",
+        "downloadAll": "Download All",
+        "downloadZip": "Download All (ZIP)"
+    },
+    "results": {
+        "placeholder": "Configure settings and click Convert to start",
+        "complete": "Conversion Complete",
+        "convertedCount": "Converted {count} pages"
+    },
+    "errors": {
+        "loadFailed": "Failed to load PDF. Please ensure it is a valid PDF file.",
+        "conversionFailed": "An error occurred during conversion.",
+        "zipFailed": "Failed to create ZIP file."
+    }
+  },
+  "SignPage": {
+    "title": "Sign PDF",
+    "uploadTitle": "Upload a PDF to sign",
+    "uploadDesc": "Files are processed entirely in your browser.",
+    "selectPdf": "Select PDF",
+    "featuresDesc": "Supported features: Draw, Type, or Upload signature. Multi-page support. Secure client-side processing.",
+    "back": "Back",
+    "addSignature": "Add Signature",
+    "downloadSigned": "Download Signed PDF",
+    "pagesTitle": "PAGES ({count})",
+    "modal": {
+        "title": "Create Signature",
+        "tabs": {
+            "draw": "Draw",
+            "type": "Type",
+            "upload": "Upload"
+        },
+        "buttons": {
+            "clear": "Clear",
+            "cancel": "Cancel",
+            "create": "Create Signature",
+            "selectFile": "Select File"
+        },
+        "placeholders": {
+            "type": "Type your name",
+            "upload": "Click to upload an image of your signature"
+        },
+        "disclaimer": "This feature adds a visual signature only. It is not a cryptographic digital signature."
+    },
+    "alerts": {
+        "loadFailed": "Failed to load PDF",
+        "saveFailed": "Failed to save PDF"
+    }
+  },
+  "Components": {
+    "Footer": {
+        "copyright": "© {year} PDFinery. Built with privacy in mind."
+    },
+    "PDFUploader": {
+        "dropText": "Drop PDF files here or click to upload",
+        "multiSelect": "You can select multiple PDF files at once",
+        "button": "Select PDF Files"
+    },
+    "DownloadButton": {
+        "merging": "Merging...",
+        "download": "Download Merged PDF ({count} pages)",
+        "error": "Failed to merge PDFs. Please try again."
+    },
+    "PDFProvider": {
+        "processing": "Processing PDF files...",
+        "processingFile": "Processing {filename} ({current}/{total})...",
+        "error": "Failed to process PDF files. Please make sure they are valid PDF files.",
+        "confirmClear": "Are you sure you want to remove all pages?"
+    },
+    "MainPageView": {
+        "noPages": "No pages to display",
+        "uploadPrompt": "Upload PDF files to get started",
+        "preview": "Page Preview",
+        "pageInfo": "From: {filename} (Page {pageIndex})",
+        "renderError": "Failed to render page. Please try again."
+    },
+    "PageThumbnails": {
+        "loading": "Loading...",
+        "page": "Page {index}",
+        "title": "Pages",
+        "noPages": "No pages yet. Upload PDF files to see them here.",
+        "titleCount": "Pages ({count})",
+        "dragHint": "Drag the grip icon to reorder pages"
+    },
+    "SortableFileList": {
+        "title": "Uploaded Files",
+        "pages": "{count} pages"
+    }
+  },
+  "Common": {
+    "language": "Language"
+  }
+}
