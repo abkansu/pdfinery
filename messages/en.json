@@ -4,7 +4,8 @@
     "organize": "Organize",
     "convert": "Convert",
     "sign": "Sign",
-    "split": "Split"
+    "split": "Split",
+    "clearAll": "Clear All"
   },
   "HomePage": {
     "title": "Your All-in-One <primary>PDF Toolkit</primary>",
@@ -122,6 +123,12 @@
             "4": "Free to use with no file size limits",
             "5": "Works entirely in your browser for maximum privacy"
         }
+    },
+    "alerts": {
+        "selectPages": "Please select pages to extract",
+        "invalidNumber": "Please enter a valid number of pages",
+        "invalidRanges": "Please enter valid page ranges (e.g. 1-3, 5-7)",
+        "error": "An error occurred while splitting the PDF"
     }
   },
   "ConvertPage": {
@@ -161,6 +168,9 @@
         "loadFailed": "Failed to load PDF. Please ensure it is a valid PDF file.",
         "conversionFailed": "An error occurred during conversion.",
         "zipFailed": "Failed to create ZIP file."
+    },
+    "tooltips": {
+        "downloadPage": "Download this page"
     }
   },
   "SignPage": {
@@ -175,6 +185,7 @@
     "pagesTitle": "PAGES ({count})",
     "modal": {
         "title": "Create Signature",
+        "signaturePreview": "Your Signature",
         "tabs": {
             "draw": "Draw",
             "type": "Type",

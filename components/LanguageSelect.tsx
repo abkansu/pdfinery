@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter, usePathname } from "@/lib/navigation";
 import Image from "next/image";
 import {
@@ -15,6 +15,7 @@ export function LanguageSelect() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("Common");
 
   const handleChange = (newLocale: string) => {
     router.replace(pathname, { locale: newLocale });
@@ -23,7 +24,7 @@ export function LanguageSelect() {
   return (
     <Select value={locale} onValueChange={handleChange}>
       <SelectTrigger className="w-[140px]">
-        <SelectValue placeholder="Language" />
+        <SelectValue placeholder={t("language")} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="en">

@@ -92,7 +92,7 @@ export function Header({ children }: HeaderProps) {
                   className="gap-2 hidden sm:flex"
                 >
                   <Trash2 className="h-4 w-4" />
-                  Clear All
+                  {t("clearAll")}
                 </Button>
               )}
               {pathname === "/organize" && (

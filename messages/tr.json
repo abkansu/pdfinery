@@ -4,7 +4,8 @@
     "organize": "Düzenle",
     "convert": "Dönüştür",
     "sign": "İmzala",
-    "split": "Böl"
+    "split": "Böl",
+    "clearAll": "Tümünü Temizle"
   },
   "HomePage": {
     "title": "Hepsi Bir Arada <primary>PDF Araç Seti</primary>",
@@ -122,6 +123,12 @@
             "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
             "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
         }
+    },
+    "alerts": {
+        "selectPages": "Lütfen çıkarmak istediğiniz sayfaları seçin",
+        "invalidNumber": "Lütfen geçerli bir sayfa sayısı girin",
+        "invalidRanges": "Lütfen geçerli sayfa aralıkları girin (örn. 1-3, 5-7)",
+        "error": "PDF bölünürken bir hata oluştu"
     }
   },
   "ConvertPage": {
@@ -161,6 +168,9 @@
         "loadFailed": "PDF yüklenemedi. Lütfen geçerli bir PDF dosyası olduğundan emin olun.",
         "conversionFailed": "Dönüşüm sırasında bir hata oluştu.",
         "zipFailed": "ZIP dosyası oluşturulamadı."
+    },
+    "tooltips": {
+        "downloadPage": "Bu sayfayı indir"
     }
   },
   "SignPage": {
@@ -175,6 +185,7 @@
     "pagesTitle": "SAYFALAR ({count})",
     "modal": {
         "title": "İmza Oluştur",
+        "signaturePreview": "İmzanız",
         "tabs": {
             "draw": "Çiz",
             "type": "Yaz",

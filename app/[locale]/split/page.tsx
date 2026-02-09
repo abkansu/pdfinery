@@ -138,7 +138,7 @@ export default function SplitPage() {
         // Just one file with selected pages
         const pagesToExtract = pages.filter((_, i) => selectedPages.has(i));
         if (pagesToExtract.length === 0) {
-          alert("Please select pages to extract"); // Could use i18n but keeping simple
+          alert(t("alerts.selectPages"));
           setIsProcessing(false);
           return;
         }
@@ -160,7 +160,7 @@ export default function SplitPage() {
         } else if (splitMode === "every-n") {
           const n = parseInt(everyNPage);
           if (isNaN(n) || n < 1) {
-            alert("Please enter a valid number of pages");
+            alert(t("alerts.invalidNumber"));
             setIsProcessing(false);
             return;
           }
@@ -174,7 +174,7 @@ export default function SplitPage() {
         } else if (splitMode === "ranges") {
           const ranges = parseRanges(rangeInput, pages.length);
           if (ranges.length === 0) {
-            alert("Please enter valid page ranges (e.g. 1-3, 5-7)");
+            alert(t("alerts.invalidRanges"));
             setIsProcessing(false);
             return;
           }
@@ -202,7 +202,7 @@ export default function SplitPage() {
       }
     } catch (error) {
       console.error("Error splitting PDF:", error);
-      alert("An error occurred while splitting the PDF");
+      alert(t("alerts.error"));
     } finally {
       setIsProcessing(false);
     }

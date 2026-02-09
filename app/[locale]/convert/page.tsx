@@ -380,7 +380,7 @@ export default function ConvertPage() {
                               variant="ghost" 
                               className="h-8 w-8"
                               onClick={() => downloadFile(result.blob, result.name)}
-                              title="Download this page"
+                              title={t("tooltips.downloadPage")}
                             >
                               <Download className="h-4 w-4" />
                             </Button>

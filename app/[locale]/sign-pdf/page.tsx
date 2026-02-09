@@ -164,7 +164,7 @@ const TypeSignature = ({ onSave, onCancel, t }: { onSave: (dataUrl: string) => v
       `}</style>
       <div className="p-8 border rounded-md bg-white flex items-center justify-center min-h-[150px]">
         <div style={{ fontFamily: '"Dancing Script", cursive', fontSize: '48px' }}>
-          {text || <span className="text-gray-300">Your Signature</span>}
+          {text || <span className="text-gray-300">{t("modal.signaturePreview")}</span>}
         </div>
       </div>
       <Input 
