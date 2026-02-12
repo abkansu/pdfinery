@@ -13,6 +13,7 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **Convert PDF**: Convert PDF file to text or image
 - **Split PDF by range**: Split PDF by page ranges, N pages, single pages
 - **Extract PDF pages**: Extract selected pages from PDF
+- **Optimize PDF**: Compress PDF, reduce image quality, remove metadata
 - **Internationalization**: Support for multiple languages (English, Turkish) with instant switching and localized URLs
 - **Privacy First**: All processing happens in your browser - files never leave your device
 
@@ -33,6 +34,8 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **app/** (Next.js App Router)
   - **[locale]/**
     - **convert/**
+      - page.tsx
+    - **optimize/**
       - page.tsx
     - **organize/**
       - page.tsx
@@ -75,6 +78,7 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **lib/**
   - conversionUtils.ts
   - navigation.ts
+  - optimizeUtils.ts
   - pdfUtils.ts
   - types.ts
   - utils.ts
@@ -130,6 +134,7 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - PDF to IMG working
 - PDF to Text working
 - PDF split working
+- PDF optimize working
 - Internationalization implemented (EN/TR)
 
 ## Core Principles

@@ -9,7 +9,8 @@ import {
   ArrowRight,
   Layers,
   FileText,
-  Scissors
+  Scissors,
+  Minimize2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,6 +51,14 @@ export default function LandingPage() {
       href: "/sign-pdf",
       color: "text-purple-500",
       bgColor: "bg-purple-500/10",
+    },
+    {
+      title: t("tools.optimize.title"),
+      description: t("tools.optimize.description"),
+      icon: Minimize2,
+      href: "/optimize",
+      color: "text-red-500",
+      bgColor: "bg-red-500/10",
     },
   ];
 

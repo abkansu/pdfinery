@@ -5,6 +5,7 @@
     "convert": "Dönüştür",
     "sign": "İmzala",
     "split": "Böl",
+    "optimize": "Optimize Et",
     "clearAll": "Tümünü Temizle"
   },
   "HomePage": {
@@ -41,6 +42,10 @@
       "sign": {
         "title": "İmzala & Güvenlik",
         "description": "Belgeleri kişisel imzanızla imzalayın. İmzanızı çizin, yazın veya imza görselinizi yükleyin."
+      },
+      "optimize": {
+        "title": "Optimize Et",
+        "description": "PDF dosyalarınızı sıkıştırın ve optimize edin. Dosya boyutunu küçültün ve metadataları kaldırın."
       }
     }
   },
@@ -207,6 +212,37 @@
         "loadFailed": "PDF yüklenemedi",
         "saveFailed": "PDF kaydedilemedi"
     }
+  },
+  "OptimizePage": {
+    "title": "PDF Optimize Et",
+    "subtitle": "PDF dosyalarınızı güvenle sıkıştırın ve optimize edin.",
+    "uploadTitle": "Optimize edilecek PDF'i yükleyin",
+    "uploadDesc": "Dosyalar tamamen tarayıcınızda işlenir.",
+    "selectPdf": "PDF Seç",
+    "settings": {
+        "title": "Optimizasyon Ayarları",
+        "compressionLevel": "Sıkıştırma Seviyesi",
+        "levels": {
+            "low": "Düşük (Temel Temizlik)",
+            "medium": "Orta (Dengeli)",
+            "high": "Yüksek (Maksimum Sıkıştırma)",
+            "custom": "Özel"
+        },
+        "imageQuality": "Görsel Kalitesi",
+        "removeMetadata": "Metadataları Kaldır",
+        "flatten": "Formları Düzleştir",
+        "optimizeWeb": "Web İçin Optimize Et"
+    },
+    "buttons": {
+        "optimize": "PDF Optimize Et",
+        "optimizing": "Optimize Ediliyor... %{progress}",
+        "download": "Optimize Edilmiş PDF'i İndir"
+    },
+    "results": {
+        "success": "Optimizasyon Tamamlandı!",
+        "sizeReduction": "Boyut {originalSize}'den {newSize}'ye düşürüldü (%{reduction})"
+    },
+    "error": "PDF optimize edilemedi."
   },
   "Components": {
     "Footer": {

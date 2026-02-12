@@ -5,6 +5,7 @@
     "convert": "Convert",
     "sign": "Sign",
     "split": "Split",
+    "optimize": "Optimize",
     "clearAll": "Clear All"
   },
   "HomePage": {
@@ -41,6 +42,10 @@
       "sign": {
         "title": "Sign & Secure",
         "description": "Sign documents with your personal signature. Draw, type, or upload your signature image."
+      },
+      "optimize": {
+        "title": "Optimize",
+        "description": "Compress and optimize your PDF files. Reduce file size and remove metadata."
       }
     }
   },
@@ -207,6 +212,37 @@
         "loadFailed": "Failed to load PDF",
         "saveFailed": "Failed to save PDF"
     }
+  },
+  "OptimizePage": {
+    "title": "Optimize PDF",
+    "subtitle": "Compress and optimize your PDF files securely.",
+    "uploadTitle": "Upload a PDF to optimize",
+    "uploadDesc": "Files are processed entirely in your browser.",
+    "selectPdf": "Select PDF",
+    "settings": {
+        "title": "Optimization Settings",
+        "compressionLevel": "Compression Level",
+        "levels": {
+            "low": "Low (Basic Cleanup)",
+            "medium": "Medium (Balanced)",
+            "high": "High (Max Compression)",
+            "custom": "Custom"
+        },
+        "imageQuality": "Image Quality",
+        "removeMetadata": "Remove Metadata",
+        "flatten": "Flatten Forms",
+        "optimizeWeb": "Optimize for Web"
+    },
+    "buttons": {
+        "optimize": "Optimize PDF",
+        "optimizing": "Optimizing... {progress}%",
+        "download": "Download Optimized PDF"
+    },
+    "results": {
+        "success": "Optimization Complete!",
+        "sizeReduction": "Size reduced from {originalSize} to {newSize} ({reduction}%)"
+    },
+    "error": "Failed to optimize PDF."
   },
   "Components": {
     "Footer": {
