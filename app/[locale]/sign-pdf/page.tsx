@@ -3,16 +3,19 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { 
   Upload, Type, Pen, X, Download, Undo, 
-  ZoomIn, ZoomOut, Trash, Move, Check, Loader2 
+  ZoomIn, ZoomOut, Trash, Move, Check, Loader2, Shield, Lock, Unlock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { getPdfjs } from "@/lib/pdfUtils";
 import { PDFDocument } from "pdf-lib";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+
+import { encryptPdf, decryptPdf } from "@/lib/encryptPdf";
 
 // --- Types ---
 
@@ -277,6 +280,143 @@ const PageThumbnail = ({ pdfDoc, pageIndex }: { pdfDoc: any, pageIndex: number }
   );
 };
 
+// 5. Security Modal
+const SecurityModal = ({ 
+  isOpen, 
+  onClose, 
+  settings, 
+  onUpdateSettings, 
+  onFlatten, 
+  hasSignatures,
+  t 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  settings: { password: string; lockEditing: boolean }; 
+  onUpdateSettings: (settings: { password: string; lockEditing: boolean }) => void;
+  onFlatten: () => void;
+  hasSignatures: boolean;
+  t: any 
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
+         <div className="p-4 border-b flex items-center justify-between bg-gray-50">
+           <div className="flex items-center gap-2">
+             <Shield className="w-5 h-5 text-primary" />
+             <h3 className="font-semibold text-lg">{t("security.title")}</h3>
+           </div>
+           <Button variant="ghost" size="icon" onClick={onClose}>
+             <X className="w-5 h-5" />
+           </Button>
+         </div>
+         
+         <div className="p-6 space-y-6">
+           {/* Password */}
+           <div className="space-y-2">
+             <label className="text-sm font-medium flex items-center gap-2">
+               <Lock className="w-4 h-4" /> {t("security.openPassword")}
+             </label>
+             <Input 
+               type="text" 
+               placeholder={t("security.openPasswordPlaceholder")}
+               value={settings.password}
+               onChange={(e) => onUpdateSettings({ ...settings, password: e.target.value })}
+             />
+             <p className="text-xs text-muted-foreground">
+               {settings.password ? t("security.passwordSet") : t("security.noPasswordSet")}
+             </p>
+           </div>
+
+           {/* Permissions */}
+           <div className="space-y-2">
+             <label className="text-sm font-medium flex items-center gap-2">
+               <Shield className="w-4 h-4" /> {t("security.permissions")}
+             </label>
+             <div className="flex items-center space-x-2 border p-3 rounded-md bg-muted/20">
+               <Checkbox 
+                 id="lock-editing" 
+                 checked={settings.lockEditing}
+                 onCheckedChange={(checked) => onUpdateSettings({ ...settings, lockEditing: checked === true })}
+               />
+               <label htmlFor="lock-editing" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none flex-1">
+                 {t("security.lockEditing")}
+               </label>
+             </div>
+           </div>
+
+           {/* Flatten */}
+           <div className="pt-4 border-t">
+             <h4 className="text-sm font-medium mb-2">{t("security.flatten")}</h4>
+             <p className="text-xs text-muted-foreground mb-3">{t("security.flattenDesc")}</p>
+             <Button 
+               onClick={onFlatten} 
+               disabled={!hasSignatures} 
+               variant="secondary" 
+               className="w-full"
+             >
+               {hasSignatures ? t("security.flatten") : t("security.noSignatures")}
+             </Button>
+           </div>
+         </div>
+         
+         <div className="p-4 border-t flex justify-end">
+           <Button onClick={onClose}>{t("modal.buttons.done")}</Button>
+         </div>
+      </div>
+    </div>
+  );
+};
+
+// 6. Password Prompt Modal
+const PasswordPromptModal = ({
+  isOpen,
+  isError,
+  onSubmit,
+  onCancel,
+  t
+}: {
+  isOpen: boolean;
+  isError: boolean;
+  onSubmit: (password: string) => void;
+  onCancel: () => void;
+  t: any;
+}) => {
+  const [password, setPassword] = useState("");
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-sm overflow-hidden">
+         <div className="p-4 border-b bg-gray-50">
+           <h3 className="font-semibold text-lg">{t("passwordPrompt.title")}</h3>
+         </div>
+         
+         <div className="p-6 space-y-4">
+           <p className="text-sm text-gray-600">{t("passwordPrompt.desc")}</p>
+           {isError && <p className="text-sm text-red-500 font-medium">{t("passwordPrompt.error")}</p>}
+           <Input 
+             type="password" 
+             placeholder={t("passwordPrompt.placeholder")}
+             value={password}
+             onChange={(e) => setPassword(e.target.value)}
+             onKeyDown={(e) => e.key === 'Enter' && onSubmit(password)}
+             autoFocus
+           />
+         </div>
+         
+         <div className="p-4 border-t flex justify-end gap-2">
+           <Button variant="ghost" onClick={onCancel}>{t("modal.buttons.cancel")}</Button>
+           <Button onClick={() => onSubmit(password)}>{t("passwordPrompt.submit")}</Button>
+         </div>
+      </div>
+    </div>
+  );
+};
+
 // --- Main Page ---
 
 export default function SignPDFPage() {
@@ -291,40 +431,143 @@ export default function SignPDFPage() {
   const [selectedSigId, setSelectedSigId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState<{ width: number; height: number } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [securitySettings, setSecuritySettings] = useState({ password: "", lockEditing: false });
+  const [isSecurityModalOpen, setIsSecurityModalOpen] = useState(false);
+  const [passwordPrompt, setPasswordPrompt] = useState<{ isOpen: boolean; error: boolean } | null>(null);
+  const [pendingFile, setPendingFile] = useState<{ file: File, arrayBuffer: ArrayBuffer } | null>(null);
+  const [inputPassword, setInputPassword] = useState<string | undefined>(undefined);
   const t = useTranslations("SignPage");
-  
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize PDF.js worker
-  useEffect(() => {
-    getPdfjs(); // Preload
-  }, []);
+  // Load PDF Helper
+  const loadPdf = async (arrayBuffer: ArrayBuffer, password?: string, fileObj?: File) => {
+    try {
+      const pdfjs = await getPdfjs();
+      if (!pdfjs) throw new Error("PDF.js not loaded");
+
+      const loadingTask = pdfjs.getDocument({ data: arrayBuffer, password });
+      const doc = await loadingTask.promise;
+      
+      setPdfDoc(doc);
+      setTotalPages(doc.numPages);
+      setCurrentPage(1);
+      setSignatures([]);
+      if (fileObj) setFile(fileObj);
+      setInputPassword(password);
+      
+      setPendingFile(null);
+      setPasswordPrompt(null);
+      setIsLoading(false);
+    } catch (err: any) {
+      setIsLoading(false);
+      
+      if (err.name === 'PasswordException' || err.message?.includes('Password') || err.name === 'InvalidPasswordException') {
+         // This is expected for encrypted files, so we don't log an error
+         if (fileObj) setPendingFile({ file: fileObj, arrayBuffer });
+         setPasswordPrompt({ isOpen: true, error: !!password });
+      } else {
+         console.error("Error loading PDF:", err);
+         alert(t("alerts.loadFailed"));
+      }
+    }
+  };
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files[0]) {
-      setFile(files[0]);
+      const selectedFile = files[0];
+      setFile(selectedFile);
       setIsLoading(true);
+      
       try {
-        const pdfjs = await getPdfjs();
-        if (!pdfjs) throw new Error("PDF.js not loaded");
-        
-        const arrayBuffer = await files[0].arrayBuffer();
-        const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
-        const doc = await loadingTask.promise;
-        
-        setPdfDoc(doc);
-        setTotalPages(doc.numPages);
-        setCurrentPage(1);
-        setSignatures([]);
+        const arrayBuffer = await selectedFile.arrayBuffer();
+        await loadPdf(arrayBuffer, undefined, selectedFile);
       } catch (err) {
-        console.error("Error loading PDF:", err);
-        alert(t("alerts.loadFailed"));
-      } finally {
+        console.error(err);
         setIsLoading(false);
       }
+    }
+  };
+  
+  const handlePasswordSubmit = async (password: string) => {
+    if (pendingFile) {
+      setIsLoading(true);
+      try {
+        const buffer = await pendingFile.file.arrayBuffer();
+        loadPdf(buffer, password, pendingFile.file);
+      } catch (e) {
+        console.error("Failed to reload file buffer", e);
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handlePasswordCancel = () => {
+    setPendingFile(null);
+    setPasswordPrompt(null);
+    setFile(null);
+    setIsLoading(false);
+  };
+
+  // Flatten Signatures
+  const flattenSignatures = async () => {
+    if (!file || !pdfDoc || signatures.length === 0) return;
+    setIsLoading(true);
+    
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      // Use inputPassword if set
+      const pdf = await PDFDocument.load(arrayBuffer, { 
+        ignoreEncryption: true 
+      });
+      // Note: pdf-lib does not support providing password to load(). 
+      // We use ignoreEncryption to load it, but modification might fail if it's strictly encrypted.
+
+      const pages = pdf.getPages();
+      for (const sig of signatures) {
+        // ... (copy logic from handleDownload)
+        const page = pages[sig.pageIndex];
+        const { width, height } = page.getSize();
+        const pngImage = await pdf.embedPng(sig.dataUrl);
+        const pdfJsPage = await pdfDoc.getPage(sig.pageIndex + 1);
+        const viewport = pdfJsPage.getViewport({ scale: 1 });
+        const scaleX = width / viewport.width;
+        const scaleY = height / viewport.height;
+        const pdfSigWidth = (sig.width / scale) * scaleX;
+        const pdfSigHeight = (sig.height / scale) * scaleY;
+        const pdfSigX = (sig.x / scale) * scaleX;
+        const pdfSigY = height - ((sig.y / scale) * scaleY) - pdfSigHeight;
+
+        page.drawImage(pngImage, {
+          x: pdfSigX,
+          y: pdfSigY,
+          width: pdfSigWidth,
+          height: pdfSigHeight,
+        });
+      }
+
+      const pdfBytes = await pdf.save();
+      const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+      // Create new file
+      const newFile = new File([blob], file.name, { type: 'application/pdf' });
+      
+      // Reload everything
+      const newArrayBuffer = await newFile.arrayBuffer();
+      await loadPdf(newArrayBuffer, undefined, newFile); // New file has no password unless we added one?
+      // flattenSignatures doesn't add password unless specified. It just burns images.
+      // By default pdf.save() removes encryption if we don't re-encrypt.
+      
+      setIsSecurityModalOpen(false);
+      
+    } catch (err) {
+      console.error("Error flattening:", err);
+      // If error is password related, we should handle it.
+      alert(t("alerts.flattenFailed"));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -498,8 +741,24 @@ export default function SignPDFPage() {
     setIsLoading(true);
 
     try {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await PDFDocument.load(arrayBuffer);
+      let buffer: ArrayBuffer;
+      
+      // Decrypt if password is known (so pdf-lib can load it)
+      if (inputPassword) {
+         try {
+            const decryptedBlob = await decryptPdf(file, inputPassword);
+            buffer = await decryptedBlob.arrayBuffer();
+         } catch (e) {
+            console.error("Decryption failed", e);
+            alert(t("alerts.decryptionFailed"));
+            setIsLoading(false);
+            return;
+         }
+      } else {
+         buffer = await file.arrayBuffer();
+      }
+
+      const pdf = await PDFDocument.load(buffer, { ignoreEncryption: true });
       const pages = pdf.getPages();
 
       for (const sig of signatures) {
@@ -541,9 +800,35 @@ export default function SignPDFPage() {
         });
       }
 
-      const pdfBytes = await pdf.save();
-      const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
+      let pdfBytes: Uint8Array;
+      
+      // Save flattened/signed PDF (without encryption first)
+      pdfBytes = await pdf.save();
+      
+      let finalBlob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+
+      // Apply Security Settings using qpdf
+      if (securitySettings.password || securitySettings.lockEditing) {
+        try {
+          const fileToEncrypt = new File([finalBlob], file.name, { type: 'application/pdf' });
+          
+          finalBlob = await encryptPdf(fileToEncrypt, {
+            userPassword: securitySettings.password,
+            ownerPassword: securitySettings.password || 'owner-secret', // Use a default owner password if not provided to enforce restrictions
+            permissions: securitySettings.lockEditing ? {
+              modify: 'none',
+              extract: false,
+              annotate: false,
+            } : undefined
+          });
+        } catch (err) {
+          console.error("Encryption failed:", err);
+          alert(t("alerts.encryptionFailed"));
+          return;
+        }
+      }
+
+      const url = URL.createObjectURL(finalBlob);
       const link = document.createElement('a');
       link.href = url;
       link.download = `signed_${file.name}`;
@@ -611,6 +896,9 @@ export default function SignPDFPage() {
         </div>
 
         <div className="flex items-center gap-3">
+          <Button variant="outline" onClick={() => setIsSecurityModalOpen(true)}>
+             <Shield className="w-4 h-4 mr-2" /> {t("security.title")}
+          </Button>
           <Button variant="outline" onClick={() => setIsModalOpen(true)}>
              <Pen className="w-4 h-4 mr-2" /> {t("addSignature")}
           </Button>
@@ -757,6 +1045,26 @@ export default function SignPDFPage() {
           </div>
         </div>
       )}
+
+      {/* Security Modal */}
+      <SecurityModal 
+        isOpen={isSecurityModalOpen}
+        onClose={() => setIsSecurityModalOpen(false)}
+        settings={securitySettings}
+        onUpdateSettings={setSecuritySettings}
+        onFlatten={flattenSignatures}
+        hasSignatures={signatures.length > 0}
+        t={t}
+      />
+
+      {/* Password Prompt */}
+      <PasswordPromptModal 
+        isOpen={!!passwordPrompt}
+        isError={passwordPrompt?.error || false}
+        onSubmit={handlePasswordSubmit}
+        onCancel={handlePasswordCancel}
+        t={t}
+      />
     </div>
   );
 }

@@ -3,7 +3,7 @@
     "home": "Ana Sayfa",
     "organize": "Düzenle",
     "convert": "Dönüştür",
-    "sign": "İmzala",
+    "sign": "İmzala & Koru",
     "split": "Böl",
     "optimize": "Optimize Et",
     "clearAll": "Tümünü Temizle"
@@ -179,7 +179,7 @@
     }
   },
   "SignPage": {
-    "title": "PDF İmzala",
+    "title": "PDF İmzala & Koru",
     "uploadTitle": "İmzalanacak PDF'i yükleyin",
     "uploadDesc": "Dosyalar tamamen tarayıcınızda işlenir.",
     "selectPdf": "PDF Seç",
@@ -187,6 +187,25 @@
     "back": "Geri",
     "addSignature": "İmza Ekle",
     "downloadSigned": "İmzalı PDF'i İndir",
+    "security": {
+        "title": "Güvenlik Ayarları",
+        "openPassword": "Açılış Şifresi",
+        "openPasswordPlaceholder": "Belgeyi açmak için şifre",
+        "permissions": "İzinler",
+        "lockEditing": "Düzenlemeyi Kilitle",
+        "flatten": "İmzaları Düzleştir",
+        "flattenDesc": "İmzaları kalıcı yap (düzenlenemez)",
+        "passwordSet": "Şifre ayarlandı (açmak için gerekecek)",
+        "noPasswordSet": "Şifre ayarlanmadı",
+        "noSignatures": "Düzleştirilecek imza yok"
+    },
+    "passwordPrompt": {
+        "title": "Şifre Gerekli",
+        "desc": "Bu belge şifre korumalı. Açmak için lütfen şifreyi girin.",
+        "placeholder": "Şifre girin",
+        "submit": "Kilidi Aç",
+        "error": "Hatalı şifre"
+    },
     "pagesTitle": "SAYFALAR ({count})",
     "modal": {
         "title": "İmza Oluştur",
@@ -200,7 +219,8 @@
             "clear": "Temizle",
             "cancel": "İptal",
             "create": "İmza Oluştur",
-            "selectFile": "Dosya Seç"
+            "selectFile": "Dosya Seç",
+            "done": "Bitti"
         },
         "placeholders": {
             "type": "Adınızı yazın",
@@ -210,7 +230,10 @@
     },
     "alerts": {
         "loadFailed": "PDF yüklenemedi",
-        "saveFailed": "PDF kaydedilemedi"
+        "saveFailed": "PDF kaydedilemedi",
+        "flattenFailed": "İmzalar düzleştirilemedi. Belge farklı bir şekilde şifrelenmiş olabilir.",
+        "encryptionFailed": "PDF şifrelenemedi",
+        "decryptionFailed": "PDF şifresi çözülemedi. Lütfen şifreyi kontrol edin."
     }
   },
   "OptimizePage": {

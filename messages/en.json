@@ -3,7 +3,7 @@
     "home": "Home",
     "organize": "Organize",
     "convert": "Convert",
-    "sign": "Sign",
+    "sign": "Sign & Secure",
     "split": "Split",
     "optimize": "Optimize",
     "clearAll": "Clear All"
@@ -179,7 +179,7 @@
     }
   },
   "SignPage": {
-    "title": "Sign PDF",
+    "title": "Sign & Secure PDF",
     "uploadTitle": "Upload a PDF to sign",
     "uploadDesc": "Files are processed entirely in your browser.",
     "selectPdf": "Select PDF",
@@ -187,6 +187,25 @@
     "back": "Back",
     "addSignature": "Add Signature",
     "downloadSigned": "Download Signed PDF",
+    "security": {
+        "title": "Security Settings",
+        "openPassword": "Open Password",
+        "openPasswordPlaceholder": "Password to open document",
+        "permissions": "Permissions",
+        "lockEditing": "Lock Editing",
+        "flatten": "Flatten Signatures",
+        "flattenDesc": "Make signatures permanent (un-editable)",
+        "passwordSet": "Password set (will be required to open)",
+        "noPasswordSet": "No password set",
+        "noSignatures": "No signatures to flatten"
+    },
+    "passwordPrompt": {
+        "title": "Password Required",
+        "desc": "This document is password protected. Please enter the password to open it.",
+        "placeholder": "Enter password",
+        "submit": "Unlock",
+        "error": "Incorrect password"
+    },
     "pagesTitle": "PAGES ({count})",
     "modal": {
         "title": "Create Signature",
@@ -200,7 +219,8 @@
             "clear": "Clear",
             "cancel": "Cancel",
             "create": "Create Signature",
-            "selectFile": "Select File"
+            "selectFile": "Select File",
+            "done": "Done"
         },
         "placeholders": {
             "type": "Type your name",
@@ -210,7 +230,10 @@
     },
     "alerts": {
         "loadFailed": "Failed to load PDF",
-        "saveFailed": "Failed to save PDF"
+        "saveFailed": "Failed to save PDF",
+        "flattenFailed": "Failed to flatten signatures. The document might be password protected/encrypted differently.",
+        "encryptionFailed": "Failed to encrypt PDF",
+        "decryptionFailed": "Failed to decrypt PDF. Please check the password."
     }
   },
   "OptimizePage": {
