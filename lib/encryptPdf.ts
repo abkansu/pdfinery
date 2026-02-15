@@ -41,7 +41,7 @@ export const decryptPdf = async (
     }
 
     const decryptedData = qpdf.FS.readFile(outputPath);
-    return new Blob([decryptedData], { type: 'application/pdf' });
+    return new Blob([new Uint8Array(decryptedData)], { type: 'application/pdf' });
   } catch (error) {
     console.error('PDF Decryption failed:', error);
     throw error;
@@ -106,8 +106,8 @@ export const encryptPdf = async (
     // Read the encrypted file
     const encryptedData = qpdf.FS.readFile(outputPath);
     
-    // Create Blob from the data
-    const blob = new Blob([encryptedData], { type: 'application/pdf' });
+    // Create Blob from the data (copy to ArrayBuffer-backed Uint8Array for BlobPart)
+    const blob = new Blob([new Uint8Array(encryptedData)], { type: 'application/pdf' });
 
     return blob;
 
