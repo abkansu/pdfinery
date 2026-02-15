@@ -242,6 +242,10 @@
     "uploadTitle": "Optimize edilecek PDF'i yükleyin",
     "uploadDesc": "Dosyalar tamamen tarayıcınızda işlenir.",
     "selectPdf": "PDF Seç",
+    "emptyState": {
+      "title": "Optimizasyon ayarlarını yapılandırın",
+      "hint": "Dosya boyutunu küçültmek için kenar çubuğundan bir sıkıştırma seviyesi seçin ve \"PDF Optimize Et\"e tıklayın."
+    },
     "settings": {
         "title": "Optimizasyon Ayarları",
         "compressionLevel": "Sıkıştırma Seviyesi",
@@ -256,6 +260,7 @@
         "flatten": "Formları Düzleştir",
         "optimizeWeb": "Web İçin Optimize Et"
     },
+    "downloadFilenamePrefix": "optimize-edilmis",
     "buttons": {
         "optimize": "PDF Optimize Et",
         "optimizing": "Optimize Ediliyor... %{progress}",
@@ -263,7 +268,10 @@
     },
     "results": {
         "success": "Optimizasyon Tamamlandı!",
-        "sizeReduction": "Boyut {originalSize}'den {newSize}'ye düşürüldü (%{reduction})"
+        "sizeReduction": "Boyut {originalSize}'den {newSize}'ye düşürüldü (%{reduction})",
+        "original": "Orijinal:",
+        "optimized": "Optimize:",
+        "savedPercent": "%{percent} tasarruf"
     },
     "error": "PDF optimize edilemedi."
   },

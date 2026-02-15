@@ -242,6 +242,10 @@
     "uploadTitle": "Upload a PDF to optimize",
     "uploadDesc": "Files are processed entirely in your browser.",
     "selectPdf": "Select PDF",
+    "emptyState": {
+      "title": "Configure optimization settings",
+      "hint": "Choose a compression level from the sidebar and click \"Optimize PDF\" to start reducing your file size."
+    },
     "settings": {
         "title": "Optimization Settings",
         "compressionLevel": "Compression Level",
@@ -256,6 +260,7 @@
         "flatten": "Flatten Forms",
         "optimizeWeb": "Optimize for Web"
     },
+    "downloadFilenamePrefix": "optimized",
     "buttons": {
         "optimize": "Optimize PDF",
         "optimizing": "Optimizing... {progress}%",
@@ -263,7 +268,10 @@
     },
     "results": {
         "success": "Optimization Complete!",
-        "sizeReduction": "Size reduced from {originalSize} to {newSize} ({reduction}%)"
+        "sizeReduction": "Size reduced from {originalSize} to {newSize} ({reduction}%)",
+        "original": "Original:",
+        "optimized": "Optimized:",
+        "savedPercent": "Saved {percent}%"
     },
     "error": "Failed to optimize PDF."
   },

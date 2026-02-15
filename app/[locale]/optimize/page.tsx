@@ -51,7 +51,7 @@ export default function OptimizePage() {
 
     try {
       const optimizedBytes = await optimizePDF(file, settings, (p) => setProgress(p));
-      const blob = new Blob([optimizedBytes], { type: "application/pdf" });
+      const blob = new Blob([new Uint8Array(optimizedBytes)], { type: "application/pdf" });
       setResult({ blob, size: blob.size });
     } catch (err) {
       console.error(err);
@@ -66,7 +66,7 @@ export default function OptimizePage() {
     const url = URL.createObjectURL(result.blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `optimized-${file.name}`;
+    link.download = `${t("downloadFilenamePrefix")}-${file.name}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -258,9 +258,9 @@ export default function OptimizePage() {
                       <div className="bg-primary/10 p-4 rounded-full inline-block">
                         <Minimize2 className="h-12 w-12 text-primary" />
                       </div>
-                      <p className="text-lg font-medium">Configure optimization settings</p>
+                      <p className="text-lg font-medium">{t("emptyState.title")}</p>
                       <p className="text-sm max-w-sm mx-auto">
-                        Choose a compression level from the sidebar and click "Optimize PDF" to start reducing your file size.
+                        {t("emptyState.hint")}
                       </p>
                     </div>
                   </div>
@@ -279,10 +279,10 @@ export default function OptimizePage() {
                                 {t("results.success")}
                             </h3>
                             <div className="text-lg space-y-1">
-                                <p>Original: <span className="font-semibold">{formatBytes(file.size)}</span></p>
-                                <p>Optimized: <span className="font-semibold">{formatBytes(result.size)}</span></p>
+                                <p>{t("results.original")} <span className="font-semibold">{formatBytes(file.size)}</span></p>
+                                <p>{t("results.optimized")} <span className="font-semibold">{formatBytes(result.size)}</span></p>
                                 <p className="text-green-600 font-bold">
-                                    Saved {Math.round(((file.size - result.size) / file.size) * 100)}%
+                                    {t("results.savedPercent", { percent: Math.round(((file.size - result.size) / file.size) * 100) })}
                                 </p>
                             </div>
                         </div>
