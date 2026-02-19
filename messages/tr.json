@@ -55,6 +55,8 @@
     }
   },
   "OrganizePage": {
+    "title": "PDF Birleştir ve Organize Et",
+    "subtitle": "Birden fazla PDF'yi birleştirin, sayfaları yeniden sıralayın ve silin. Tarayıcınızda güvenle.",
     "loading": "İşleniyor...",
     "loadingSub": "Dosyalarınız işlenirken lütfen bekleyin",
     "noFilesTitle": "Dosya yüklenmedi",
@@ -85,6 +87,7 @@
   },
   "SplitPage": {
     "title": "PDF Böl",
+    "subtitle": "PDF dosyalarınızı aralığa göre bölün, sayfaları çıkarın veya her sayfayı ayrı ayrı kaydedin.",
     "modes": {
         "ranges": "Aralığa Göre Böl",
         "rangesDesc": "Özel sayfa aralıkları (örn. 1-5, 8-10)",
@@ -143,7 +146,7 @@
   },
   "ConvertPage": {
     "title": "PDF Dönüştür",
-    "subtitle": "Güvenli, tarayıcı tabanlı PDF dönüşümü. Dosya yüklemesi yok.",
+    "subtitle": "PDF'leri yüksek kaliteli görsellere (PNG/JPG) dönüştürün veya metni güvenle çıkarın. Dosya yüklemeye gerek yoktur.",
     "fileInfo": "{size} • {pages} sayfa",
     "changeFile": "Dosyayı Değiştir",
     "modes": {
@@ -181,14 +184,51 @@
     },
     "tooltips": {
         "downloadPage": "Bu sayfayı indir"
+    },
+    "howTo": {
+        "title": "Nasıl kullanılır",
+        "step1": "Dönüştürmek için bir PDF dosyası yükleyin",
+        "step2": "İstediğiniz dönüşüm modunu seçin (Resme veya Metne)",
+        "step3": "Resme dönüştürüyorsanız format ve ölçek gibi ayarları yapılandırın",
+        "step4": "'Dönüştür'e tıklayın ve sonuçlarınızı indirin"
+    },
+    "features": {
+        "title": "Özellikler",
+        "list": {
+            "0": "PDF sayfalarını yüksek kaliteli PNG veya JPG görsellerine dönüştürün",
+            "1": "PDF belgelerinden metin içeriğini doğru bir şekilde çıkarın",
+            "2": "Görsel ölçeği ve kalite ayarlarını özelleştirin",
+            "3": "Bireysel sayfaları indirin veya tümünü ZIP dosyası olarak alın",
+            "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
+            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
+        }
     }
   },
   "SignPage": {
     "title": "PDF İmzala & Koru",
+    "subtitle": "PDF belgelerinize güvenle imza ekleyin. Dosya yüklemesi gerekmez.",
     "uploadTitle": "İmzalanacak PDF'i yükleyin",
     "uploadDesc": "Dosyalar tamamen tarayıcınızda işlenir.",
     "selectPdf": "PDF Seç",
     "featuresDesc": "Desteklenen özellikler: Çiz, Yaz veya İmza Yükle. Çoklu sayfa desteği. Güvenli istemci taraflı işleme.",
+    "howTo": {
+        "title": "Nasıl kullanılır",
+        "step1": "İmzalamak için bir PDF belgesi yükleyin",
+        "step2": "İmza eklemek istediğiniz sayfaya gidin",
+        "step3": "Çizmek, yazmak veya bir resim yüklemek için 'İmza Ekle'ye tıklayın",
+        "step4": "İmzanızı sürükleyip boyutlandırın, ardından 'İmzalı PDF'i İndir'e tıklayın"
+    },
+    "features": {
+        "title": "Özellikler",
+        "list": {
+            "0": "Çizerek, yazarak veya resim yükleyerek imza ekleyin",
+            "1": "PDF'inizi şifreler ve düzenleme kısıtlamalarıyla güvence altına alın",
+            "2": "İmzaları düzleştirerek kalıcı ve düzenlenemez hale getirin",
+            "3": "İmzaları herhangi bir sayfada kolayca önizleyin ve konumlandırın",
+            "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
+            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
+        }
+    },
     "back": "Geri",
     "addSignature": "İmza Ekle",
     "downloadSigned": "İmzalı PDF'i İndir",
@@ -278,14 +318,51 @@
         "optimized": "Optimize:",
         "savedPercent": "%{percent} tasarruf"
     },
-    "error": "PDF optimize edilemedi."
+    "error": "PDF optimize edilemedi.",
+    "howTo": {
+        "title": "Nasıl kullanılır",
+        "step1": "Optimize etmek için bir PDF dosyası yükleyin",
+        "step2": "Bir sıkıştırma seviyesi seçin (Düşük, Orta, Yüksek veya Özel)",
+        "step3": "İşlemi başlatmak için 'PDF Optimize Et'e tıklayın",
+        "step4": "Dosya boyutu tasarrufunu inceleyin ve optimize edilmiş PDF'i indirin"
+    },
+    "features": {
+        "title": "Özellikler",
+        "list": {
+            "0": "PDF dosyalarını önemli ölçüde küçültmek için sıkıştırın",
+            "1": "Önceden tanımlanmış sıkıştırma seviyelerinden seçin veya ayarları özelleştirin",
+            "2": "Görsel kalitesini ve çözünürlüğünü manuel olarak ayarlayın",
+            "3": "Ekstra tasarruf için metadataları kaldırın ve formları düzleştirin",
+            "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
+            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
+        }
+    }
   },
   "EditPage": {
-    "title": "Düzenle",
+    "title": "PDF Düzenle",
+    "subtitle": "PDF'inize metin ekleyin, çizim yapın, şekiller ekleyin ve güvenle düzenleyin.",
     "uploadTitle": "Düzenlenecek PDF'i yükleyin",
     "uploadDesc": "Dosyalar tamamen tarayıcınızda işlenir.",
     "selectPdf": "PDF Seç",
     "featuresDesc": "Desteklenen özellikler: Metin ekle, serbest çizim yap, şekiller ekle, resim yükle ve alanları beyazlat. Çoklu sayfa desteği. Güvenli istemci taraflı işleme.",
+    "howTo": {
+        "title": "Nasıl kullanılır",
+        "step1": "Düzenlemek için bir PDF belgesi yükleyin",
+        "step2": "Üst araç çubuğundan bir araç (metin, çizim, şekiller vb.) seçin",
+        "step3": "Düzenlemelerinizi uygulamak için PDF sayfasına tıklayın veya sürükleyin",
+        "step4": "Değişikliklerinizi kaydetmek için 'Düzenlenmiş PDF'i İndir'e tıklayın"
+    },
+    "features": {
+        "title": "Özellikler",
+        "list": {
+            "0": "Özel metinler, serbest el çizimleri ve şekiller ekleyin",
+            "1": "PDF sayfalarınıza resim yükleyin ve ekleyin",
+            "2": "İstenmeyen içeriği gizlemek için beyazlatma aracını kullanın",
+            "3": "Birden çok sayfa arasında kolayca gezinin ve düzenleyin",
+            "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
+            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
+        }
+    },
     "back": "Geri",
     "downloadEdited": "Düzenlenmiş PDF'i İndir",
     "pagesTitle": "SAYFALAR ({count})",

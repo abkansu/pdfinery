@@ -187,14 +187,50 @@ export default function ConvertPage() {
           
           {/* Main Upload / File Info Area */}
           {!file ? (
-            <div className="space-y-4">
-              <div className="text-center space-y-2 mb-8">
-                <h2 className="text-3xl font-bold">{t("title")}</h2>
-                <p className="text-muted-foreground text-lg">
-                  {t("subtitle")}
-                </p>
+            <div className="space-y-12">
+              <div className="space-y-4">
+                <div className="text-center space-y-2 mb-8">
+                  <h1 className="text-3xl font-bold">{t("title")}</h1>
+                  <p className="text-muted-foreground text-lg">
+                    {t("subtitle")}
+                  </p>
+                </div>
+                <PDFUploader onFilesSelected={handleFilesSelected} isLoading={false} />
               </div>
-              <PDFUploader onFilesSelected={handleFilesSelected} isLoading={false} />
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-muted/50 rounded-lg p-8">
+                  <h3 className="font-medium text-lg mb-4">{t("howTo.title")}</h3>
+                  <ul className="text-sm text-muted-foreground space-y-3">
+                    <li className="flex items-start gap-3">
+                      <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>
+                      <span>{t("howTo.step1")}</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>
+                      <span>{t("howTo.step2")}</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                        <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>
+                      <span>{t("howTo.step3")}</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>
+                      <span>{t("howTo.step4")}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-muted/50 rounded-lg p-8">
+                  <h3 className="font-medium text-lg mb-4">{t("features.title")}</h3>
+                  <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside">
+                    <li>{t("features.list.0")}</li>
+                    <li>{t("features.list.1")}</li>
+                    <li>{t("features.list.2")}</li>
+                    <li>{t("features.list.3")}</li>
+                    <li>{t("features.list.4")}</li>
+                    <li>{t("features.list.5")}</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="grid md:grid-cols-[300px,1fr] gap-8">

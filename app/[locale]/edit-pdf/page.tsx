@@ -344,27 +344,67 @@ export default function EditPDFPage() {
 
   if (!file) {
     return (
-      <div className="container mx-auto py-10 max-w-4xl flex-1">
-           <h1 className="text-3xl font-bold mb-6">{t("title")}</h1>
-           <div className="border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-4 bg-muted/10">
-             <div className="bg-primary/10 p-4 rounded-full">
-               <Upload className="w-10 h-10 text-primary" />
+        <div className="container mx-auto py-10 max-w-5xl flex-1">
+           <div className="space-y-12">
+             <div className="space-y-4">
+               <div className="text-center space-y-2 mb-8">
+                 <h1 className="text-3xl font-bold">{t("title")}</h1>
+                 <p className="text-muted-foreground text-lg">
+                   {t("subtitle")}
+                 </p>
+               </div>
+               <div className="border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-4 bg-muted/10">
+                 <div className="bg-primary/10 p-4 rounded-full">
+                   <Upload className="w-10 h-10 text-primary" />
+                 </div>
+                 <h2 className="text-xl font-semibold">{t("uploadTitle")}</h2>
+                 <p className="text-muted-foreground">{t("uploadDesc")}</p>
+                 <Button onClick={() => fileInputRef.current?.click()}>
+                   {t("selectPdf")}
+                 </Button>
+                 <input
+                   ref={fileInputRef}
+                   type="file"
+                   accept="application/pdf"
+                   className="hidden"
+                   onChange={handleFileSelect}
+                 />
+               </div>
              </div>
-             <h2 className="text-xl font-semibold">{t("uploadTitle")}</h2>
-             <p className="text-muted-foreground">{t("uploadDesc")}</p>
-             <Button onClick={() => fileInputRef.current?.click()}>
-               {t("selectPdf")}
-             </Button>
-             <input
-               ref={fileInputRef}
-               type="file"
-               accept="application/pdf"
-               className="hidden"
-               onChange={handleFileSelect}
-             />
-           </div>
-           <div className="mt-8 text-center text-sm text-muted-foreground">
-             <p>{t("featuresDesc")}</p>
+             <div className="grid md:grid-cols-2 gap-8">
+               <div className="bg-muted/50 rounded-lg p-8">
+                 <h3 className="font-medium text-lg mb-4">{t("howTo.title")}</h3>
+                 <ul className="text-sm text-muted-foreground space-y-3">
+                   <li className="flex items-start gap-3">
+                     <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>
+                     <span>{t("howTo.step1")}</span>
+                   </li>
+                   <li className="flex items-start gap-3">
+                     <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>
+                     <span>{t("howTo.step2")}</span>
+                   </li>
+                   <li className="flex items-start gap-3">
+                       <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>
+                     <span>{t("howTo.step3")}</span>
+                   </li>
+                   <li className="flex items-start gap-3">
+                     <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>
+                     <span>{t("howTo.step4")}</span>
+                   </li>
+                 </ul>
+               </div>
+               <div className="bg-muted/50 rounded-lg p-8">
+                 <h3 className="font-medium text-lg mb-4">{t("features.title")}</h3>
+                 <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside">
+                   <li>{t("features.list.0")}</li>
+                   <li>{t("features.list.1")}</li>
+                   <li>{t("features.list.2")}</li>
+                   <li>{t("features.list.3")}</li>
+                   <li>{t("features.list.4")}</li>
+                   <li>{t("features.list.5")}</li>
+                 </ul>
+               </div>
+             </div>
            </div>
         </div>
     );

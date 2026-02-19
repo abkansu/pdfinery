@@ -83,11 +83,16 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 flex-1">
+        <div className="text-center space-y-2 mb-8">
+          <h1 className="text-3xl font-bold">{t("title")}</h1>
+          <p className="text-muted-foreground text-lg">
+            {t("subtitle")}
+          </p>
+        </div>
         <div className="grid lg:grid-cols-[240px,1fr] gap-6 h-full items-start">
           
           {/* Left Sidebar */}
           <div className="space-y-6">
-            {/* Upload Section */}
             <PDFUploader onFilesSelected={addFiles} isLoading={isLoading} />
 
             {/* Uploaded Files List */}

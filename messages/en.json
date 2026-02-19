@@ -55,6 +55,8 @@
     }
   },
   "OrganizePage": {
+    "title": "Merge & Organize PDF",
+    "subtitle": "Merge multiple PDFs, reorder and delete pages securely in your browser.",
     "loading": "Processing...",
     "loadingSub": "Please wait while we process your files",
     "noFilesTitle": "No files uploaded",
@@ -85,6 +87,7 @@
   },
   "SplitPage": {
     "title": "Split PDF",
+    "subtitle": "Split your PDF files by range, extract pages or save every page separately.",
     "modes": {
         "ranges": "Split by Range",
         "rangesDesc": "Custom page ranges (e.g. 1-5, 8-10)",
@@ -143,7 +146,7 @@
   },
   "ConvertPage": {
     "title": "Convert PDF",
-    "subtitle": "Secure, browser-based PDF conversion. No file uploads.",
+    "subtitle": "Convert PDFs to high-quality images (PNG/JPG) or extract text securely. No file uploads required.",
     "fileInfo": "{size} • {pages} pages",
     "changeFile": "Change File",
     "modes": {
@@ -181,14 +184,51 @@
     },
     "tooltips": {
         "downloadPage": "Download this page"
+    },
+    "howTo": {
+        "title": "How to use",
+        "step1": "Upload a PDF file to convert",
+        "step2": "Select your desired conversion mode (To Image or To Text)",
+        "step3": "Configure settings like format and scale if converting to images",
+        "step4": "Click 'Convert' and download your results"
+    },
+    "features": {
+        "title": "Features",
+        "list": {
+            "0": "Convert PDF pages to high-quality PNG or JPG images",
+            "1": "Extract text content from PDF documents accurately",
+            "2": "Customize image scale and quality settings",
+            "3": "Download individual pages or get all as a ZIP file",
+            "4": "Free to use with no file size limits",
+            "5": "Works entirely in your browser for maximum privacy"
+        }
     }
   },
   "SignPage": {
     "title": "Sign & Secure PDF",
+    "subtitle": "Add your signature to PDF documents securely. No file uploads required.",
     "uploadTitle": "Upload a PDF to sign",
     "uploadDesc": "Files are processed entirely in your browser.",
     "selectPdf": "Select PDF",
     "featuresDesc": "Supported features: Draw, Type, or Upload signature. Multi-page support. Secure client-side processing.",
+    "howTo": {
+        "title": "How to use",
+        "step1": "Upload a PDF document to sign",
+        "step2": "Navigate to the page where you want to add a signature",
+        "step3": "Click 'Add Signature' to draw, type, or upload an image",
+        "step4": "Drag and resize your signature, then click 'Download Signed PDF'"
+    },
+    "features": {
+        "title": "Features",
+        "list": {
+            "0": "Add signatures by drawing, typing, or uploading images",
+            "1": "Secure your PDF with passwords and editing restrictions",
+            "2": "Flatten signatures to make them permanent and uneditable",
+            "3": "Preview and position signatures easily on any page",
+            "4": "Free to use with no file size limits",
+            "5": "Works entirely in your browser for maximum privacy"
+        }
+    },
     "back": "Back",
     "addSignature": "Add Signature",
     "downloadSigned": "Download Signed PDF",
@@ -278,14 +318,51 @@
         "optimized": "Optimized:",
         "savedPercent": "Saved {percent}%"
     },
-    "error": "Failed to optimize PDF."
+    "error": "Failed to optimize PDF.",
+    "howTo": {
+        "title": "How to use",
+        "step1": "Upload a PDF file to optimize",
+        "step2": "Select a compression level (Low, Medium, High, or Custom)",
+        "step3": "Click 'Optimize PDF' to start processing",
+        "step4": "Review the file size savings and download the optimized PDF"
+    },
+    "features": {
+        "title": "Features",
+        "list": {
+            "0": "Compress PDF files to significantly reduce file size",
+            "1": "Choose from predefined compression levels or customize settings",
+            "2": "Adjust image quality and resolution manually",
+            "3": "Remove metadata and flatten forms for extra savings",
+            "4": "Free to use with no file size limits",
+            "5": "Works entirely in your browser for maximum privacy"
+        }
+    }
   },
   "EditPage": {
-    "title": "Edit",
+    "title": "Edit PDF",
+    "subtitle": "Add text, draw, add shapes and whiteout areas on your PDF securely.",
     "uploadTitle": "Upload a PDF to edit",
     "uploadDesc": "Files are processed entirely in your browser.",
     "selectPdf": "Select PDF",
     "featuresDesc": "Supported features: Add text, draw freehand, add shapes, upload images, and whiteout areas. Multi-page support. Secure client-side processing.",
+    "howTo": {
+        "title": "How to use",
+        "step1": "Upload a PDF document to edit",
+        "step2": "Select a tool (text, draw, shapes, etc.) from the top toolbar",
+        "step3": "Click or drag on the PDF page to apply your edits",
+        "step4": "Click 'Download Edited PDF' to save your changes"
+    },
+    "features": {
+        "title": "Features",
+        "list": {
+            "0": "Add custom text, freehand drawings, and shapes",
+            "1": "Upload and insert images onto your PDF pages",
+            "2": "Use the whiteout tool to hide unwanted content",
+            "3": "Easily navigate and edit multiple pages",
+            "4": "Free to use with no file size limits",
+            "5": "Works entirely in your browser for maximum privacy"
+        }
+    },
     "back": "Back",
     "downloadEdited": "Download Edited PDF",
     "pagesTitle": "PAGES ({count})",

@@ -157,6 +157,9 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - If a feature needs layout changes, it must adapt to the container, not replace it.
 - Navbar invariant: navbar is full-width and outside the content+ads container. Ads/content start below it.
 - Footer invariant: footer is full-width and outside the content+ads container. Ads/content start above it.
+- Every page must contain a title and a subtitle centered above the page content.
+- Every page must contain an instruction section.
+- Every page must contain a features section.
 
 ### Global internationalization rule (must not be violated)
 - At every page translate every user-seen text 
