@@ -4,6 +4,7 @@
     "organize": "Organize",
     "convert": "Convert",
     "sign": "Sign & Secure",
+    "edit": "Edit",
     "split": "Split",
     "optimize": "Optimize",
     "clearAll": "Clear All"
@@ -42,6 +43,10 @@
       "sign": {
         "title": "Sign & Secure",
         "description": "Sign documents with your personal signature. Draw, type, or upload your signature image."
+      },
+      "edit": {
+        "title": "Edit",
+        "description": "Edit your PDF by adding text, drawing, shapes, and images directly on the pages."
       },
       "optimize": {
         "title": "Optimize",
@@ -137,7 +142,7 @@
     }
   },
   "ConvertPage": {
-    "title": "Convert PDF to Image or Text",
+    "title": "Convert PDF",
     "subtitle": "Secure, browser-based PDF conversion. No file uploads.",
     "fileInfo": "{size} • {pages} pages",
     "changeFile": "Change File",
@@ -274,6 +279,28 @@
         "savedPercent": "Saved {percent}%"
     },
     "error": "Failed to optimize PDF."
+  },
+  "EditPage": {
+    "title": "Edit",
+    "uploadTitle": "Upload a PDF to edit",
+    "uploadDesc": "Files are processed entirely in your browser.",
+    "selectPdf": "Select PDF",
+    "featuresDesc": "Supported features: Add text, draw freehand, add shapes, upload images, and whiteout areas. Multi-page support. Secure client-side processing.",
+    "back": "Back",
+    "downloadEdited": "Download Edited PDF",
+    "pagesTitle": "PAGES ({count})",
+    "tools": {
+      "text": "Add Text",
+      "freehand": "Draw",
+      "rectangle": "Add Rectangle",
+      "image": "Add Image",
+      "whiteout": "Whiteout",
+      "clear": "Clear All Edits"
+    },
+    "alerts": {
+      "loadFailed": "Failed to load PDF",
+      "saveFailed": "Failed to save PDF"
+    }
   },
   "Components": {
     "Footer": {

@@ -1,9 +1,10 @@
 {
   "Navigation": {
     "home": "Ana Sayfa",
-    "organize": "Düzenle",
+    "organize": "Organize Et",
     "convert": "Dönüştür",
     "sign": "İmzala & Koru",
+    "edit": "Düzenle",
     "split": "Böl",
     "optimize": "Optimize Et",
     "clearAll": "Tümünü Temizle"
@@ -28,7 +29,7 @@
     },
     "tools": {
       "organize": {
-        "title": "Düzenle",
+        "title": "Organize Et",
         "description": "Birden fazla PDF dosyasını tek bir belgede birleştirin. Sayfaları sürükleyip bırakarak yeniden sıralayın ve istenmeyen sayfaları kaldırın."
       },
       "split": {
@@ -42,6 +43,10 @@
       "sign": {
         "title": "İmzala & Güvenlik",
         "description": "Belgeleri kişisel imzanızla imzalayın. İmzanızı çizin, yazın veya imza görselinizi yükleyin."
+      },
+      "edit": {
+        "title": "Düzenle",
+        "description": "Sayfalara doğrudan metin ekleyerek, çizim yaparak, şekiller ve görseller yerleştirerek PDF'inizi düzenleyin."
       },
       "optimize": {
         "title": "Optimize Et",
@@ -137,7 +142,7 @@
     }
   },
   "ConvertPage": {
-    "title": "PDF'i Resme veya Metne Dönüştür",
+    "title": "PDF Dönüştür",
     "subtitle": "Güvenli, tarayıcı tabanlı PDF dönüşümü. Dosya yüklemesi yok.",
     "fileInfo": "{size} • {pages} sayfa",
     "changeFile": "Dosyayı Değiştir",
@@ -274,6 +279,28 @@
         "savedPercent": "%{percent} tasarruf"
     },
     "error": "PDF optimize edilemedi."
+  },
+  "EditPage": {
+    "title": "Düzenle",
+    "uploadTitle": "Düzenlenecek PDF'i yükleyin",
+    "uploadDesc": "Dosyalar tamamen tarayıcınızda işlenir.",
+    "selectPdf": "PDF Seç",
+    "featuresDesc": "Desteklenen özellikler: Metin ekle, serbest çizim yap, şekiller ekle, resim yükle ve alanları beyazlat. Çoklu sayfa desteği. Güvenli istemci taraflı işleme.",
+    "back": "Geri",
+    "downloadEdited": "Düzenlenmiş PDF'i İndir",
+    "pagesTitle": "SAYFALAR ({count})",
+    "tools": {
+      "text": "Metin Ekle",
+      "freehand": "Çizim Yap",
+      "rectangle": "Dikdörtgen Ekle",
+      "image": "Resim Ekle",
+      "whiteout": "Beyazlat",
+      "clear": "Tüm Düzenlemeleri Temizle"
+    },
+    "alerts": {
+      "loadFailed": "PDF yüklenemedi",
+      "saveFailed": "PDF kaydedilemedi"
+    }
   },
   "Components": {
     "Footer": {

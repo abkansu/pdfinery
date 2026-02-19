@@ -4,7 +4,8 @@ import { Link } from "@/lib/navigation";
 import { 
   Files, 
   RefreshCcw, 
-  PenLine, 
+  PenLine,
+  Edit3,
   ShieldCheck, 
   ArrowRight,
   Layers,
@@ -51,6 +52,14 @@ export default function LandingPage() {
       href: "/sign-pdf",
       color: "text-purple-500",
       bgColor: "bg-purple-500/10",
+    },
+    {
+      title: t("tools.edit.title"),
+      description: t("tools.edit.description"),
+      icon: Edit3,
+      href: "/edit-pdf",
+      color: "text-indigo-500",
+      bgColor: "bg-indigo-500/10",
     },
     {
       title: t("tools.optimize.title"),

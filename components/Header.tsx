@@ -41,6 +41,11 @@ export function Header({ children }: HeaderProps) {
       isActive: pathname === "/sign-pdf"
     },
     {
+      name: t("edit"),
+      href: "/edit-pdf",
+      isActive: pathname === "/edit-pdf"
+    },
+    {
       name: t("optimize"),
       href: "/optimize",
       isActive: pathname === "/optimize"

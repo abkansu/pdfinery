@@ -10,6 +10,8 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **Delete Pages**: Remove unwanted pages from the final output
 - **Download Merged PDF**: Export the final merged PDF with your custom page order
 - **Sign PDF**: Visually add a signature and download the PDF with the added signature
+- **Edit PDF**: Add text, shapes, freehand drawing, and images directly onto PDF pages
+- **Secure PDF**: Lock, unlock and disable editing of the PDF
 - **Convert PDF**: Convert PDF file to text or image
 - **Split PDF by range**: Split PDF by page ranges, N pages, single pages
 - **Extract PDF pages**: Extract selected pages from PDF
@@ -26,6 +28,7 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **shadcn/ui** (Radix UI + Tailwind CSS)
 - **pdf-lib** for PDF manipulation
 - **pdfjs-dist** for PDF rendering
+- **fabric** for Canvas editing
 - **@dnd-kit** for drag-and-drop functionality
 - **next-intl** for internationalization (i18n)
 
@@ -34,6 +37,8 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **app/** (Next.js App Router)
   - **[locale]/**
     - **convert/**
+      - page.tsx
+    - **edit-pdf/**
       - page.tsx
     - **optimize/**
       - page.tsx
@@ -116,6 +121,7 @@ A frontend-only Next.js application that allows users to interact with PDF files
 
 ### In Scope
 - PDF merge, split, reorder
+- PDF edit (text, shapes, drawings)
 - Client-side processing (WASM)
 - SEO-friendly tool pages
 - Internationalization (i18n)
@@ -131,6 +137,8 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - Ad containers reserved
 - PDF merge working
 - PDF visual sign working
+- PDF edit working
+- PDF lock working
 - PDF to IMG working
 - PDF to Text working
 - PDF split working
