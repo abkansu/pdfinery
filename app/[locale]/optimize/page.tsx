@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { PDFUploader } from "@/components/PDFUploader";
 import { useTranslations } from "next-intl";
 import { formatBytes, cn } from "@/lib/utils";
@@ -234,32 +235,28 @@ export default function OptimizePage() {
                             />
                         </div>
 
-                        <div className="flex items-center justify-between space-x-2">
-                            <label htmlFor="flatten" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                {t("settings.flatten")}
-                            </label>
-                            <input 
-                                type="checkbox"
+                        <div className="flex items-center space-x-2">
+                            <Checkbox
                                 id="flatten"
                                 checked={settings.flatten}
-                                onChange={(e) => setSettings({...settings, flatten: e.target.checked})}
+                                onCheckedChange={(checked) => setSettings({ ...settings, flatten: checked === true })}
                                 disabled={isProcessing}
-                                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                             />
+                            <label htmlFor="flatten" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none">
+                                {t("settings.flatten")}
+                            </label>
                         </div>
 
-                         <div className="flex items-center justify-between space-x-2">
-                            <label htmlFor="metadata" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                {t("settings.removeMetadata")}
-                            </label>
-                            <input 
-                                type="checkbox"
+                        <div className="flex items-center space-x-2">
+                            <Checkbox
                                 id="metadata"
                                 checked={settings.removeMetadata}
-                                onChange={(e) => setSettings({...settings, removeMetadata: e.target.checked})}
+                                onCheckedChange={(checked) => setSettings({ ...settings, removeMetadata: checked === true })}
                                 disabled={isProcessing}
-                                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                             />
+                            <label htmlFor="metadata" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none">
+                                {t("settings.removeMetadata")}
+                            </label>
                         </div>
                       </div>
                     )}
