@@ -298,6 +298,7 @@
             "low": "Düşük (Temel Temizlik)",
             "medium": "Orta (Dengeli)",
             "high": "Yüksek (Maksimum Sıkıştırma)",
+            "condense": "Yoğunlaştır (Kayıpsız)",
             "custom": "Özel"
         },
         "imageQuality": "Görsel Kalitesi",

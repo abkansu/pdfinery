@@ -298,6 +298,7 @@
             "low": "Low (Basic Cleanup)",
             "medium": "Medium (Balanced)",
             "high": "High (Max Compression)",
+            "condense": "Condense (Lossless)",
             "custom": "Custom"
         },
         "imageQuality": "Image Quality",

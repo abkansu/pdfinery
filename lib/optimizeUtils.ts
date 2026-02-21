@@ -2,7 +2,7 @@ import { PDFDocument } from "pdf-lib";
 import { getPdfjs } from "./pdfUtils";
 
 export interface OptimizeOptions {
-  compressionLevel: "low" | "medium" | "high" | "custom";
+  compressionLevel: "low" | "medium" | "high" | "condense" | "custom";
   imageQuality: number; // 0-1
   removeMetadata: boolean;
   flatten: boolean;
@@ -14,6 +14,24 @@ export async function optimizePDF(
   options: OptimizeOptions,
   onProgress?: (progress: number) => void
 ): Promise<Uint8Array> {
+  if (options.compressionLevel === "condense") {
+    console.log('[optimizeUtils] Starting condense compression...');
+    
+    // We are going to execute structuralCompress directly inline, 
+    // avoiding Next.js Web Worker dynamic imports which frequently fail
+    // when using WASM or nested modules. Since Condense runs fast 
+    // enough for moderate PDFs, direct execution is the most robust approach.
+    const { structuralCompress } = await import('./structuralCompress');
+    
+    try {
+      const buffer = await file.arrayBuffer();
+      return await structuralCompress(buffer, options.removeMetadata, onProgress);
+    } catch (err) {
+      console.error('[optimizeUtils] Error running condense inline:', err);
+      throw err;
+    }
+  }
+
   // If "low" or pure metadata/flatten update, we can just use pdf-lib directly
   // "Medium" and "High" usually imply re-compression which pdf-lib can't do natively on images
   // effectively without rasterization or complex extraction.

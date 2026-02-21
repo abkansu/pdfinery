@@ -74,7 +74,7 @@ export default function OptimizePage() {
     URL.revokeObjectURL(url);
   };
 
-  const updateCompressionLevel = (level: "low" | "medium" | "high" | "custom") => {
+  const updateCompressionLevel = (level: "low" | "medium" | "high" | "condense" | "custom") => {
     const newSettings = { ...settings, compressionLevel: level };
     
     if (level === "low") {
@@ -87,6 +87,10 @@ export default function OptimizePage() {
       newSettings.flatten = false; 
     } else if (level === "high") {
       newSettings.imageQuality = 0.5;
+      newSettings.removeMetadata = true;
+      newSettings.flatten = false;
+    } else if (level === "condense") {
+      newSettings.imageQuality = 1.0; // Lossless
       newSettings.removeMetadata = true;
       newSettings.flatten = false;
     }
@@ -190,7 +194,7 @@ export default function OptimizePage() {
                         {t("settings.compressionLevel")}
                       </label>
                       <div className="grid gap-2">
-                        {(["low", "medium", "high", "custom"] as const).map((level) => (
+                        {(["low", "medium", "high", "condense", "custom"] as const).map((level) => (
                           <div key={level} className="flex items-center space-x-2">
                             <input
                               type="radio"

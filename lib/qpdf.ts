@@ -13,21 +13,34 @@ interface QpdfModule {
 let qpdfInstance: Promise<QpdfModule> | null = null;
 
 export const getQpdf = async (): Promise<QpdfModule> => {
+  console.log('[getQpdf] Initializing qpdf...');
+  
   if (qpdfInstance) {
+    console.log('[getQpdf] Returning cached instance');
     return qpdfInstance;
   }
 
+  console.log('[getQpdf] Creating new qpdf instance');
   qpdfInstance = (QpdfFactory as any)({
     locateFile: (path: string) => {
+      console.log('[getQpdf] locateFile called with:', path);
       if (path.endsWith('.wasm')) {
-        return `/qpdf/qpdf.wasm`;
+        const wasmPath = `/qpdf/qpdf.wasm`;
+        console.log('[getQpdf] Returning WASM path:', wasmPath);
+        return wasmPath;
       }
       if (path.endsWith('.js') || path === 'qpdf.js') {
-        return `/qpdf/qpdf.js`;
+        const jsPath = `/qpdf/qpdf.js`;
+        console.log('[getQpdf] Returning JS path:', jsPath);
+        return jsPath;
       }
+      console.log('[getQpdf] Returning original path:', path);
       return path;
     },
   });
 
-  return qpdfInstance!;
+  console.log('[getQpdf] Waiting for qpdf to initialize...');
+  const result = await qpdfInstance!;
+  console.log('[getQpdf] qpdf initialized successfully');
+  return result;
 };

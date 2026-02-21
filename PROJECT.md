@@ -29,6 +29,7 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **pdf-lib** for PDF manipulation
 - **pdfjs-dist** for PDF rendering
 - **fabric** for Canvas editing
+- **pako** for recompress streams
 - **@dnd-kit** for drag-and-drop functionality
 - **next-intl** for internationalization (i18n)
 

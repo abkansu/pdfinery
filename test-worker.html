@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Worker</title>
+</head>
+<body>
+    <h1>Worker Test</h1>
+    <button id="testBtn">Test Worker</button>
+    <pre id="output"></pre>
+    
+    <script type="module">
+        const output = document.getElementById('output');
+        const testBtn = document.getElementById('testBtn');
+        
+        testBtn.addEventListener('click', async () => {
+            try {
+                output.textContent = 'Creating worker...\n';
+                
+                // Try to create the worker
+                const workerUrl = new URL('./lib/structuralCompressWorker.ts', import.meta.url);
+                output.textContent += `Worker URL: ${workerUrl}\n`;
+                
+                const worker = new Worker(workerUrl, { type: 'module' });
+                
+                worker.onmessage = (e) => {
+                    output.textContent += `Message from worker: ${JSON.stringify(e.data)}\n`;
+                };
+                
+                worker.onerror = (err) => {
+                    output.textContent += `Worker error: ${err.message}\n`;
+                    console.error('Worker error:', err);
+                };
+                
+                // Create a simple test PDF (minimal valid PDF)
+                const testPdf = new Uint8Array([
+                    0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a
+                ]);
+                
+                output.textContent += 'Sending message to worker...\n';
+                worker.postMessage({
+                    type: 'START',
+                    payload: {
+                        fileData: testPdf.buffer,
+                        removeMetadata: true
+                    }
+                });
+                
+            } catch (err) {
+                output.textContent += `Error: ${err.message}\n${err.stack}\n`;
+                console.error('Error:', err);
+            }
+        });
+    </script>
+</body>
+</html>
