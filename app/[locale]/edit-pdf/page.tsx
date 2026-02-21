@@ -173,19 +173,14 @@ export default function EditPDFPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pdfDoc, currentPage, scale, pageEdits]); // Note: excluding activeTool from deps intentionally
 
-  // Save current page state when leaving
-  const saveCurrentPageState = () => {
-    if (fabricCanvasInstance.current) {
-      const json = fabricCanvasInstance.current.toJSON();
-      setPageEdits(prev => ({ ...prev, [currentPage]: json }));
-    }
-  };
-
   useEffect(() => {
-    saveCurrentPageState(); // Save before changing page/scale
     renderPage();
     return () => {
-       // Optional: We don't save on unmount of page
+      // Save the state of the outgoing page before switching to the new one
+      if (fabricCanvasInstance.current) {
+        const json = fabricCanvasInstance.current.toJSON();
+        setPageEdits(prev => ({ ...prev, [currentPage]: json }));
+      }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, scale, pdfDoc]); // Only trigger on page, scale, or doc change
@@ -311,7 +306,10 @@ export default function EditPDFPage() {
     setIsLoading(true);
     
     // Save current page state first
-    saveCurrentPageState();
+    if (fabricCanvasInstance.current) {
+      const json = fabricCanvasInstance.current.toJSON();
+      setPageEdits(prev => ({ ...prev, [currentPage]: json }));
+    }
 
     try {
       const arrayBuffer = await file.arrayBuffer();
