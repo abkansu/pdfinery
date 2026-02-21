@@ -20,6 +20,54 @@ interface PageEdits {
   [pageIndex: number]: any; // Fabric JSON representation
 }
 
+// 1. Page Thumbnail Component
+const PageThumbnail = ({ pdfDoc, pageIndex }: { pdfDoc: any, pageIndex: number }) => {
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const renderThumbnail = async () => {
+      if (!pdfDoc) return;
+      
+      try {
+        const page = await pdfDoc.getPage(pageIndex + 1);
+        const viewport = page.getViewport({ scale: 0.2 }); // Small scale for thumbnail
+        
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        
+        if (context) {
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          
+          await page.render({
+            canvasContext: context,
+            viewport: viewport
+          }).promise;
+          
+          setImageSrc(canvas.toDataURL());
+        }
+      } catch (err) {
+        console.error("Error rendering thumbnail:", err);
+      }
+    };
+
+    renderThumbnail();
+  }, [pdfDoc, pageIndex]);
+
+  if (!imageSrc) {
+    return (
+      <div className="aspect-[3/4] bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500 animate-pulse">
+        <Loader2 className="h-4 w-4 animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={imageSrc} alt={`Page ${pageIndex + 1}`} className="w-full h-full object-contain bg-white rounded" />
+  );
+};
+
 export default function EditPDFPage() {
   const [file, setFile] = useState<File | null>(null);
   const [pdfDoc, setPdfDoc] = useState<any>(null); // pdfjs doc
@@ -411,10 +459,10 @@ export default function EditPDFPage() {
   }
 
   return (
-      <div className="flex flex-col h-full min-h-[calc(100vh-10rem)] w-full bg-gray-50 border rounded-lg overflow-hidden shadow-sm">
+      <div className="flex flex-col h-[calc(100vh-10rem)] w-full bg-gray-100">
         
         {/* Editor Toolbar */}
-        <div className="bg-white border-b px-4 py-3 flex flex-wrap items-center justify-between shadow-sm z-10 gap-2">
+        <div className="bg-white border-b px-6 py-3 flex flex-wrap items-center justify-between shadow-sm z-10 gap-2">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" onClick={() => setFile(null)}>
               <Undo className="w-4 h-4 mr-2" /> {t("back")}
@@ -425,7 +473,7 @@ export default function EditPDFPage() {
           {/* Editing Tools */}
           <div className="flex items-center gap-1 bg-muted p-1 rounded-md">
              <Button 
-               variant={activeTool === "select" ? "secondary" : "ghost"} 
+               variant={activeTool === "select" ? "default" : "ghost"} 
                size="sm"
                onClick={() => setActiveTool("select")}
                title="Select"
@@ -433,7 +481,7 @@ export default function EditPDFPage() {
                <MousePointer2 className="w-4 h-4" />
              </Button>
              <Button 
-               variant={activeTool === "text" ? "secondary" : "ghost"} 
+               variant={activeTool === "text" ? "default" : "ghost"} 
                size="sm"
                onClick={() => setActiveTool("text")}
                title={t("tools.text")}
@@ -441,7 +489,7 @@ export default function EditPDFPage() {
                <Type className="w-4 h-4" />
              </Button>
              <Button 
-               variant={activeTool === "freehand" ? "secondary" : "ghost"} 
+               variant={activeTool === "freehand" ? "default" : "ghost"} 
                size="sm"
                onClick={() => setActiveTool("freehand")}
                title={t("tools.freehand")}
@@ -449,7 +497,7 @@ export default function EditPDFPage() {
                <Pen className="w-4 h-4" />
              </Button>
              <Button 
-               variant={activeTool === "rect" ? "secondary" : "ghost"} 
+               variant={activeTool === "rect" ? "default" : "ghost"} 
                size="sm"
                onClick={() => setActiveTool("rect")}
                title={t("tools.rectangle")}
@@ -457,7 +505,7 @@ export default function EditPDFPage() {
                <Square className="w-4 h-4" />
              </Button>
              <Button 
-               variant={activeTool === "whiteout" ? "secondary" : "ghost"} 
+               variant={activeTool === "whiteout" ? "default" : "ghost"} 
                size="sm"
                onClick={() => setActiveTool("whiteout")}
                title={t("tools.whiteout")}
@@ -515,46 +563,47 @@ export default function EditPDFPage() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-hidden flex w-full h-[600px] lg:h-[800px]">
-          {/* Thumbnails Sidebar */}
-          <div className="w-48 bg-white border-r overflow-y-auto hidden md:block p-4">
-             <div className="space-y-4">
-               <h3 className="font-semibold text-xs text-muted-foreground">{t("pagesTitle", { count: totalPages })}</h3>
-               <div className="grid grid-cols-1 gap-3">
+        <div className="flex-1 overflow-hidden p-6 w-full flex justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-[256px_1fr] w-full max-w-[1200px] shadow-lg bg-white rounded-lg overflow-hidden border h-full">
+            <div id="loaded-edit-pages" className="bg-white border-r overflow-y-auto hidden md:block p-4 h-full">
+              <div className="space-y-4">
+                <h3 className="font-semibold text-sm text-gray-500">{t("pagesTitle", { count: totalPages })}</h3>
+                <div className="grid grid-cols-1 gap-4">
                   {Array.from({ length: totalPages }).map((_, idx) => (
                     <div 
                       key={idx} 
                       className={cn(
-                        "border rounded overflow-hidden cursor-pointer hover:bg-muted transition",
-                        currentPage === idx + 1 ? "ring-2 ring-primary border-transparent" : "border-border"
+                        "border rounded p-2 cursor-pointer hover:bg-gray-50 transition relative",
+                        currentPage === idx + 1 ? "ring-2 ring-primary" : ""
                       )}
                       onClick={() => setCurrentPage(idx + 1)}
                     >
-                      <div className="bg-gray-100 flex items-center justify-center aspect-[3/4] p-2 text-xs text-muted-foreground relative">
-                         {/* Simple placeholder, full thumbnail rendering could be added */}
-                         Sayfa {idx + 1}
-                         {pageEdits[idx + 1] && Object.keys(pageEdits[idx + 1].objects || {}).length > 0 && (
-                            <div className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" title="Edited" />
-                         )}
+                      <div className="aspect-[3/4] bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500 overflow-hidden relative">
+                         <PageThumbnail pdfDoc={pdfDoc} pageIndex={idx} />
                       </div>
+                      <div className="text-center text-xs mt-1 text-gray-500">Page {idx + 1}</div>
+                      {pageEdits[idx + 1] && Object.keys(pageEdits[idx + 1].objects || {}).length > 0 && (
+                         <div className="absolute top-3 right-3 w-3 h-3 bg-primary rounded-full shadow-sm" title="Edited" />
+                      )}
                     </div>
                   ))}
-               </div>
-             </div>
-          </div>
+                </div>
+              </div>
+            </div>
 
-          {/* Canvas Area */}
-          <div className="flex-1 overflow-auto bg-gray-100/50 flex justify-center p-4 relative" id="pdf-viewer-container">
-             <div 
-               className="relative shadow-xl transition-all duration-200 bg-white" 
-               style={{ 
-                 width: pageSize ? pageSize.width : 'auto', 
-                 height: pageSize ? pageSize.height : 'auto' 
-               }}
-             >
-                <canvas ref={pdfCanvasRef} className="absolute inset-0" />
-                <canvas ref={fabricCanvasRef} className="absolute inset-0" />
-             </div>
+            {/* Canvas Area */}
+            <div className="overflow-auto bg-gray-100 flex justify-center p-8 relative h-full" id="pdf-viewer-container">
+               <div 
+                 className="relative shadow-lg transition-all duration-200 bg-white" 
+                 style={{ 
+                   width: pageSize ? pageSize.width : 'auto', 
+                   height: pageSize ? pageSize.height : 'auto' 
+                 }}
+               >
+                  <canvas ref={pdfCanvasRef} className="absolute inset-0" />
+                  <canvas ref={fabricCanvasRef} className="absolute inset-0" />
+               </div>
+            </div>
           </div>
         </div>
 
