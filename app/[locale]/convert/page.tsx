@@ -2,16 +2,19 @@
 
 import { useState, useRef, useEffect } from "react";
 import { 
+  ChevronLeft, 
+  ChevronRight,
   FileText, 
   Image as ImageIcon, 
   Download, 
   Loader2, 
   RefreshCcw,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Upload
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PDFUploader } from "@/components/PDFUploader";
 import { 
   loadPdf, 
@@ -19,11 +22,20 @@ import {
   extractTextFromPdf, 
   createZip, 
   formatBytes,
+  convertToPdf,
   ConversionResult 
 } from "@/lib/conversionUtils";
+import { renderPageToCanvas } from "@/lib/pdfUtils";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 
-type ConversionType = "image" | "text";
+type ConversionType = "image" | "text" | "pdf";
 type ImageFormat = "image/png" | "image/jpeg";
 
 interface ImageConversionState {
@@ -69,12 +81,65 @@ export default function ConvertPage() {
   // State for Text Conversion
   const [textResult, setTextResult] = useState<string | null>(null);
   
+  // State for PDF Conversion
+  const [pdfResult, setPdfResult] = useState<Blob | null>(null);
+  const [pdfNumPages, setPdfNumPages] = useState<number>(1);
+  const [pdfPageIndex, setPdfPageIndex] = useState<number>(0);
+  
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isRendering, setIsRendering] = useState(false);
+  
   // Processing State
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!pdfResult || activeTab !== "pdf" || !canvasRef.current) return;
+
+    let isCancelled = false;
+    let cancelRender: (() => void) | null = null;
+    let renderTimeout: NodeJS.Timeout;
+
+    const renderPdf = async () => {
+      setIsRendering(true);
+      try {
+        const arrayBuffer = await pdfResult.arrayBuffer();
+        const pdfBytes = new Uint8Array(arrayBuffer);
+        const { promise, cancel } = await renderPageToCanvas(pdfBytes, canvasRef.current!, 700, 900, pdfPageIndex + 1);
+        cancelRender = cancel;
+        await promise;
+      } catch (err: any) {
+        if (err?.name === "RenderingCancelledException") {
+            return;
+        }
+        console.error("Error rendering page:", err);
+      } finally {
+        if (!isCancelled) {
+          setIsRendering(false);
+        }
+      }
+    };
+
+    renderTimeout = setTimeout(() => {
+      renderPdf();
+    }, 50);
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(renderTimeout);
+      if (cancelRender) cancelRender();
+    }
+  }, [pdfResult, activeTab, pdfPageIndex]);
+
   // Load PDF info when file changes
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFilesSelected(e.target.files);
+    }
+  };
+
   const handleFilesSelected = async (files: FileList) => {
     if (files.length === 0) return;
     const selectedFile = files[0];
@@ -83,59 +148,74 @@ export default function ConvertPage() {
     setFile(selectedFile);
     setImageResults([]);
     setTextResult(null);
+    setPdfResult(null);
     setError(null);
     setProgress(0);
     setPdfInfo(null);
     
-    try {
-      const pdf = await loadPdf(selectedFile);
-      setPdfInfo({ numPages: pdf.numPages });
-      pdf.destroy();
-    } catch (err) {
-      console.error(err);
-      setError(t("errors.loadFailed"));
-      setFile(null);
+    if (selectedFile.type === "application/pdf") {
+      setActiveTab("image");
+      try {
+        const pdf = await loadPdf(selectedFile);
+        setPdfInfo({ numPages: pdf.numPages });
+        pdf.destroy();
+      } catch (err) {
+        console.error(err);
+        setError(t("errors.loadFailed"));
+        setFile(null);
+      }
+    } else {
+      setActiveTab("pdf");
     }
   };
 
   const handleConvert = async () => {
-    if (!file || !pdfInfo) return;
+    if (!file) return;
+    if (activeTab !== "pdf" && !pdfInfo) return;
     
     setIsProcessing(true);
     setProgress(0);
     setError(null);
     
     try {
-      const pdf = await loadPdf(file);
-      
-      if (activeTab === "image") {
-        const results: ConversionResult[] = [];
-        const ext = imageSettings.format === "image/png" ? "png" : "jpg";
-        
-        for (let i = 1; i <= pdfInfo.numPages; i++) {
-          const blob = await renderPageAsImage(
-            pdf, 
-            i, 
-            imageSettings.scale, 
-            imageSettings.format
-          );
-          
-          results.push({
-            blob,
-            name: `${file.name.replace(".pdf", "")}-page-${i}.${ext}`
-          });
-          
-          setProgress(Math.round((i / pdfInfo.numPages) * 100));
-        }
-        setImageResults(results);
+      if (activeTab === "pdf") {
+        const result = await convertToPdf(file);
+        setPdfResult(result.blob);
+        setPdfNumPages(result.numPages);
+        setPdfPageIndex(0);
+        setProgress(100);
       } else {
-        const text = await extractTextFromPdf(pdf, (current, total) => {
-          setProgress(Math.round((current / total) * 100));
-        });
-        setTextResult(text);
+        const pdf = await loadPdf(file);
+        
+        if (activeTab === "image") {
+          const results: ConversionResult[] = [];
+          const ext = imageSettings.format === "image/png" ? "png" : "jpg";
+          
+          for (let i = 1; i <= pdfInfo!.numPages; i++) {
+            const blob = await renderPageAsImage(
+              pdf, 
+              i, 
+              imageSettings.scale, 
+              imageSettings.format
+            );
+            
+            results.push({
+              blob,
+              name: `${file.name.replace(".pdf", "")}-page-${i}.${ext}`
+            });
+            
+            setProgress(Math.round((i / pdfInfo!.numPages) * 100));
+          }
+          setImageResults(results);
+        } else if (activeTab === "text") {
+          const text = await extractTextFromPdf(pdf, (current, total) => {
+            setProgress(Math.round((current / total) * 100));
+          });
+          setTextResult(text);
+        }
+        
+        pdf.destroy();
       }
-      
-      pdf.destroy();
     } catch (err) {
       console.error(err);
       setError(t("errors.conversionFailed"));
@@ -195,7 +275,23 @@ export default function ConvertPage() {
                     {t("subtitle")}
                   </p>
                 </div>
-                <PDFUploader onFilesSelected={handleFilesSelected} isLoading={false} />
+                <div className="border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-4 bg-muted/10">
+                 <div className="bg-primary/10 p-4 rounded-full">
+                   <Upload className="w-10 h-10 text-primary" />
+                 </div>
+                 <h2 className="text-xl font-semibold">{t("uploadTitle")}</h2>
+                 <p className="text-muted-foreground">{t("uploadDesc")}</p>
+                 <Button onClick={() => fileInputRef.current?.click()}>
+                   {t("selectPdf")}
+                 </Button>
+                 <input
+                   ref={fileInputRef}
+                   type="file"
+                   accept="application/pdf,image/jpeg,image/png,text/plain"
+                   className="hidden"
+                   onChange={handleFileSelect}
+                 />
+               </div>
               </div>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="bg-muted/50 rounded-lg p-8">
@@ -216,6 +312,10 @@ export default function ConvertPage() {
                     <li className="flex items-start gap-3">
                       <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>
                       <span>{t("howTo.step4")}</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">5</span>
+                      <span>{t("howTo.step5")}</span>
                     </li>
                   </ul>
                 </div>
@@ -244,7 +344,10 @@ export default function ConvertPage() {
                       <div className="overflow-hidden">
                         <p className="font-medium truncate" title={file.name}>{file.name}</p>
                         <p className="text-xs text-muted-foreground">
-                          {t("fileInfo", { size: formatBytes(file.size), pages: pdfInfo?.numPages || "?" })}
+                          {pdfInfo?.numPages 
+                            ? t("fileInfo", { size: formatBytes(file.size), pages: pdfInfo.numPages })
+                            : formatBytes(file.size)
+                          }
                         </p>
                       </div>
                     </div>
@@ -260,28 +363,54 @@ export default function ConvertPage() {
                   </CardContent>
                 </Card>
 
+                {((pdfInfo && pdfInfo.numPages > 0) || (pdfResult && pdfNumPages > 0)) && (
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <h3 className="font-medium mb-2">{t("stats.title")}</h3>
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <p>{t("stats.totalPages")}: <span className="font-medium text-foreground">
+                        {activeTab === "pdf" ? pdfNumPages : (pdfInfo?.numPages || 0)}
+                      </span></p>
+                      <p>{t("stats.sourceFiles")}: <span className="font-medium text-foreground">1</span></p>
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex flex-col gap-2">
                   <p className="text-sm font-medium text-muted-foreground px-1">{t("modes.label")}</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      variant={activeTab === "image" ? "default" : "outline"}
-                      onClick={() => setActiveTab("image")}
-                      disabled={isProcessing}
-                      className="gap-2"
-                    >
-                      <ImageIcon className="h-4 w-4" />
-                      {t("modes.image")}
-                    </Button>
-                    <Button
-                      variant={activeTab === "text" ? "default" : "outline"}
-                      onClick={() => setActiveTab("text")}
-                      disabled={isProcessing}
-                      className="gap-2"
-                    >
-                      <FileText className="h-4 w-4" />
-                      {t("modes.text")}
-                    </Button>
-                  </div>
+                  <Select 
+                    value={activeTab} 
+                    onValueChange={(val) => setActiveTab(val as ConversionType)}
+                    disabled={isProcessing}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder={t("modes.label")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {file.type === "application/pdf" ? (
+                        <>
+                          <SelectItem value="image">
+                            <div className="flex items-center gap-2">
+                              <ImageIcon className="h-4 w-4" />
+                              {t("modes.image")}
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="text">
+                            <div className="flex items-center gap-2">
+                              <FileText className="h-4 w-4" />
+                              {t("modes.text")}
+                            </div>
+                          </SelectItem>
+                        </>
+                      ) : (
+                        <SelectItem value="pdf">
+                          <div className="flex items-center gap-2">
+                            <FileText className="h-4 w-4" />
+                            {t("modes.pdf")}
+                          </div>
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {activeTab === "image" && (
@@ -341,7 +470,7 @@ export default function ConvertPage() {
                   ) : (
                     <>
                       <RefreshCcw className="mr-2 h-4 w-4" />
-                      {activeTab === "image" ? t("buttons.convertImage") : t("buttons.convertText")}
+                      {activeTab === "image" ? t("buttons.convertImage") : activeTab === "text" ? t("buttons.convertText") : t("buttons.convertPdf")}
                     </>
                   )}
                 </Button>
@@ -357,12 +486,75 @@ export default function ConvertPage() {
               {/* Main Content - Results */}
               <div className="space-y-6">
                 {/* Initial State / Placeholder */}
-                {!isProcessing && imageResults.length === 0 && !textResult && !error && (
+                {!isProcessing && imageResults.length === 0 && !textResult && !pdfResult && !error && (
                   <div className="h-full min-h-[400px] border-2 border-dashed rounded-lg flex items-center justify-center text-muted-foreground bg-muted/10">
                     <div className="text-center p-6">
                       <RefreshCcw className="h-12 w-12 mx-auto mb-4 opacity-20" />
                       <p>{t("results.placeholder")}</p>
                     </div>
+                  </div>
+                )}
+
+                {/* PDF Results */}
+                {pdfResult && activeTab === "pdf" && (
+                  <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-medium flex items-center gap-2">
+                        <CheckCircle2 className="text-green-500 h-5 w-5" />
+                        {t("results.complete")}
+                      </h3>
+                      <Button 
+                        onClick={() => downloadFile(pdfResult!, `${file?.name.replace(/\.[^/.]+$/, "") || "converted"}.pdf`)} 
+                        variant="default" 
+                        className="gap-2"
+                      >
+                        <Download className="h-4 w-4" />
+                        {t("buttons.downloadPdf")}
+                      </Button>
+                    </div>
+                    <Card className="h-full">
+                      <CardHeader className="pb-2">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-lg">{t("preview")}</CardTitle>
+                          {pdfNumPages > 1 && (
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={() => setPdfPageIndex(Math.max(0, pdfPageIndex - 1))}
+                                disabled={pdfPageIndex === 0}
+                              >
+                                <ChevronLeft className="h-4 w-4" />
+                              </Button>
+                              <span className="text-sm font-medium min-w-[80px] text-center">
+                                {pdfPageIndex + 1} / {pdfNumPages}
+                              </span>
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={() => setPdfPageIndex(Math.min(pdfNumPages - 1, pdfPageIndex + 1))}
+                                disabled={pdfPageIndex === pdfNumPages - 1}
+                              >
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </CardHeader>
+                      <CardContent className="flex items-center justify-center p-4">
+                        <div className="relative">
+                          {isRendering && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
+                              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                            </div>
+                          )}
+                          <canvas
+                            ref={canvasRef}
+                            className="pdf-canvas border rounded-lg shadow-sm max-h-[700px] object-contain"
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 )}
 

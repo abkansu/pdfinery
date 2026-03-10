@@ -37,8 +37,8 @@
         "description": "Split PDF into multiple files by range, extract specific pages, or split into single pages."
       },
       "convert": {
-        "title": "Convert",
-        "description": "Convert PDFs to high-quality images (PNG/JPG) or extract text securely. No file uploads required."
+        "title": "Convert PDF",
+        "description": "Securely convert PDF to JPG/PNG images, extract text from PDFs, or convert images and text to PDF directly in your browser."
       },
       "sign": {
         "title": "Sign & Secure",
@@ -146,14 +146,19 @@
   },
   "ConvertPage": {
     "title": "Convert PDF",
-    "subtitle": "Convert PDFs to high-quality images (PNG/JPG) or extract text securely. No file uploads required.",
+    "subtitle": "Securely convert PDF to JPG/PNG images, extract text from PDF, or turn images and text files into PDF documents. Free online PDF converter with no limits.",
+    "uploadTitle": "Upload a file to convert",
+    "uploadDesc": "100% private. Files are processed entirely in your browser.",
+    "selectPdf": "Select File",
     "fileInfo": "{size} • {pages} pages",
     "changeFile": "Change File",
     "modes": {
         "label": "Conversion Mode",
-        "image": "To Image",
-        "text": "To Text"
+        "image": "PDF to Image",
+        "text": "PDF to Text",
+        "pdf": "Convert to PDF"
     },
+    "preview": "Page Preview",
     "imageSettings": {
         "format": "Format",
         "scale": "Scale / Quality",
@@ -168,7 +173,9 @@
         "converting": "Converting... {progress}%",
         "convertImage": "Convert to Images",
         "convertText": "Convert to Text",
+        "convertPdf": "Convert to PDF",
         "downloadTxt": "Download .txt",
+        "downloadPdf": "Download PDF",
         "downloadAll": "Download All",
         "downloadZip": "Download All (ZIP)"
     },
@@ -187,20 +194,26 @@
     },
     "howTo": {
         "title": "How to use",
-        "step1": "Upload a PDF file to convert",
-        "step2": "Select your desired conversion mode (To Image or To Text)",
-        "step3": "Configure settings like format and scale if converting to images",
-        "step4": "Click 'Convert' and download your results"
+        "step1": "Upload your PDF, image (JPG/PNG), or text file to our secure converter",
+        "step2": "Choose your conversion format (PDF to Image, PDF to Text, or Convert to PDF)",
+        "step3": "Adjust conversion settings such as image format (PNG/JPG) and quality scale",
+        "step4": "Click 'Convert' and preview your converted files or ZIP archive",
+        "step5": "Click 'Download' to download your converted files or ZIP archive"
+    },
+    "stats": {
+        "title": "Statistics",
+        "totalPages": "Total Pages",
+        "sourceFiles": "Source Files"
     },
     "features": {
         "title": "Features",
         "list": {
-            "0": "Convert PDF pages to high-quality PNG or JPG images",
-            "1": "Extract text content from PDF documents accurately",
-            "2": "Customize image scale and quality settings",
-            "3": "Download individual pages or get all as a ZIP file",
-            "4": "Free to use with no file size limits",
-            "5": "Works entirely in your browser for maximum privacy"
+            "0": "Convert PDF to JPG and PNG images with high-resolution quality",
+            "1": "Accurately extract text from PDF documents to plain text files (.txt)",
+            "2": "Convert images (JPG/PNG) and text files into formatted multi-page PDFs",
+            "3": "Batch convert PDFs and download all pages as a convenient ZIP file",
+            "4": "Completely free PDF converter with no hidden fees or file size limits",
+            "5": "Maximum security: 100% client-side processing, your files are never uploaded"
         }
     }
   },
@@ -208,7 +221,7 @@
     "title": "Sign & Secure PDF",
     "subtitle": "Add your signature to PDF documents securely. No file uploads required.",
     "uploadTitle": "Upload a PDF to sign",
-    "uploadDesc": "Files are processed entirely in your browser.",
+    "uploadDesc": "100% private. Files are processed entirely in your browser.",
     "selectPdf": "Select PDF",
     "featuresDesc": "Supported features: Draw, Type, or Upload signature. Multi-page support. Secure client-side processing.",
     "howTo": {
@@ -285,7 +298,7 @@
     "title": "Optimize PDF",
     "subtitle": "Compress and optimize your PDF files securely.",
     "uploadTitle": "Upload a PDF to optimize",
-    "uploadDesc": "Files are processed entirely in your browser.",
+    "uploadDesc": "100% private. Files are processed entirely in your browser.",
     "selectPdf": "Select PDF",
     "emptyState": {
       "title": "Configure optimization settings",
@@ -343,7 +356,7 @@
     "title": "Edit PDF",
     "subtitle": "Add text, draw, add shapes and whiteout areas on your PDF securely.",
     "uploadTitle": "Upload a PDF to edit",
-    "uploadDesc": "Files are processed entirely in your browser.",
+    "uploadDesc": "100% private. Files are processed entirely in your browser.",
     "selectPdf": "Select PDF",
     "featuresDesc": "Supported features: Add text, draw freehand, add shapes, upload images, and whiteout areas. Multi-page support. Secure client-side processing.",
     "howTo": {

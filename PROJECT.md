@@ -12,7 +12,8 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **Sign PDF**: Visually add a signature and download the PDF with the added signature
 - **Edit PDF**: Add text, shapes, freehand drawing, and images directly onto PDF pages
 - **Secure PDF**: Lock, unlock and disable editing of the PDF
-- **Convert PDF**: Convert PDF file to text or image
+- **Convert PDF**: Convert PDF file to text or image, and convert text or images back to PDF
+- **Markdown to PDF**: (Beta) Convert Markdown files into fully styled PDFs in the browser
 - **Split PDF by range**: Split PDF by page ranges, N pages, single pages
 - **Extract PDF pages**: Extract selected pages from PDF
 - **Optimize PDF**: Compress PDF, reduce image quality, remove metadata
@@ -32,6 +33,8 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **pako** for recompress streams
 - **@dnd-kit** for drag-and-drop functionality
 - **next-intl** for internationalization (i18n)
+- **marked** for parsing Markdown text
+- **html2pdf.js** for converting HTML to PDF
 
 ## Project Structure
 
@@ -142,6 +145,9 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - PDF lock working
 - PDF to IMG working
 - PDF to Text working
+- Text to PDF working
+- Image to PDF working
+- Markdown to PDF working (beta)
 - PDF split working
 - PDF optimize working
 - Internationalization implemented (EN/TR)

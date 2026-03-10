@@ -104,7 +104,8 @@ export async function renderPageToCanvas(
   pdfBytes: Uint8Array,
   canvas: HTMLCanvasElement,
   maxWidth: number = 800,
-  maxHeight: number = 1000
+  maxHeight: number = 1000,
+  pageNumber: number = 1
 ): Promise<{ promise: Promise<void>; cancel: () => void }> {
   const pdfjs = await getPdfjs();
   if (!pdfjs) throw new Error("PDF.js not available");
@@ -121,7 +122,7 @@ export async function renderPageToCanvas(
         return;
       }
 
-      const page = await pdf.getPage(1);
+      const page = await pdf.getPage(pageNumber);
       
       const viewport = page.getViewport({ scale: 1 });
       const scale = Math.min(maxWidth / viewport.width, maxHeight / viewport.height, 2);

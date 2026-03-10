@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { 
   FileText, 
   Settings2, 
@@ -8,7 +8,8 @@ import {
   Loader2, 
   CheckCircle2,
   AlertCircle,
-  Minimize2
+  Minimize2,
+  Upload
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +21,7 @@ import { optimizePDF, OptimizeOptions } from "@/lib/optimizeUtils";
 
 export default function OptimizePage() {
   const t = useTranslations("OptimizePage");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -34,6 +36,12 @@ export default function OptimizePage() {
     flatten: false,
     convertToGrayscale: false,
   });
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFilesSelected(e.target.files);
+    }
+  };
 
   const handleFilesSelected = (files: FileList) => {
     if (files.length === 0) return;
@@ -112,7 +120,23 @@ export default function OptimizePage() {
                     {t("subtitle")}
                   </p>
                 </div>
-                <PDFUploader onFilesSelected={handleFilesSelected} isLoading={false} />
+                <div className="border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-4 bg-muted/10">
+                 <div className="bg-primary/10 p-4 rounded-full">
+                   <Upload className="w-10 h-10 text-primary" />
+                 </div>
+                 <h2 className="text-xl font-semibold">{t("uploadTitle")}</h2>
+                 <p className="text-muted-foreground">{t("uploadDesc")}</p>
+                 <Button onClick={() => fileInputRef.current?.click()}>
+                   {t("selectPdf")}
+                 </Button>
+                 <input
+                   ref={fileInputRef}
+                   type="file"
+                   accept="application/pdf"
+                   className="hidden"
+                   onChange={handleFileSelect}
+                 />
+               </div>
               </div>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="bg-muted/50 rounded-lg p-8">

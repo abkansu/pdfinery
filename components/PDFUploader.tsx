@@ -9,11 +9,24 @@ import { useTranslations } from "next-intl";
 interface PDFUploaderProps {
   onFilesSelected: (files: FileList) => void;
   isLoading: boolean;
+  acceptedFileTypes?: string;
 }
 
-export function PDFUploader({ onFilesSelected, isLoading }: PDFUploaderProps) {
+export function PDFUploader({ onFilesSelected, isLoading, acceptedFileTypes }: PDFUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations("Components.PDFUploader");
+
+  const isFileAccepted = (file: File) => {
+    if (acceptedFileTypes) {
+      const types = acceptedFileTypes.split(',').map(t => t.trim());
+      return types.some(type => {
+        if (type.startsWith('.')) return file.name.toLowerCase().endsWith(type.toLowerCase());
+        if (type.endsWith('/*')) return file.type.startsWith(type.replace('/*', ''));
+        return file.type === type;
+      });
+    }
+    return file.type === "application/pdf";
+  };
 
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -23,17 +36,15 @@ export function PDFUploader({ onFilesSelected, isLoading }: PDFUploaderProps) {
       if (isLoading) return;
 
       const files = e.dataTransfer.files;
-      const pdfFiles = Array.from(files).filter(
-        (file) => file.type === "application/pdf"
-      );
+      const validFiles = Array.from(files).filter(isFileAccepted);
 
-      if (pdfFiles.length > 0) {
+      if (validFiles.length > 0) {
         const dataTransfer = new DataTransfer();
-        pdfFiles.forEach((file) => dataTransfer.items.add(file));
+        validFiles.forEach((file) => dataTransfer.items.add(file));
         onFilesSelected(dataTransfer.files);
       }
     },
-    [onFilesSelected, isLoading]
+    [onFilesSelected, isLoading, acceptedFileTypes]
   );
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -86,7 +97,7 @@ export function PDFUploader({ onFilesSelected, isLoading }: PDFUploaderProps) {
           <input
             ref={inputRef}
             type="file"
-            accept="application/pdf"
+            accept={acceptedFileTypes || "application/pdf"}
             multiple
             onChange={handleFileChange}
             className="hidden"
