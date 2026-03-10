@@ -126,11 +126,11 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - Client-side processing (WASM)
 - SEO-friendly tool pages
 - Internationalization (i18n)
+- Server-side PDF processing
 
 ### Out of Scope (for now)
 - User accounts
 - Cloud storage
-- Server-side PDF processing
 
 
 ## Current Status
@@ -147,7 +147,6 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - Internationalization implemented (EN/TR)
 
 ## Core Principles
-### Browser-only processing (no server uploads)
 ### Privacy-first
 ### Global layout rule (must not be violated)
 - All pages must render inside the existing centered content container that reserves left and right side space for banner ads.

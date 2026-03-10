@@ -148,12 +148,17 @@
     "title": "PDF Dönüştür",
     "subtitle": "PDF'leri yüksek kaliteli görsellere (PNG/JPG) dönüştürün veya metni güvenle çıkarın. Dosya yüklemeye gerek yoktur.",
     "fileInfo": "{size} • {pages} sayfa",
+    "fileInfoGeneric": "{size}",
     "changeFile": "Dosyayı Değiştir",
     "modes": {
         "label": "Dönüştürme Modu",
         "image": "Resme",
-        "text": "Metne"
+        "text": "Metne",
+        "docx": "Word'e (.docx)",
+        "xlsx": "Excel'e (.xlsx)",
+        "pdfa": "PDF/A'ya"
     },
+    "toPdfHelp": "Yüklenen dosyadan PDF belgenizi oluşturmak için dönüştür'e tıklayın.",
     "imageSettings": {
         "format": "Format",
         "scale": "Ölçek / Kalite",
@@ -168,19 +173,23 @@
         "converting": "Dönüştürülüyor... %{progress}",
         "convertImage": "Resme Dönüştür",
         "convertText": "Metne Dönüştür",
+        "convertToPdf": "PDF'e Dönüştür",
+        "convertFile": "Dosyayı Dönüştür",
         "downloadTxt": ".txt İndir",
         "downloadAll": "Tümünü İndir",
         "downloadZip": "Tümünü İndir (ZIP)"
     },
     "results": {
         "placeholder": "Ayarları yapılandırın ve başlamak için Dönüştür'e tıklayın",
+        "readyToDownload": "Dosyanızı oluşturmaya başlamak için Dönüştür'e tıklayın.",
         "complete": "Dönüşüm Tamamlandı",
         "convertedCount": "{count} sayfa dönüştürüldü"
     },
     "errors": {
         "loadFailed": "PDF yüklenemedi. Lütfen geçerli bir PDF dosyası olduğundan emin olun.",
         "conversionFailed": "Dönüşüm sırasında bir hata oluştu.",
-        "zipFailed": "ZIP dosyası oluşturulamadı."
+        "zipFailed": "ZIP dosyası oluşturulamadı.",
+        "serverError": "Sunucu hatası. Bağlanılamadı veya geçersiz yanıt."
     },
     "tooltips": {
         "downloadPage": "Bu sayfayı indir"
@@ -386,8 +395,10 @@
     },
     "PDFUploader": {
         "dropText": "PDF dosyalarını buraya bırakın veya yüklemek için tıklayın",
+        "dropTextGeneric": "Dosyaları buraya bırakın veya yüklemek için tıklayın",
         "multiSelect": "Aynı anda birden fazla PDF dosyası seçebilirsiniz",
-        "button": "PDF Dosyaları Seç"
+        "button": "PDF Dosyaları Seç",
+        "buttonGeneric": "Dosyaları Seç"
     },
     "DownloadButton": {
         "merging": "Birleştiriliyor...",

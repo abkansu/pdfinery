@@ -148,12 +148,17 @@
     "title": "Convert PDF",
     "subtitle": "Convert PDFs to high-quality images (PNG/JPG) or extract text securely. No file uploads required.",
     "fileInfo": "{size} • {pages} pages",
+    "fileInfoGeneric": "{size}",
     "changeFile": "Change File",
     "modes": {
         "label": "Conversion Mode",
         "image": "To Image",
-        "text": "To Text"
+        "text": "To Text",
+        "docx": "To Word (.docx)",
+        "xlsx": "To Excel (.xlsx)",
+        "pdfa": "To PDF/A"
     },
+    "toPdfHelp": "Click convert to generate your PDF document from the uploaded file.",
     "imageSettings": {
         "format": "Format",
         "scale": "Scale / Quality",
@@ -168,19 +173,23 @@
         "converting": "Converting... {progress}%",
         "convertImage": "Convert to Images",
         "convertText": "Convert to Text",
+        "convertToPdf": "Convert to PDF",
+        "convertFile": "Convert File",
         "downloadTxt": "Download .txt",
         "downloadAll": "Download All",
         "downloadZip": "Download All (ZIP)"
     },
     "results": {
         "placeholder": "Configure settings and click Convert to start",
+        "readyToDownload": "Click Convert to start generating your file.",
         "complete": "Conversion Complete",
         "convertedCount": "Converted {count} pages"
     },
     "errors": {
         "loadFailed": "Failed to load PDF. Please ensure it is a valid PDF file.",
         "conversionFailed": "An error occurred during conversion.",
-        "zipFailed": "Failed to create ZIP file."
+        "zipFailed": "Failed to create ZIP file.",
+        "serverError": "Server error. Could not connect or invalid response."
     },
     "tooltips": {
         "downloadPage": "Download this page"
@@ -386,8 +395,10 @@
     },
     "PDFUploader": {
         "dropText": "Drop PDF files here or click to upload",
+        "dropTextGeneric": "Drop files here or click to upload",
         "multiSelect": "You can select multiple PDF files at once",
-        "button": "Select PDF Files"
+        "button": "Select PDF Files",
+        "buttonGeneric": "Select Files"
     },
     "DownloadButton": {
         "merging": "Merging...",

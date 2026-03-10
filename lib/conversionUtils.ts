@@ -1,5 +1,6 @@
 import { getPdfjs } from "./pdfUtils";
 import JSZip from "jszip";
+import { PDFDocument, StandardFonts } from "pdf-lib";
 
 export interface ConversionResult {
   blob: Blob;
@@ -120,4 +121,96 @@ export function formatBytes(bytes: number, decimals = 2) {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+}
+
+/**
+ * Convert an image file (PNG/JPG) to a PDF Blob
+ */
+export async function imageToPdf(file: File): Promise<Blob> {
+  const pdfDoc = await PDFDocument.create();
+  const arrayBuffer = await file.arrayBuffer();
+  
+  let image;
+  if (file.type === "image/jpeg" || file.type === "image/jpg") {
+    image = await pdfDoc.embedJpg(arrayBuffer);
+  } else if (file.type === "image/png") {
+    image = await pdfDoc.embedPng(arrayBuffer);
+  } else {
+    throw new Error("Unsupported image format: " + file.type);
+  }
+
+  const page = pdfDoc.addPage([image.width, image.height]);
+  page.drawImage(image, {
+    x: 0,
+    y: 0,
+    width: image.width,
+    height: image.height,
+  });
+
+  const pdfBytes = await pdfDoc.save();
+  return new Blob([pdfBytes], { type: "application/pdf" });
+}
+
+/**
+ * Convert a text or markdown file to a PDF Blob
+ */
+export async function textToPdf(file: File): Promise<Blob> {
+  const text = await file.text();
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  
+  const fontSize = 12;
+  const margin = 50;
+  const lineHeight = font.heightAtSize(fontSize) + 2;
+  const pageWidth = 595.28; // A4 width
+  const pageHeight = 841.89; // A4 height
+  
+  let page = pdfDoc.addPage([pageWidth, pageHeight]);
+  let y = pageHeight - margin - fontSize;
+
+  const lines = text.split("\n");
+  
+  for (const line of lines) {
+    let remainingText = line;
+    // Add empty line for blank lines
+    if (remainingText.length === 0) {
+      y -= lineHeight;
+      if (y < margin) {
+        page = pdfDoc.addPage([pageWidth, pageHeight]);
+        y = pageHeight - margin - fontSize;
+      }
+      continue;
+    }
+    
+    while (remainingText.length > 0) {
+      if (y < margin) {
+        page = pdfDoc.addPage([pageWidth, pageHeight]);
+        y = pageHeight - margin - fontSize;
+      }
+      
+      let splitIndex = remainingText.length;
+      let width = font.widthOfTextAtSize(remainingText, fontSize);
+      
+      while (width > pageWidth - 2 * margin && splitIndex > 0) {
+        splitIndex--;
+        width = font.widthOfTextAtSize(remainingText.substring(0, splitIndex), fontSize);
+      }
+      
+      if (splitIndex === 0) splitIndex = 1; // At least one character
+      
+      const textToDraw = remainingText.substring(0, splitIndex);
+      page.drawText(textToDraw, {
+        x: margin,
+        y: y,
+        size: fontSize,
+        font: font,
+      });
+      
+      y -= lineHeight;
+      remainingText = remainingText.substring(splitIndex);
+    }
+  }
+
+  const pdfBytes = await pdfDoc.save();
+  return new Blob([pdfBytes], { type: "application/pdf" });
 }
