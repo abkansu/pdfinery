@@ -60,7 +60,8 @@ export default function OptimizePage() {
 
     try {
       const optimizedBytes = await optimizePDF(file, settings, (p) => setProgress(p));
-      const blob = new Blob([new Uint8Array(optimizedBytes)], { type: "application/pdf" });
+      const buffer = optimizedBytes.buffer.slice(optimizedBytes.byteOffset, optimizedBytes.byteOffset + optimizedBytes.byteLength) as ArrayBuffer;
+      const blob = new Blob([buffer], { type: "application/pdf" });
       setResult({ blob, size: blob.size });
     } catch (err) {
       console.error(err);
@@ -82,7 +83,7 @@ export default function OptimizePage() {
     URL.revokeObjectURL(url);
   };
 
-  const updateCompressionLevel = (level: "low" | "medium" | "high" | "condense" | "custom") => {
+  const updateCompressionLevel = (level: "low" | "medium" | "high" | "advanced" | "custom") => {
     const newSettings = { ...settings, compressionLevel: level };
     
     if (level === "low") {
@@ -97,8 +98,8 @@ export default function OptimizePage() {
       newSettings.imageQuality = 0.5;
       newSettings.removeMetadata = true;
       newSettings.flatten = false;
-    } else if (level === "condense") {
-      newSettings.imageQuality = 1.0; // Lossless
+    } else if (level === "advanced") {
+      newSettings.imageQuality = 0.75; // Image downsampling quality
       newSettings.removeMetadata = true;
       newSettings.flatten = false;
     }
@@ -217,27 +218,123 @@ export default function OptimizePage() {
                       <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                         {t("settings.compressionLevel")}
                       </label>
-                      <div className="grid gap-2">
-                        {(["low", "medium", "high", "condense", "custom"] as const).map((level) => (
-                          <div key={level} className="flex items-center space-x-2">
+                      <div className="grid gap-3">
+                        {/* Low Group */}
+                        <div 
+                          className={cn("flex flex-col gap-1 rounded-lg border p-4 cursor-pointer transition-colors hover:bg-muted/50", settings.compressionLevel === "low" ? "border-primary bg-primary/5" : "border-border")}
+                          onClick={() => !isProcessing && updateCompressionLevel("low")}
+                        >
+                          <div className="flex items-center space-x-2">
                             <input
                               type="radio"
-                              id={level}
+                              id="low"
                               name="compressionLevel"
-                              value={level}
-                              checked={settings.compressionLevel === level}
-                              onChange={(e) => updateCompressionLevel(e.target.value as any)}
+                              value="low"
+                              checked={settings.compressionLevel === "low"}
+                              onChange={() => updateCompressionLevel("low")}
                               disabled={isProcessing}
                               className="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                             />
-                            <label
-                              htmlFor={level}
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                              {t(`settings.levels.${level}` as any)}
+                            <label htmlFor="low" className="text-sm font-semibold cursor-pointer">
+                              {t("settings.levels.low")}
                             </label>
                           </div>
-                        ))}
+                          <p className="text-xs text-muted-foreground ml-6">
+                            {t("settings.levelsDesc.low")}
+                          </p>
+                        </div>
+
+                        {/* Medium / High / Custom Group */}
+                        <div className="flex flex-col gap-3 rounded-lg border p-4">
+                          <p className="text-xs font-medium text-amber-500 flex items-center gap-1.5">
+                            <AlertCircle className="h-4 w-4 shrink-0" />
+                            {t("settings.levelsDesc.rasterWarning")}
+                          </p>
+                          <div className="grid grid-cols-1 gap-3">
+                            <div 
+                              className={cn("flex items-center space-x-2 rounded-md border p-3 cursor-pointer hover:bg-muted/50", settings.compressionLevel === "medium" ? "border-primary bg-primary/5" : "border-border")}
+                              onClick={() => !isProcessing && updateCompressionLevel("medium")}
+                            >
+                              <input
+                                type="radio"
+                                id="medium"
+                                name="compressionLevel"
+                                value="medium"
+                                checked={settings.compressionLevel === "medium"}
+                                onChange={() => updateCompressionLevel("medium")}
+                                disabled={isProcessing}
+                                className="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                              />
+                              <label htmlFor="medium" className="text-sm font-semibold cursor-pointer w-full">
+                                {t("settings.levels.medium")}
+                              </label>
+                            </div>
+                            <div 
+                              className={cn("flex items-center space-x-2 rounded-md border p-3 cursor-pointer hover:bg-muted/50", settings.compressionLevel === "high" ? "border-primary bg-primary/5" : "border-border")}
+                              onClick={() => !isProcessing && updateCompressionLevel("high")}
+                            >
+                              <input
+                                type="radio"
+                                id="high"
+                                name="compressionLevel"
+                                value="high"
+                                checked={settings.compressionLevel === "high"}
+                                onChange={() => updateCompressionLevel("high")}
+                                disabled={isProcessing}
+                                className="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                              />
+                              <label htmlFor="high" className="text-sm font-semibold cursor-pointer w-full">
+                                {t("settings.levels.high")}
+                              </label>
+                            </div>
+                            <div 
+                              className={cn("flex items-center space-x-2 rounded-md border p-3 cursor-pointer hover:bg-muted/50", settings.compressionLevel === "custom" ? "border-primary bg-primary/5" : "border-border")}
+                              onClick={() => !isProcessing && updateCompressionLevel("custom")}
+                            >
+                              <input
+                                type="radio"
+                                id="custom"
+                                name="compressionLevel"
+                                value="custom"
+                                checked={settings.compressionLevel === "custom"}
+                                onChange={() => updateCompressionLevel("custom")}
+                                disabled={isProcessing}
+                                className="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                              />
+                              <label htmlFor="custom" className="text-sm font-semibold cursor-pointer w-full">
+                                {t("settings.levels.custom")}
+                                <span className="block text-xs font-normal text-muted-foreground mt-0.5">
+                                  {t("settings.levelsDesc.custom")}
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Advanced Group */}
+                        <div 
+                          className={cn("flex flex-col gap-1 rounded-lg border p-4 cursor-pointer transition-colors hover:bg-muted/50", settings.compressionLevel === "advanced" ? "border-primary bg-primary/5" : "border-border")}
+                          onClick={() => !isProcessing && updateCompressionLevel("advanced")}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="radio"
+                              id="advanced"
+                              name="compressionLevel"
+                              value="advanced"
+                              checked={settings.compressionLevel === "advanced"}
+                              onChange={() => updateCompressionLevel("advanced")}
+                              disabled={isProcessing}
+                              className="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            />
+                            <label htmlFor="advanced" className="text-sm font-semibold cursor-pointer">
+                              {t("settings.levels.advanced")}
+                            </label>
+                          </div>
+                          <p className="text-xs text-muted-foreground ml-6">
+                            {t("settings.levelsDesc.advanced")}
+                          </p>
+                        </div>
                       </div>
                     </div>
 
@@ -298,7 +395,9 @@ export default function OptimizePage() {
                       {isProcessing ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          {t("buttons.optimizing", { progress })}
+                          {settings.compressionLevel === 'advanced' 
+                            ? "Running advanced compression..." 
+                            : t("buttons.optimizing", { progress })}
                         </>
                       ) : (
                         <>

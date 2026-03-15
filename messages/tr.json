@@ -308,11 +308,17 @@
         "title": "Optimizasyon Ayarları",
         "compressionLevel": "Sıkıştırma Seviyesi",
         "levels": {
-            "low": "Düşük (Temel Temizlik)",
-            "medium": "Orta (Dengeli)",
-            "high": "Yüksek (Maksimum Sıkıştırma)",
-            "condense": "Yoğunlaştır (Kayıpsız)",
+            "low": "Düşük",
+            "medium": "Orta",
+            "high": "Yüksek",
+            "advanced": "Gelişmiş",
             "custom": "Özel"
+        },
+        "levelsDesc": {
+            "low": "Temel sıkıştırma. Metinler seçilebilir kalır.",
+            "rasterWarning": "Uyarı: PDF'i resme dönüştürür. Metinler seçilemez.",
+            "advanced": "En iyi boyut ve kalite için gelişmiş sıkıştırma.",
+            "custom": "Sıkıştırma ayarlarınızı manuel olarak yapılandırın."
         },
         "imageQuality": "Görsel Kalitesi",
         "removeMetadata": "Metadataları Kaldır",
@@ -336,19 +342,19 @@
     "howTo": {
         "title": "Nasıl kullanılır",
         "step1": "Optimize etmek için bir PDF dosyası yükleyin",
-        "step2": "Bir sıkıştırma seviyesi seçin (Düşük, Orta, Yüksek veya Özel)",
+        "step2": "Bir sıkıştırma seviyesi seçin (Düşük, Orta, Yüksek, Gelişmiş veya Özel)",
         "step3": "İşlemi başlatmak için 'PDF Optimize Et'e tıklayın",
         "step4": "Dosya boyutu tasarrufunu inceleyin ve optimize edilmiş PDF'i indirin"
     },
     "features": {
         "title": "Özellikler",
         "list": {
-            "0": "PDF dosyalarını önemli ölçüde küçültmek için sıkıştırın",
-            "1": "Önceden tanımlanmış sıkıştırma seviyelerinden seçin veya ayarları özelleştirin",
-            "2": "Görsel kalitesini ve çözünürlüğünü manuel olarak ayarlayın",
-            "3": "Ekstra tasarruf için metadataları kaldırın ve formları düzleştirin",
-            "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
-            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
+            "0": "PDF dosyalarınızı önemli ölçüde küçültün.",
+            "1": "Düşük (temel temizlik), Orta/Yüksek (görüntüye dönüştürme) veya Gelişmiş (gerçek sıkıştırma) seviyelerinden birini seçin.",
+            "2": "Görselleri otomatik olarak küçültün, fontları optimize edin ve maksimum gereksiz veri temizliği uygulayın.",
+            "3": "Ekstra tasarruf için metadataları kaldırın ve formları düzleştirin.",
+            "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım.",
+            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır—dosyalarınız cihazınızdan asla ayrılmaz."
         }
     }
   },

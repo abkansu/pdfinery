@@ -1,35 +1,114 @@
 import { PDFDocument } from "pdf-lib";
 import { getPdfjs } from "./pdfUtils";
+import { loadPyMuPDF } from "./pymupdfLoader";
 
 export interface OptimizeOptions {
-  compressionLevel: "low" | "medium" | "high" | "condense" | "custom";
+  compressionLevel: "low" | "medium" | "high" | "advanced" | "custom";
   imageQuality: number; // 0-1
   removeMetadata: boolean;
   flatten: boolean;
   convertToGrayscale: boolean; // Optional, maybe for future
 }
 
+// Map the numeric quality back to string levels for PyMuPDF
+const ADVANCED_PRESETS = {
+  light: {
+    images: { quality: 90, dpiTarget: 150, dpiThreshold: 200 },
+    scrub: { metadata: false, thumbnails: true },
+    subsetFonts: true,
+  },
+  balanced: {
+    images: { quality: 75, dpiTarget: 96, dpiThreshold: 150 },
+    scrub: { metadata: true, thumbnails: true },
+    subsetFonts: true,
+  },
+  aggressive: {
+    images: { quality: 50, dpiTarget: 72, dpiThreshold: 100 },
+    scrub: { metadata: true, thumbnails: true, xmlMetadata: true },
+    subsetFonts: true,
+  },
+};
+
 export async function optimizePDF(
   file: File,
   options: OptimizeOptions,
   onProgress?: (progress: number) => void
 ): Promise<Uint8Array> {
-  if (options.compressionLevel === "condense") {
-    console.log('[optimizeUtils] Starting condense compression...');
-    
-    // We are going to execute structuralCompress directly inline, 
-    // avoiding Next.js Web Worker dynamic imports which frequently fail
-    // when using WASM or nested modules. Since Condense runs fast 
-    // enough for moderate PDFs, direct execution is the most robust approach.
-    const { structuralCompress } = await import('./structuralCompress');
+  if (options.compressionLevel === "advanced") {
+    console.log('[optimizeUtils] Starting advanced compression via PyMuPDF...');
+    onProgress?.(10); // Indicate start
     
     try {
-      const buffer = await file.arrayBuffer();
-      return await structuralCompress(buffer, options.removeMetadata, onProgress);
+      const pymupdf = await loadPyMuPDF();
+      onProgress?.(30);
+
+      // Determine level based on the current imageQuality UI setting
+      // The previous UI had advanced set to 0.75 internally
+      let preset = ADVANCED_PRESETS.balanced;
+      if (options.imageQuality >= 0.9) preset = ADVANCED_PRESETS.light;
+      else if (options.imageQuality <= 0.6) preset = ADVANCED_PRESETS.aggressive;
+
+      const pdfOptions = {
+        images: {
+          enabled: true,
+          quality: preset.images.quality,
+          dpiTarget: preset.images.dpiTarget,
+          dpiThreshold: preset.images.dpiThreshold,
+          convertToGray: options.convertToGrayscale ?? false,
+        },
+        scrub: {
+          metadata: options.removeMetadata ?? preset.scrub.metadata,
+          thumbnails: preset.scrub.thumbnails,
+          xmlMetadata: (preset.scrub as any).xmlMetadata ?? false,
+        },
+        subsetFonts: preset.subsetFonts,
+        save: {
+          garbage: 4 as const,
+          deflate: true,
+          clean: true,
+          useObjstms: true,
+        },
+      };
+
+      onProgress?.(50); // Processing (WASM blocks here)
+      
+      let result;
+      try {
+        result = await pymupdf.compressPdf(file, pdfOptions);
+      } catch (error: any) {
+        // Fallback for tricky patterns (same as bentopdf)
+        const errorMessage = error?.message || String(error);
+        if (errorMessage.includes('PatternType') || errorMessage.includes('pattern')) {
+          console.warn('[optimizeUtils] Pattern error, retrying without image rewriting:', errorMessage);
+          const fallbackOptions = { ...pdfOptions, images: { ...pdfOptions.images, enabled: false } };
+          result = await pymupdf.compressPdf(file, fallbackOptions);
+        } else {
+          throw error;
+        }
+      }
+
+      onProgress?.(90);
+      const arrayBuffer = await result.blob.arrayBuffer();
+      onProgress?.(100);
+      return new Uint8Array(arrayBuffer);
     } catch (err) {
-      console.error('[optimizeUtils] Error running condense inline:', err);
+      console.error('[optimizeUtils] Error running advanced via PyMuPDF:', err);
+      // We could optionally fallback to the structuralCompress here if we wanted
       throw err;
     }
+    
+    /* 
+    // OLD STRUCTURAL COMPRESS (Preserved)
+    // We are bypassing this in favor of the true PyMuPDF algorithm above.
+    const { structuralCompress } = await import('./structuralCompress');
+    try {
+      const buffer = await file.arrayBuffer();
+      return await structuralCompress(buffer, options.removeMetadata, options.imageQuality, onProgress);
+    } catch (err) {
+      console.error('[optimizeUtils] Error running advanced inline:', err);
+      throw err;
+    }
+    */
   }
 
   // If "low" or pure metadata/flatten update, we can just use pdf-lib directly

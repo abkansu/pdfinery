@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { usePDF } from "@/contexts/PDFContext";
 import { DownloadButton } from "@/components/DownloadButton";
-import { Trash2 } from "lucide-react";
+import { Trash2, Github, Star } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface HeaderProps {
   children?: React.ReactNode;
@@ -18,6 +19,23 @@ export function Header({ children }: HeaderProps) {
   const pathname = usePathname();
   const t = useTranslations("Navigation");
   const { pages, isLoading, clearAll } = usePDF(); // Access PDF context
+  const [stars, setStars] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("https://api.github.com/repos/abkansu/pdfinery")
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data.stargazers_count === "number") {
+          setStars(data.stargazers_count);
+        } else {
+          setStars(0);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching github stars:", err);
+        setStars(0);
+      });
+  }, []);
 
   const navItems = [
     {
@@ -110,6 +128,24 @@ export function Header({ children }: HeaderProps) {
               )}
             </>
           )}
+
+          <a
+            href="https://github.com/abkansu/pdfinery"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center"
+          >
+            <Button variant="outline" size="sm" className="gap-2 h-9 px-3 hover:bg-muted">
+              <Github className="h-4 w-4" />
+              <span className="hidden lg:inline-block font-medium">GitHub</span>
+              {stars !== null && (
+                <span className="flex items-center gap-1 ml-1 pl-2 border-l border-border text-xs font-medium">
+                  <Star className="h-3 w-3 fill-current" />
+                  {stars}
+                </span>
+              )}
+            </Button>
+          </a>
         </div>
       </div>
     </header>

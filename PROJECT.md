@@ -13,7 +13,6 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **Edit PDF**: Add text, shapes, freehand drawing, and images directly onto PDF pages
 - **Secure PDF**: Lock, unlock and disable editing of the PDF
 - **Convert PDF**: Convert PDF file to text or image, and convert text or images back to PDF
-- **Markdown to PDF**: (Beta) Convert Markdown files into fully styled PDFs in the browser
 - **Split PDF by range**: Split PDF by page ranges, N pages, single pages
 - **Extract PDF pages**: Extract selected pages from PDF
 - **Optimize PDF**: Compress PDF, reduce image quality, remove metadata
@@ -29,8 +28,10 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - **shadcn/ui** (Radix UI + Tailwind CSS)
 - **pdf-lib** for PDF manipulation
 - **pdfjs-dist** for PDF rendering
+- **pymupdf-wasm** for advanced native PDF compression (loaded dynamically via CDN)
 - **fabric** for Canvas editing
 - **pako** for recompress streams
+- **qpdf-wasm** for structural optimization
 - **@dnd-kit** for drag-and-drop functionality
 - **next-intl** for internationalization (i18n)
 - **marked** for parsing Markdown text
@@ -89,6 +90,9 @@ A frontend-only Next.js application that allows users to interact with PDF files
   - navigation.ts
   - optimizeUtils.ts
   - pdfUtils.ts
+  - pymupdfLoader.ts
+  - qpdf.ts
+  - structuralCompress.ts
   - types.ts
   - utils.ts
 
@@ -147,7 +151,6 @@ A frontend-only Next.js application that allows users to interact with PDF files
 - PDF to Text working
 - Text to PDF working
 - Image to PDF working
-- Markdown to PDF working (beta)
 - PDF split working
 - PDF optimize working
 - Internationalization implemented (EN/TR)

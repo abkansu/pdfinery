@@ -308,11 +308,17 @@
         "title": "Optimization Settings",
         "compressionLevel": "Compression Level",
         "levels": {
-            "low": "Low (Basic Cleanup)",
-            "medium": "Medium (Balanced)",
-            "high": "High (Max Compression)",
-            "condense": "Condense (Lossless)",
+            "low": "Low",
+            "medium": "Medium",
+            "high": "High",
+            "advanced": "Advanced",
             "custom": "Custom"
+        },
+        "levelsDesc": {
+            "low": "Basic compression. Keeps text selectable.",
+            "rasterWarning": "Warning: Converts PDF to images. Text will not be selectable.",
+            "advanced": "Advanced compression for best size and quality.",
+            "custom": "Manually configure your compression settings."
         },
         "imageQuality": "Image Quality",
         "removeMetadata": "Remove Metadata",
@@ -336,19 +342,19 @@
     "howTo": {
         "title": "How to use",
         "step1": "Upload a PDF file to optimize",
-        "step2": "Select a compression level (Low, Medium, High, or Custom)",
+        "step2": "Select a compression level (Low, Medium, High, Advanced or Custom)",
         "step3": "Click 'Optimize PDF' to start processing",
         "step4": "Review the file size savings and download the optimized PDF"
     },
     "features": {
         "title": "Features",
         "list": {
-            "0": "Compress PDF files to significantly reduce file size",
-            "1": "Choose from predefined compression levels or customize settings",
-            "2": "Adjust image quality and resolution manually",
-            "3": "Remove metadata and flatten forms for extra savings",
-            "4": "Free to use with no file size limits",
-            "5": "Works entirely in your browser for maximum privacy"
+            "0": "Compress PDF files to significantly reduce file size.",
+            "1": "Choose from Low (basic cleanup), Medium/High (rasterization), or Advanced (true compression) levels.",
+            "2": "Automatically downsample images, subset fonts, and execute maximum garbage collection.",
+            "3": "Remove metadata and flatten forms for extra file size savings.",
+            "4": "Free to use with no file size limits.",
+            "5": "Works entirely in your browser for maximum privacy—files never leave your device."
         }
     }
   },

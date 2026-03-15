@@ -91,4 +91,8 @@ pdf-merger/
 
 ## License
 
-MIT
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+This is required due to the dynamic loading and usage of PyMuPDF and Ghostscript for advanced PDF optimization functionalities.
+
+See the [LICENSE](LICENSE) file for more details.
