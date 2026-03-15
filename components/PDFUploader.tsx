@@ -16,7 +16,7 @@ export function PDFUploader({ onFilesSelected, isLoading, acceptedFileTypes }: P
   const inputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations("Components.PDFUploader");
 
-  const isFileAccepted = (file: File) => {
+  const isFileAccepted = useCallback((file: File) => {
     if (acceptedFileTypes) {
       const types = acceptedFileTypes.split(',').map(t => t.trim());
       return types.some(type => {
@@ -26,7 +26,7 @@ export function PDFUploader({ onFilesSelected, isLoading, acceptedFileTypes }: P
       });
     }
     return file.type === "application/pdf";
-  };
+  }, [acceptedFileTypes]);
 
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -44,7 +44,7 @@ export function PDFUploader({ onFilesSelected, isLoading, acceptedFileTypes }: P
         onFilesSelected(dataTransfer.files);
       }
     },
-    [onFilesSelected, isLoading, acceptedFileTypes]
+    [onFilesSelected, isLoading, isFileAccepted]
   );
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {

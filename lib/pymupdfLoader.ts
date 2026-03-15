@@ -27,15 +27,15 @@ export async function loadPyMuPDF(): Promise<any> {
       
       // We use a dynamic import with vite-ignore / webpackIgnore to bypass bundler static analysis
       // This forces the browser to load the module natively from the CDN at runtime.
-      const module = await import(/* webpackIgnore: true */ /* @vite-ignore */ wrapperUrl);
+      const pymupdfModule = await import(/* webpackIgnore: true */ /* @vite-ignore */ wrapperUrl);
 
-      if (typeof module.PyMuPDF !== 'function') {
+      if (typeof pymupdfModule.PyMuPDF !== 'function') {
         throw new Error(
           'PyMuPDF module did not export expected PyMuPDF class.'
         );
       }
 
-      cachedPyMuPDF = new module.PyMuPDF({
+      cachedPyMuPDF = new pymupdfModule.PyMuPDF({
         assetPath: `${PYMUPDF_CDN}assets/`,
         ghostscriptUrl: GS_CDN,
       });
