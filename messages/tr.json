@@ -440,6 +440,8 @@
     }
   },
   "Common": {
-    "language": "Dil"
+    "language": "Dil",
+    "cancel": "İptal",
+    "continue": "Devam Et"
   }
 }

@@ -440,6 +440,8 @@
     }
   },
   "Common": {
-    "language": "Language"
+    "language": "Language",
+    "cancel": "Cancel",
+    "continue": "Continue"
   }
 }

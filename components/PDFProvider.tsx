@@ -80,12 +80,10 @@ export function PDFProvider({ children }: { children: ReactNode }) {
   }, [selectedIndex]);
 
   const clearAll = useCallback(() => {
-    if (confirm(t("confirmClear"))) {
-      setPages([]);
-      setUploadedFilesState([]);
-      setSelectedIndex(0);
-    }
-  }, [t]);
+    setPages([]);
+    setUploadedFilesState([]);
+    setSelectedIndex(0);
+  }, []);
 
   return (
     <PDFContext.Provider
