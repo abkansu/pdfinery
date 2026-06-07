@@ -4,14 +4,15 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { 
   Upload, Type, Pen, X, Download, Undo, 
   ZoomIn, ZoomOut, MousePointer2, Image as ImageIcon,
-  Square, Eraser, Loader2
+  Square, Eraser, Loader2, Stamp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getPdfjs } from "@/lib/pdfUtils";
-import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts, degrees } from "pdf-lib";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import * as fabric from "fabric";
+import { WatermarkModal } from "./WatermarkModal";
 
 // --- Types ---
 type Tool = "select" | "text" | "freehand" | "rect" | "whiteout";
@@ -70,6 +71,7 @@ const PageThumbnail = ({ pdfDoc, pageIndex }: { pdfDoc: any, pageIndex: number }
 
 export default function EditPDFPage() {
   const [file, setFile] = useState<File | null>(null);
+  const [originalFile, setOriginalFile] = useState<File | null>(null);
   const [pdfDoc, setPdfDoc] = useState<any>(null); // pdfjs doc
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -79,6 +81,9 @@ export default function EditPDFPage() {
   const [activeTool, setActiveTool] = useState<Tool>("select");
   const [pageEdits, setPageEdits] = useState<PageEdits>({});
   
+  // Watermark Modal State
+  const [showWatermarkModal, setShowWatermarkModal] = useState(false);
+
   const t = useTranslations("EditPage");
 
   const pdfCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -87,7 +92,7 @@ export default function EditPDFPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load PDF Helper
-  const loadPdf = async (arrayBuffer: ArrayBuffer, fileObj: File) => {
+  const loadPdf = async (arrayBuffer: ArrayBuffer, fileObj: File, preserveEdits = false) => {
     try {
       const pdfjs = await getPdfjs();
       if (!pdfjs) throw new Error("PDF.js not loaded");
@@ -97,9 +102,15 @@ export default function EditPDFPage() {
       
       setPdfDoc(doc);
       setTotalPages(doc.numPages);
-      setCurrentPage(1);
+      if (!preserveEdits) {
+        setCurrentPage(1);
+        setPageEdits({});
+        if (fabricCanvasInstance.current) {
+          fabricCanvasInstance.current.dispose();
+          fabricCanvasInstance.current = null;
+        }
+      }
       setFile(fileObj);
-      setPageEdits({});
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
@@ -113,6 +124,7 @@ export default function EditPDFPage() {
     if (files && files[0]) {
       const selectedFile = files[0];
       setFile(selectedFile);
+      setOriginalFile(selectedFile);
       setIsLoading(true);
       
       try {
@@ -122,6 +134,26 @@ export default function EditPDFPage() {
         console.error(err);
         setIsLoading(false);
       }
+    }
+    // Clear the input value so the same file can be selected again later
+    e.target.value = '';
+  };
+
+  // Clear All Edits
+  const clearAllEdits = async () => {
+    if (!originalFile) return;
+    setIsLoading(true);
+    setPageEdits({});
+    setActiveTool("select");
+    if (fabricCanvasInstance.current) {
+      fabricCanvasInstance.current.clear();
+    }
+    try {
+      const arrayBuffer = await originalFile.arrayBuffer();
+      await loadPdf(arrayBuffer, originalFile, false);
+    } catch (err) {
+      console.error(err);
+      setIsLoading(false);
     }
   };
 
@@ -271,6 +303,8 @@ export default function EditPDFPage() {
       };
       reader.readAsDataURL(files[0]);
     }
+    // Clear the input value so the same file can be uploaded again
+    e.target.value = '';
   };
 
   const deleteSelected = useCallback(() => {
@@ -462,7 +496,13 @@ export default function EditPDFPage() {
         {/* Editor Toolbar */}
         <div className="bg-white border-b px-6 py-3 flex flex-wrap items-center justify-between shadow-sm z-10 gap-2">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={() => setFile(null)}>
+            <Button variant="ghost" size="sm" onClick={() => {
+              if (fabricCanvasInstance.current) {
+                fabricCanvasInstance.current.dispose();
+                fabricCanvasInstance.current = null;
+              }
+              setFile(null);
+            }}>
               <Undo className="w-4 h-4 mr-2" /> {t("back")}
             </Button>
             <span className="font-semibold text-sm truncate max-w-[150px] md:max-w-[200px]">{file.name}</span>
@@ -528,14 +568,20 @@ export default function EditPDFPage() {
                  onChange={handleImageUpload} 
                />
              </Button>
+
              <Button 
                variant="ghost" 
                size="sm"
-               onClick={() => {
-                 if (fabricCanvasInstance.current) {
-                    fabricCanvasInstance.current.clear();
-                 }
-               }}
+               onClick={() => setShowWatermarkModal(true)}
+               title="Watermark"
+             >
+               <Stamp className="w-4 h-4" />
+             </Button>
+
+             <Button 
+               variant="ghost" 
+               size="sm"
+               onClick={clearAllEdits}
                title={t("tools.clear")}
              >
                <X className="w-4 h-4" />
@@ -615,6 +661,28 @@ export default function EditPDFPage() {
              Sonraki
            </Button>
         </div>
+
+        {/* Watermark Modal */}
+        <WatermarkModal
+          isOpen={showWatermarkModal}
+          onClose={() => setShowWatermarkModal(false)}
+          file={file}
+          totalPages={totalPages}
+          onApply={async (newFile) => {
+            if (fabricCanvasInstance.current) {
+              const json = fabricCanvasInstance.current.toJSON();
+              setPageEdits(prev => ({ ...prev, [currentPage]: json }));
+            }
+            setShowWatermarkModal(false);
+            setIsLoading(true);
+            try {
+              await loadPdf(await newFile.arrayBuffer(), newFile, true);
+            } catch (err) {
+              console.error(err);
+              setIsLoading(false);
+            }
+          }}
+        />
       </div>
   );
 }
