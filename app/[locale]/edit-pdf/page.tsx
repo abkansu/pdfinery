@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { 
   Upload, Type, Pen, X, Download, Undo, 
   ZoomIn, ZoomOut, MousePointer2, Image as ImageIcon,
-  Square, Eraser, Loader2, Stamp
+  Square, Eraser, Loader2, Stamp, Hash, PanelLeftClose, PanelLeftOpen
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getPdfjs } from "@/lib/pdfUtils";
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import * as fabric from "fabric";
 import { WatermarkModal } from "./WatermarkModal";
+import { PageNumberModal } from "./PageNumberModal";
 
 // --- Types ---
 type Tool = "select" | "text" | "freehand" | "rect" | "whiteout";
@@ -83,6 +84,8 @@ export default function EditPDFPage() {
   
   // Watermark Modal State
   const [showWatermarkModal, setShowWatermarkModal] = useState(false);
+  const [showPageNumberModal, setShowPageNumberModal] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(true);
 
   const t = useTranslations("EditPage");
 
@@ -482,6 +485,8 @@ export default function EditPDFPage() {
                    <li>{t("features.list.3")}</li>
                    <li>{t("features.list.4")}</li>
                    <li>{t("features.list.5")}</li>
+                   <li>{t("features.list.6")}</li>
+                   <li>{t("features.list.7")}</li>
                  </ul>
                </div>
              </div>
@@ -494,9 +499,9 @@ export default function EditPDFPage() {
       <div className="flex flex-col h-[calc(100vh-10rem)] w-full bg-gray-100">
         
         {/* Editor Toolbar */}
-        <div className="bg-white border-b px-6 py-3 flex flex-wrap items-center justify-between shadow-sm z-10 gap-2">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={() => {
+        <div className="bg-white border-b px-6 py-3 grid grid-cols-[minmax(0,1fr)_auto_auto] items-center shadow-sm z-10 gap-3 min-w-0">
+          <div className="flex items-center gap-4 min-w-0 overflow-hidden">
+            <Button variant="ghost" size="sm" className="shrink-0" onClick={() => {
               if (fabricCanvasInstance.current) {
                 fabricCanvasInstance.current.dispose();
                 fabricCanvasInstance.current = null;
@@ -505,11 +510,11 @@ export default function EditPDFPage() {
             }}>
               <Undo className="w-4 h-4 mr-2" /> {t("back")}
             </Button>
-            <span className="font-semibold text-sm truncate max-w-[150px] md:max-w-[200px]">{file.name}</span>
+            <span className="font-semibold text-sm truncate min-w-0" title={file.name}>{file.name}</span>
           </div>
           
           {/* Editing Tools */}
-          <div className="flex items-center gap-1 bg-muted p-1 rounded-md">
+          <div className="flex items-center gap-1 bg-muted p-1 rounded-md shrink-0">
              <Button 
                variant={activeTool === "select" ? "default" : "ghost"} 
                size="sm"
@@ -573,9 +578,18 @@ export default function EditPDFPage() {
                variant="ghost" 
                size="sm"
                onClick={() => setShowWatermarkModal(true)}
-               title="Watermark"
+               title={t("tools.watermark")}
              >
                <Stamp className="w-4 h-4" />
+             </Button>
+
+             <Button 
+               variant="ghost" 
+               size="sm"
+               onClick={() => setShowPageNumberModal(true)}
+               title={t("tools.pageNumbers")}
+             >
+               <Hash className="w-4 h-4" />
              </Button>
 
              <Button 
@@ -589,17 +603,17 @@ export default function EditPDFPage() {
           </div>
 
           <div className="flex items-center gap-2">
-             <div className="flex items-center gap-1 mr-2">
-               <Button variant="outline" size="sm" onClick={() => setScale(s => Math.max(0.5, s - 0.2))}>
+             <div className="flex items-center gap-1">
+               <Button variant="outline" size="sm" className="shrink-0" onClick={() => setScale(s => Math.max(0.5, s - 0.2))}>
                  <ZoomOut className="w-3 h-3" />
                </Button>
-               <span className="text-xs w-10 text-center">{Math.round(scale * 100)}%</span>
-               <Button variant="outline" size="sm" onClick={() => setScale(s => Math.min(3, s + 0.2))}>
+               <span className="text-xs w-10 text-center shrink-0">{Math.round(scale * 100)}%</span>
+               <Button variant="outline" size="sm" className="shrink-0" onClick={() => setScale(s => Math.min(3, s + 0.2))}>
                  <ZoomIn className="w-3 h-3" />
                </Button>
              </div>
              
-             <Button size="sm" onClick={handleDownload} disabled={isLoading}>
+             <Button size="sm" className="shrink-0" onClick={handleDownload} disabled={isLoading}>
                {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
                {t("downloadEdited")}
              </Button>
@@ -608,10 +622,45 @@ export default function EditPDFPage() {
 
         {/* Main Content */}
         <div className="flex-1 overflow-hidden p-6 w-full flex justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-[256px_1fr] w-full max-w-[1200px] shadow-lg bg-white rounded-lg overflow-hidden border h-full">
-            <div id="loaded-edit-pages" className="bg-white border-r overflow-y-auto hidden md:block p-4 h-full">
-              <div className="space-y-4">
-                <h3 className="font-semibold text-sm text-gray-500">{t("pagesTitle", { count: totalPages })}</h3>
+          <div className={cn(
+            "grid grid-cols-1 w-full max-w-[1200px] shadow-lg bg-white rounded-lg overflow-hidden border h-full",
+            isPreviewOpen ? "md:grid-cols-[256px_1fr]" : "md:grid-cols-[48px_1fr]"
+          )}>
+            <div
+              id="loaded-edit-pages"
+              className={cn(
+                "bg-white border-r hidden md:block h-full",
+                isPreviewOpen ? "overflow-y-auto p-4" : "overflow-hidden p-1"
+              )}
+            >
+              {!isPreviewOpen && (
+                <div className="flex justify-center pt-3">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 shrink-0 bg-black text-white hover:bg-neutral-800 hover:text-white [&_svg]:size-4"
+                    onClick={() => setIsPreviewOpen(true)}
+                    title={t("showPreview")}
+                    aria-label={t("showPreview")}
+                  >
+                    <PanelLeftOpen />
+                  </Button>
+                </div>
+              )}
+              <div className={cn("space-y-4", !isPreviewOpen && "hidden")}>
+                <div className="flex items-center justify-between gap-1">
+                  <h3 className="font-semibold text-sm text-gray-500">{t("pagesTitle", { count: totalPages })}</h3>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 shrink-0 bg-black text-white hover:bg-neutral-800 hover:text-white [&_svg]:size-4"
+                    onClick={() => setIsPreviewOpen(false)}
+                    title={t("hidePreview")}
+                    aria-label={t("hidePreview")}
+                  >
+                    <PanelLeftClose />
+                  </Button>
+                </div>
                 <div className="grid grid-cols-1 gap-4">
                   {Array.from({ length: totalPages }).map((_, idx) => (
                     <div 
@@ -674,6 +723,27 @@ export default function EditPDFPage() {
               setPageEdits(prev => ({ ...prev, [currentPage]: json }));
             }
             setShowWatermarkModal(false);
+            setIsLoading(true);
+            try {
+              await loadPdf(await newFile.arrayBuffer(), newFile, true);
+            } catch (err) {
+              console.error(err);
+              setIsLoading(false);
+            }
+          }}
+        />
+
+        <PageNumberModal
+          isOpen={showPageNumberModal}
+          onClose={() => setShowPageNumberModal(false)}
+          file={file}
+          totalPages={totalPages}
+          onApply={async (newFile) => {
+            if (fabricCanvasInstance.current) {
+              const json = fabricCanvasInstance.current.toJSON();
+              setPageEdits(prev => ({ ...prev, [currentPage]: json }));
+            }
+            setShowPageNumberModal(false);
             setIsLoading(true);
             try {
               await loadPdf(await newFile.arrayBuffer(), newFile, true);

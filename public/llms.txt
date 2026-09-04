@@ -6,7 +6,7 @@
 - **Merge & Organize**: Combine multiple PDF files into a single document. Drag-and-drop to reorder pages or delete unwanted pages.
 - **Convert PDF**: Convert PDF pages to high-quality JPG or PNG images. Extract text from PDF documents instantly. Turn JPG, PNG images, and text files into multi-page PDF documents.
 - **Split & Extract**: Split PDFs by custom page ranges, extract specific pages, or split a document into single individual pages.
-- **Edit PDF**: Add text, shapes, freehand drawings, and images directly onto PDF pages.
+- **Edit PDF**: Add text, shapes, freehand drawings, images, watermarks, and page numbers directly onto PDF pages.
 - **Sign & Secure**: Visually add your signature to documents. Lock, unlock, and restrict editing permissions for your PDFs.
 - **Optimize PDF**: Compress PDFs to reduce file size, adjust image quality, and remove metadata.
 - **Internationalization**: Full support for English and Turkish languages.

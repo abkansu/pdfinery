@@ -68,16 +68,27 @@ export function PDFProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const deletePage = useCallback((index: number) => {
-    setPages((prev) => {
-      const newPages = prev.filter((_, i) => i !== index);
-      if (newPages.length === 0) {
-        setSelectedIndex(0);
-      } else if (index <= selectedIndex) {
-        setSelectedIndex(Math.max(0, selectedIndex - 1));
-      }
-      return newPages;
-    });
-  }, [selectedIndex]);
+    const deletedPage = pages[index];
+    if (!deletedPage) return;
+
+    const newPages = pages.filter((_, i) => i !== index);
+
+    if (newPages.length === 0) {
+      setSelectedIndex(0);
+    } else if (index <= selectedIndex) {
+      setSelectedIndex(Math.max(0, selectedIndex - 1));
+    }
+
+    setPages(newPages);
+
+    // Drop any uploaded file that no longer has remaining pages
+    const remainingPageIds = new Set(newPages.map((p) => p.id));
+    setUploadedFilesState((prevFiles) =>
+      prevFiles.filter((file) =>
+        file.pages.some((p) => remainingPageIds.has(p.id))
+      )
+    );
+  }, [pages, selectedIndex]);
 
   const clearAll = useCallback(() => {
     setPages([]);

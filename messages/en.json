@@ -46,7 +46,7 @@
       },
       "edit": {
         "title": "Edit",
-        "description": "Edit your PDF by adding text, drawing, shapes, and images directly on the pages."
+        "description": "Edit your PDF by adding text, drawings, shapes, images, watermarks, and page numbers directly on the pages."
       },
       "optimize": {
         "title": "Optimize",
@@ -360,16 +360,16 @@
   },
   "EditPage": {
     "title": "Edit PDF",
-    "subtitle": "Add text, draw, add shapes and whiteout areas on your PDF securely.",
+    "subtitle": "Add text, drawings, shapes, images, watermarks, page numbers, and whiteout areas on your PDF securely.",
     "uploadTitle": "Upload a PDF to edit",
     "uploadDesc": "100% private. Files are processed entirely in your browser.",
     "selectPdf": "Select PDF",
-    "featuresDesc": "Supported features: Add text, draw freehand, add shapes, upload images, and whiteout areas. Multi-page support. Secure client-side processing.",
+    "featuresDesc": "Supported features: Add text, draw freehand, add shapes, upload images, add watermarks, add page numbers, and whiteout areas. Multi-page support. Secure client-side processing.",
     "howTo": {
         "title": "How to use",
         "step1": "Upload a PDF document to edit",
-        "step2": "Select a tool (text, draw, shapes, etc.) from the top toolbar",
-        "step3": "Click or drag on the PDF page to apply your edits",
+        "step2": "Select a tool from the toolbar, or open watermark or page number settings",
+        "step3": "Click or drag on the page to edit, or apply watermark and page number options",
         "step4": "Click 'Download Edited PDF' to save your changes"
     },
     "features": {
@@ -380,19 +380,49 @@
             "2": "Use the whiteout tool to hide unwanted content",
             "3": "Easily navigate and edit multiple pages",
             "4": "Free to use with no file size limits",
-            "5": "Works entirely in your browser for maximum privacy"
+            "5": "Works entirely in your browser for maximum privacy",
+            "6": "Add page numbers with single or facing-page layouts",
+            "7": "Add text or image watermarks with placement, opacity, and page range"
         }
     },
     "back": "Back",
     "downloadEdited": "Download Edited PDF",
     "pagesTitle": "PAGES ({count})",
+    "hidePreview": "Hide page preview",
+    "showPreview": "Show page preview",
     "tools": {
       "text": "Add Text",
       "freehand": "Draw",
       "rectangle": "Add Rectangle",
       "image": "Add Image",
       "whiteout": "Whiteout",
-      "clear": "Clear All Edits"
+      "clear": "Clear All Edits",
+      "watermark": "Watermark",
+      "pageNumbers": "Page Numbers"
+    },
+    "pageNumbers": {
+      "title": "Add Page Numbers",
+      "pageMode": "Page mode",
+      "single": "Single pages",
+      "singleDesc": "Place the number in the same position on every page.",
+      "facing": "Facing pages",
+      "facingDesc": "Alternate between the selected position and its opposite side.",
+      "position": "Position",
+      "margin": "Margin",
+      "marginSmall": "Small",
+      "marginMedium": "Medium",
+      "marginLarge": "Large",
+      "pages": "Pages",
+      "from": "From",
+      "to": "To",
+      "text": "Text format",
+      "formatNumber": "{n}",
+      "formatPage": "Page {n}",
+      "formatPageOf": "Page {n} of {total}",
+      "cancel": "Cancel",
+      "apply": "Add Page Numbers",
+      "applying": "Adding...",
+      "applyFailed": "Failed to add page numbers."
     },
     "alerts": {
       "loadFailed": "Failed to load PDF",

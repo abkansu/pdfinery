@@ -46,7 +46,7 @@
       },
       "edit": {
         "title": "Düzenle",
-        "description": "Sayfalara doğrudan metin ekleyerek, çizim yaparak, şekiller ve görseller yerleştirerek PDF'inizi düzenleyin."
+        "description": "Sayfalara doğrudan metin, çizim, şekiller, görseller, filigran ve sayfa numaraları ekleyerek PDF'inizi düzenleyin."
       },
       "optimize": {
         "title": "Optimize Et",
@@ -360,16 +360,16 @@
   },
   "EditPage": {
     "title": "PDF Düzenle",
-    "subtitle": "PDF'inize metin ekleyin, çizim yapın, şekiller ekleyin ve güvenle düzenleyin.",
+    "subtitle": "PDF'inize metin, çizim, şekiller, görseller, filigran, sayfa numaraları ekleyin ve güvenle düzenleyin.",
     "uploadTitle": "Düzenlenecek PDF'i yükleyin",
     "uploadDesc": "%100 gizli. Dosyalar tamamen tarayıcınızda işlenir.",
     "selectPdf": "PDF Seç",
-    "featuresDesc": "Desteklenen özellikler: Metin ekle, serbest çizim yap, şekiller ekle, resim yükle ve alanları beyazlat. Çoklu sayfa desteği. Güvenli istemci taraflı işleme.",
+    "featuresDesc": "Desteklenen özellikler: Metin ekle, serbest çizim yap, şekiller ekle, resim yükle, filigran ekle, sayfa numarası ekle ve alanları beyazlat. Çoklu sayfa desteği. Güvenli istemci taraflı işleme.",
     "howTo": {
         "title": "Nasıl kullanılır",
         "step1": "Düzenlemek için bir PDF belgesi yükleyin",
-        "step2": "Üst araç çubuğundan bir araç (metin, çizim, şekiller vb.) seçin",
-        "step3": "Düzenlemelerinizi uygulamak için PDF sayfasına tıklayın veya sürükleyin",
+        "step2": "Araç çubuğundan bir araç seçin veya filigran ve sayfa numarası ayarlarını açın",
+        "step3": "Düzenlemek için sayfaya tıklayın veya sürükleyin; filigran ve sayfa numarası seçeneklerini uygulayın",
         "step4": "Değişikliklerinizi kaydetmek için 'Düzenlenmiş PDF'i İndir'e tıklayın"
     },
     "features": {
@@ -380,19 +380,49 @@
             "2": "İstenmeyen içeriği gizlemek için beyazlatma aracını kullanın",
             "3": "Birden çok sayfa arasında kolayca gezinin ve düzenleyin",
             "4": "Dosya boyutu sınırı olmadan ücretsiz kullanım",
-            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır"
+            "5": "Maksimum gizlilik için tamamen tarayıcınızda çalışır",
+            "6": "Tek veya karşılıklı sayfa düzeniyle sayfa numaraları ekleyin",
+            "7": "Metin veya görsel filigran ekleyin; konum, opaklık ve sayfa aralığını ayarlayın"
         }
     },
     "back": "Geri",
     "downloadEdited": "Düzenlenmiş PDF'i İndir",
     "pagesTitle": "SAYFALAR ({count})",
+    "hidePreview": "Sayfa önizlemesini gizle",
+    "showPreview": "Sayfa önizlemesini göster",
     "tools": {
       "text": "Metin Ekle",
       "freehand": "Çizim Yap",
       "rectangle": "Dikdörtgen Ekle",
       "image": "Resim Ekle",
       "whiteout": "Beyazlat",
-      "clear": "Tüm Düzenlemeleri Temizle"
+      "clear": "Tüm Düzenlemeleri Temizle",
+      "watermark": "Filigran",
+      "pageNumbers": "Sayfa Numaraları"
+    },
+    "pageNumbers": {
+      "title": "Sayfa Numaraları Ekle",
+      "pageMode": "Sayfa düzeni",
+      "single": "Tek sayfa",
+      "singleDesc": "Numarayı her sayfada aynı konuma yerleştirir.",
+      "facing": "Karşılıklı sayfalar",
+      "facingDesc": "Seçilen konum ile karşı taraf arasında sırayla yerleştirir.",
+      "position": "Konum",
+      "margin": "Kenar boşluğu",
+      "marginSmall": "Küçük",
+      "marginMedium": "Orta",
+      "marginLarge": "Büyük",
+      "pages": "Sayfalar",
+      "from": "Başlangıç",
+      "to": "Bitiş",
+      "text": "Metin biçimi",
+      "formatNumber": "{n}",
+      "formatPage": "Sayfa {n}",
+      "formatPageOf": "Sayfa {n} / {total}",
+      "cancel": "İptal",
+      "apply": "Sayfa Numaralarını Ekle",
+      "applying": "Ekleniyor...",
+      "applyFailed": "Sayfa numaraları eklenemedi."
     },
     "alerts": {
       "loadFailed": "PDF yüklenemedi",
